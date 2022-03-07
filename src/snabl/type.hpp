@@ -17,7 +17,7 @@ namespace snabl {
     };
     
     Type(shared_ptr<const Imp> imp = nullptr);
-    Type(M *m, Sym name);
+    Type(M &m, Sym name);
     shared_ptr<const Imp> imp;
   };
 

@@ -8,7 +8,7 @@ namespace snabl::libs {
   struct Abc: Lib {
     types::Fun fun_type;
     
-    Abc(M *m);
+    Abc(M &m);
   };
 }
 

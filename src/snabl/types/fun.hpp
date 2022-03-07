@@ -9,7 +9,7 @@ namespace snabl::types {
       Imp(Id id, Sym name);
     };
     
-    Fun(M *m, Sym name);
+    Fun(M &m, Sym name);
   };
 }
 

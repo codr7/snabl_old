@@ -4,7 +4,6 @@ using namespace std;
 
 int main() {
   snabl::M m;
-  m.abc_lib = make_optional<snabl::libs::Abc>(&m);
-  
+  m.abc_lib.emplace(m);
   return 0;
 }

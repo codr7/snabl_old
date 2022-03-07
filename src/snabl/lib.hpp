@@ -5,9 +5,9 @@ namespace snabl {
   struct M;
   
   struct Lib {
-    M *m;
+    M &m;
     
-    Lib(M *m);
+    Lib(M &m);
   };
 }
 
