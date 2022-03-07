@@ -1,3 +1,5 @@
+* convert M *m to M &m
+* add FUN op to capture env
 * write Fun.Emit
 * add int type
 * add LOAD_INT ops

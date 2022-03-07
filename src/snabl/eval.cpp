@@ -1,3 +1,4 @@
+#include "snabl/fun.hpp"
 #include "snabl/m.hpp"
 
 #define DISPATCH(next_pc)						\
@@ -8,7 +9,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&GOTO, &&NOP, &&RET,
+      &&GOTO, &&LOAD_FUN, &&NOP, &&RET,
       /* STOP */
       &&STOP};
 
@@ -16,7 +17,13 @@ namespace snabl {
     Op op = 0;
     
     DISPATCH(start_pc);
-    
+
+  LOAD_FUN: {
+      Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
+      env->regs[ops::load_reg(op)] = Val(abc_lib->fun_type, f);
+      DISPATCH(pc+2);
+    }
+
   NOP: {
       DISPATCH(pc+1);
     }

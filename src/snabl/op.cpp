@@ -2,24 +2,33 @@
 
 namespace snabl {
   namespace ops {
-    Op GOTO(PC pc) {
-      return static_cast<Op>(static_cast<Op>(OpCode::STOP) + (pc << OP_CODE_BITS));
+    void GOTO(Op &op, PC pc) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STOP) + (pc << OP_CODE_BITS));
     }
 
     PC goto_pc(Op op) {
       return static_cast<PC>(op >> OP_CODE_BITS);
     }
 
-    Op NOP() {
-      return static_cast<Op>(OpCode::NOP);
+    void LOAD_FUN(Op &op, Reg reg, Fun *val) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STOP) + (reg << OP_CODE_BITS));
+      *(&op+1) = reinterpret_cast<Op>(val);
     }
 
-    Op RET() {
-      return static_cast<Op>(OpCode::RET);      
+    Reg load_reg(Op op) {
+      return static_cast<Reg>(op >> OP_CODE_BITS);
+    }
+
+    void NOP(Op &op) {
+      op = static_cast<Op>(OpCode::NOP);
+    }
+
+    void RET(Op &op) {
+      op = static_cast<Op>(OpCode::RET);      
     }
     
-    Op STOP() {
-      return static_cast<Op>(OpCode::STOP);
+    void STOP(Op &op) {
+      op = static_cast<Op>(OpCode::STOP);
     }
   }
 }

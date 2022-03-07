@@ -25,11 +25,11 @@ namespace snabl {
     Alloc<Env, ENV_SLAB_SIZE> env_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
     Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
-
-    libs::Abc abc_lib;
     
     vector<Sym> syms;
     map<string, Sym> sym_lookup;
+
+    vector<Type> types;
     
     Env *env, *free_env;
     Frame *frame, *free_frame;
@@ -38,8 +38,10 @@ namespace snabl {
     array<Op, OP_COUNT> ops;
     PC emit_pc = 0;
 
+    optional<libs::Abc> abc_lib;
+
     M();
-    Op &emit(Op op);
+    Op &emit();
     optional<Error> eval(PC start_pc);
 
     Sym sym(string name) {
@@ -53,6 +55,12 @@ namespace snabl {
       syms.push_back(s);
       sym_lookup[name] = s;
       return s;
+    }
+
+    Type::Id add_type(Type type) {
+      Type::Id id = types.size();
+      types.push_back(type);
+      return id;
     }
     
     Env *begin_env() {

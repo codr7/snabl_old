@@ -2,6 +2,7 @@
 #define SNABL_OP_HPP
 
 #include <cstdint>
+#include "snabl/env.hpp"
 
 namespace snabl {
   using namespace std;
@@ -16,7 +17,7 @@ namespace snabl {
   #define OP_TYPE_ID_BITS 10
 
   enum class OpCode {
-    GOTO, NOP, RET,
+    GOTO, LOAD_FUN, NOP, RET,
     /* STOP */
     STOP
   };
@@ -26,8 +27,13 @@ namespace snabl {
   }
 
   namespace ops {
+    struct Fun;
+    
     Op GOTO(PC pc);
     PC goto_pc(Op op);
+
+    Reg load_reg(Op op);
+    Op LOAD_FUN(Reg reg, Fun *val);
 
     Op NOP();
     Op RET();

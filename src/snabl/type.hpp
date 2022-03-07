@@ -4,6 +4,8 @@
 #include "snabl/sym.hpp"
 
 namespace snabl {
+  struct M;
+  
   struct Type {
     using Id = uint64_t;
 
@@ -14,8 +16,8 @@ namespace snabl {
       Sym name;
     };
     
-    Type();
-    Type(Id id, Sym name);
+    Type(shared_ptr<const Imp> imp = nullptr);
+    Type(M *m, Sym name);
     shared_ptr<const Imp> imp;
   };
 

@@ -8,6 +8,8 @@
 namespace snabl {
   using namespace std;
 
+  using Reg = int;
+    
   struct Env {
     static const int REG_COUNT = 256;
     
