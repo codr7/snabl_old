@@ -3,6 +3,7 @@
 
 #include <array>
 
+#include "snabl/op.hpp"
 #include "snabl/val.hpp"
 
 namespace snabl {
@@ -10,9 +11,10 @@ namespace snabl {
 
   struct Frame {
     Frame *outer;
+    PC ret_pc;
     int ref_count;
 
-    Frame(Frame *outer);
+    Frame(Frame *outer, PC ret_pc);
   };
 }
 

@@ -15,8 +15,10 @@ namespace snabl {
   #define OP_REG_BITS 8
   #define OP_TYPE_ID_BITS 10
 
-  enum class OpCode { STOP,
-    GOTO, NOP
+  enum class OpCode {
+    GOTO, NOP, RET,
+    /* STOP */
+    STOP
   };
     
   inline OpCode op_code(Op op) {
@@ -25,7 +27,13 @@ namespace snabl {
 
   namespace ops {
     Op GOTO(PC pc);
+    PC goto_pc(Op op);
+
     Op NOP();
+    Op RET();
+
+    /* STOP */
+    
     Op STOP();
   }
 }

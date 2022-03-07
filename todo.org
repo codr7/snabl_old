@@ -1,7 +1,6 @@
-* add eval loop
 * add type
 * add int type
 * add LOAD_INT ops
 * add readers
 * add repl
-* add ops
+* fib

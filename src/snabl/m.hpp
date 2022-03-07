@@ -1,8 +1,11 @@
 #ifndef SNABL_M_HPP
 #define SNABL_M_HPP
 
+#include <optional>
+
 #include "snabl/alloc.hpp"
 #include "snabl/env.hpp"
+#include "snabl/error.hpp"
 #include "snabl/frame.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/op.hpp"
@@ -30,7 +33,8 @@ namespace snabl {
 
     M();
     Op &emit(Op op);
-    
+    optional<Error> eval(PC start_pc);
+
     Env *begin_env() {
       if (free_env) {
 	Env *new_env = free_env;
@@ -57,13 +61,13 @@ namespace snabl {
       }
     }
 
-    Frame *begin_frame() {
+    Frame *begin_frame(PC ret_pc) {
       if (free_frame) {
 	Frame *new_frame = free_frame;
 	free_frame = free_frame->outer;
-	frame = new(new_frame) Frame(frame);
+	frame = new(new_frame) Frame(frame, ret_pc);
       } else {
-	frame = frame_alloc.make(frame);
+	frame = frame_alloc.make(frame, ret_pc);
       }
       
       return frame;
