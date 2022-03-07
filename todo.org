@@ -1,4 +1,8 @@
-* add type
+* finish sym
+** use shared_ptr imp
+* finish type
+** use shared_ptr imp
+* write Fun.Emit
 * add int type
 * add LOAD_INT ops
 * add readers

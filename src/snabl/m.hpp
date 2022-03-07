@@ -1,7 +1,10 @@
 #ifndef SNABL_M_HPP
 #define SNABL_M_HPP
 
+#include <map>
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "snabl/alloc.hpp"
 #include "snabl/env.hpp"
@@ -10,6 +13,7 @@
 #include "snabl/libs/abc.hpp"
 #include "snabl/op.hpp"
 #include "snabl/scope.hpp"
+#include "snabl/sym.hpp"
 
 namespace snabl {
   struct M {
@@ -17,17 +21,22 @@ namespace snabl {
     static const int ENV_SLAB_SIZE = 32;
     static const int FRAME_SLAB_SIZE = 32;
     static const int SCOPE_SLAB_SIZE = 32;
+    static const int SYM_SLAB_SIZE = 32;
 
     Alloc<Env, ENV_SLAB_SIZE> env_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
     Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
+    Alloc<Sym, SYM_SLAB_SIZE> sym_alloc;
 
     libs::Abc abc_lib;
+    
+    vector<Sym *> syms;
+    map<string, Sym *> sym_lookup;
     
     Env *env, *free_env;
     Frame *frame, *free_frame;
     Scope *scope, *free_scope;
-
+        
     array<Op, OP_COUNT> ops;
     PC emit_pc = 0;
 
@@ -35,6 +44,19 @@ namespace snabl {
     Op &emit(Op op);
     optional<Error> eval(PC start_pc);
 
+    Sym &sym(const string &name) {
+      auto found = sym_lookup.find(name);
+      
+      if (found != sym_lookup.end()) {
+	return *found->second;
+      }
+
+      Sym *s = sym_alloc.make(syms.size(), name);
+      syms.push_back(s);
+      sym_lookup[name] = s;
+      return *s;
+    }
+    
     Env *begin_env() {
       if (free_env) {
 	Env *new_env = free_env;
