@@ -18,8 +18,6 @@ namespace snabl {
     struct Arg {
       Sym name;
       Type type;
-
-      Arg();
     };
       
     using Body = function<pair<PC, optional<Error>> (Fun &self, PC ret_pc, M &m)>;
@@ -29,7 +27,7 @@ namespace snabl {
     pair<PC, optional<Error>> call(PC ret_pc, M &m);
     
     Sym name;
-    vector<Arg> args;
+    array<Arg, ARG_COUNT> args;
     int arg_count;
     Type ret_type;
     Body body;

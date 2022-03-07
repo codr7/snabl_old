@@ -26,12 +26,11 @@ namespace snabl {
     Alloc<Env, ENV_SLAB_SIZE> env_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
     Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
-    Alloc<Sym, SYM_SLAB_SIZE> sym_alloc;
 
     libs::Abc abc_lib;
     
-    vector<Sym *> syms;
-    map<string, Sym *> sym_lookup;
+    vector<Sym> syms;
+    map<string, Sym> sym_lookup;
     
     Env *env, *free_env;
     Frame *frame, *free_frame;
@@ -44,17 +43,17 @@ namespace snabl {
     Op &emit(Op op);
     optional<Error> eval(PC start_pc);
 
-    Sym &sym(const string &name) {
+    Sym sym(string name) {
       auto found = sym_lookup.find(name);
       
       if (found != sym_lookup.end()) {
-	return *found->second;
+	return found->second;
       }
 
-      Sym *s = sym_alloc.make(syms.size(), name);
+      Sym s(syms.size(), name);
       syms.push_back(s);
       sym_lookup[name] = s;
-      return *s;
+      return s;
     }
     
     Env *begin_env() {
