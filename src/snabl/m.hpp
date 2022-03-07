@@ -21,7 +21,6 @@ namespace snabl {
     static const int ENV_SLAB_SIZE = 32;
     static const int FRAME_SLAB_SIZE = 32;
     static const int SCOPE_SLAB_SIZE = 32;
-    static const int SYM_SLAB_SIZE = 32;
 
     Alloc<Env, ENV_SLAB_SIZE> env_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;

@@ -27,8 +27,10 @@ namespace snabl {
 
   RET: {
       Frame *f = end_frame();
-      end_env();
-      DISPATCH(f->ret_pc);
+      PC ret_pc = f->ret_pc;
+      deref_frame(f);
+      deref_env(end_env());
+      DISPATCH(ret_pc);
     }
     
     /* STOP */
