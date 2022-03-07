@@ -12,6 +12,7 @@
 #include "snabl/type.hpp"
 
 namespace snabl {
+  struct Form;
   struct M;
 
   struct Fun {
@@ -24,6 +25,7 @@ namespace snabl {
     static const int ARG_COUNT = 8;
     
     Fun(Sym name, const vector<Arg> &args, Type ret_type, Body body = nullptr);
+    optional<Error> emit(Form body, M &m);
     pair<PC, optional<Error>> call(PC ret_pc, M &m);
     
     Sym name;

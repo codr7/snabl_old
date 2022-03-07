@@ -10,10 +10,8 @@ namespace snabl {
 
   bool operator==(Sym lhs, Sym rhs) { return lhs.imp->id == rhs.imp->id; }
 
-  bool operator<(Sym lhs, Sym rhs) { return lhs.imp->id < rhs.imp->id; }
-
   ostream &operator <<(ostream &out, Sym val) {
-    out << val.imp->name;
+    out << '\'' << val.imp->name;
     return out;
   }
 }

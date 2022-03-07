@@ -1,5 +1,6 @@
+* implement id form emit
 * add FUN op to capture env
-* write Fun.emit
+* implement Fun.emit
 * add int type
 * add LOAD_INT ops
 * add readers
