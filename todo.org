@@ -1,7 +1,5 @@
-* add int type
 * add FUN op to capture env
 * implement Fun.emit
-* add LOAD_INT ops
 * add readers
 * add repl
 * fib

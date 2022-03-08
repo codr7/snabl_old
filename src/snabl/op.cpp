@@ -15,6 +15,11 @@ namespace snabl {
       *(&op+1) = reinterpret_cast<Op>(val);
     }
 
+    void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_FUN) + (reg << OP_CODE_BITS));
+      *(&op+1) = static_cast<Op>(val);
+    }
+
     void LOAD_TYPE(Op &op, Reg reg, snabl::Type val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_TYPE) +
 			   (reg << OP_CODE_BITS) +

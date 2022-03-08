@@ -9,6 +9,7 @@
 #include "snabl/types.hpp"
 
 namespace snabl {
+  struct Lib;
   struct M;
   struct Val;
   
@@ -30,7 +31,7 @@ namespace snabl {
     };
     
     Type(shared_ptr<const Imp> imp = nullptr);
-    Type(M &m, Sym name);
+    Type(Lib &lib, Sym name);
     shared_ptr<const Imp> imp;
   };
 

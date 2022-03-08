@@ -43,25 +43,8 @@ namespace snabl {
     M();
     Op &emit(int n = 1);
     optional<Error> eval(PC start_pc);
-
-    Sym sym(string name) {
-      auto found = sym_lookup.find(name);
-      
-      if (found != sym_lookup.end()) {
-	return found->second;
-      }
-
-      Sym s(syms.size(), name);
-      syms.push_back(s);
-      sym_lookup[name] = s;
-      return s;
-    }
-
-    Type::Id add_type(Type type) {
-      Type::Id id = types.size();
-      types.push_back(type);
-      return id;
-    }
+    Type::Id add_type(Type type);
+    Sym sym(string name);
     
     Env *begin_env() {
       if (free_env) {

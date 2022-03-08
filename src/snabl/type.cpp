@@ -18,7 +18,7 @@ namespace snabl {
   Type::Type(shared_ptr<const Imp> imp): imp(imp) {
   }
   
-  Type::Type(M &m, Sym name): imp(make_shared<const Imp>(m.add_type(*this), name)) {
+  Type::Type(Lib &lib, Sym name): imp(make_shared<const Imp>(lib.add_type(*this), name)) {
   }
 
   bool operator==(Type lhs, Type rhs) { return lhs.imp->id == rhs.imp->id; }

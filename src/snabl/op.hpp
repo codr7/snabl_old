@@ -4,6 +4,7 @@
 #include <cstdint>
 #include "snabl/env.hpp"
 #include "snabl/fun.hpp"
+#include "snabl/types/int.hpp"
 
 namespace snabl {
   using namespace std;
@@ -17,7 +18,7 @@ namespace snabl {
   #define OP_TYPE_ID_BITS 10
 
   enum class OpCode {
-    GOTO, LOAD_FUN, LOAD_TYPE, NOP, RET,
+    GOTO, LOAD_FUN, LOAD_INT, LOAD_TYPE, NOP, RET,
     /* STOP */
     STOP
   };
@@ -33,6 +34,7 @@ namespace snabl {
     PC goto_pc(Op op);
 
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
+    void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);
     void LOAD_TYPE(Op &op, Reg reg, Type val);
     Reg load_reg(Op op);
     snabl::Type::Id load_type_id(Op op);
