@@ -2,6 +2,7 @@
 #define SNABL_VAL_HPP
 
 #include <any>
+
 #include "snabl/type.hpp"
 
 namespace snabl {
@@ -11,12 +12,11 @@ namespace snabl {
     Type type;
     any data;
 
-    Val() {
-    }
-    
-    Val(Type type, any data): type(type), data(data) {
-    }
+    Val() {}
+    Val(Type type, any data): type(type), data(data) {}
   };
+
+  ostream &operator <<(ostream &out, Val val);
 }
 
 #endif

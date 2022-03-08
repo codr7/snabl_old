@@ -23,6 +23,7 @@ namespace snabl {
   };
 
   bool operator==(Sym lhs, Sym rhs);
+  bool operator<(Sym lhs, Sym rhs);
   ostream &operator <<(ostream &out, Sym val);
 }
 

@@ -8,4 +8,13 @@ namespace snabl {
       outer->ref_count++;
     }
   }
+
+  optional<Val> Scope::get(Sym key) {
+    auto found = bindings.find(key);
+    if (found == bindings.end()) {
+      return nullopt;
+    }
+
+    return found->second;
+  }
 }

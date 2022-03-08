@@ -2,7 +2,17 @@
 #include "snabl/type.hpp"
 
 namespace snabl {
+  static optional<Error> default_emit(Val val, Reg reg, Pos pos, M &m) {
+    return Error(pos, "Emit not supported: ", val);
+  }
+  
+  static bool default_is_true(Val val) {
+    return true;
+  }
+
   Type::Imp::Imp(Id id, Sym name): id(id), name(name) {
+    methods.emit = default_emit;
+    methods.is_true = default_is_true;
   }
 
   Type::Type(shared_ptr<const Imp> imp): imp(imp) {

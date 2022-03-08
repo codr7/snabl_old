@@ -1,6 +1,6 @@
-* implement id form emit
 * add FUN op to capture env
 * implement Fun.emit
+* add type methods from ampl
 * add int type
 * add LOAD_INT ops
 * add readers

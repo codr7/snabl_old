@@ -7,7 +7,6 @@
 namespace snabl {
   using namespace std;
 
-  using PC = int64_t;
   using Op = uint64_t;
 
   #define OP_BITS 64
