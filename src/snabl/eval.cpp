@@ -9,7 +9,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&GOTO,
+      &&FUN, &&GOTO,
       &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
       &&NOP, &&RET,
       /* STOP */
@@ -19,6 +19,17 @@ namespace snabl {
     Op op = 0;
     
     DISPATCH(start_pc);
+
+
+  FUN: {
+      Fun *f = env->regs[ops::fun_reg(op)].as<Fun *>();
+      f->env = begin_env(env);
+      DISPATCH(ops::fun_end_pc(op));
+    }
+
+  GOTO: {
+      DISPATCH(ops::goto_pc(op));
+    }
 
   LOAD_FUN: {
       Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
@@ -41,10 +52,6 @@ namespace snabl {
       DISPATCH(pc+1);
     }
     
-  GOTO: {
-      DISPATCH(ops::goto_pc(op));
-    }
-
   RET: {
       Frame *f = end_frame();
       PC ret_pc = f->ret_pc;

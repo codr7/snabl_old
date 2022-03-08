@@ -6,7 +6,7 @@ namespace snabl {
     frame(nullptr), free_frame(nullptr),
     scope(nullptr), free_scope(nullptr) {
     begin_scope();
-    begin_env();
+    begin_env(nullptr);
   }
 
   Op &M::emit(int n) {

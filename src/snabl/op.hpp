@@ -18,7 +18,7 @@ namespace snabl {
   #define OP_TYPE_ID_BITS 10
 
   enum class OpCode {
-    GOTO, LOAD_FUN, LOAD_INT, LOAD_TYPE, NOP, RET,
+    FUN, GOTO, LOAD_FUN, LOAD_INT, LOAD_TYPE, NOP, RET,
     /* STOP */
     STOP
   };
@@ -28,10 +28,16 @@ namespace snabl {
   }
   
   namespace ops {    
-    #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
+    #define FUN_END_PC_BIT (OP_CODE_BITS + OP_REG_BITS)
+
+    void FUN(Op &op, Reg fun, PC end_pc);
+    PC fun_reg(Op op);
+    PC fun_end_pc(Op op);
 
     void GOTO(Op &op, PC pc);
     PC goto_pc(Op op);
+
+    #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
 
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);

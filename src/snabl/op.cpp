@@ -2,6 +2,18 @@
 
 namespace snabl {
   namespace ops {
+    void FUN(Op &op, Reg fun, PC end_pc) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (fun << OP_CODE_BITS) + (end_pc << FUN_END_PC_BIT));
+    }
+    
+    PC fun_reg(Op op) {
+      return static_cast<Reg>(op >> OP_CODE_BITS);
+    }
+    
+    PC fun_end_pc(Op op) {
+      return static_cast<PC>((op >> FUN_END_PC_BIT) & ((1 << OP_PC_BITS) - 1));
+    }
+
     void GOTO(Op &op, PC pc) {
       op = static_cast<Op>(static_cast<Op>(OpCode::GOTO) + (pc << OP_CODE_BITS));
     }
@@ -31,7 +43,7 @@ namespace snabl {
     }
 
     snabl::Type::Id load_type_id(Op op) {
-      return static_cast<snabl::Type::Id>(op >> LOAD_TYPE_ID_BIT);
+      return static_cast<snabl::Type::Id>(op >> LOAD_TYPE_ID_BIT & ((1 << OP_TYPE_ID_BITS) - 1));
     }
     
     void NOP(Op &op) {

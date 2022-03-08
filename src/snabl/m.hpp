@@ -46,13 +46,13 @@ namespace snabl {
     Type::Id add_type(Type type);
     Sym sym(string name);
     
-    Env *begin_env() {
+    Env *begin_env(Env *outer) {
       if (free_env) {
 	Env *new_env = free_env;
 	free_env = free_env->outer;
 	env = new(new_env) Env(env);
       } else {
-	env = env_alloc.make(env);
+	env = env_alloc.make(outer);
       }
       
       return env;

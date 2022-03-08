@@ -1,4 +1,3 @@
-* add FUN op to capture env
 * implement Fun.emit
 * add readers
 * add repl
