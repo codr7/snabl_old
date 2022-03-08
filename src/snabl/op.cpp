@@ -10,7 +10,7 @@ namespace snabl {
       return static_cast<PC>(op >> OP_CODE_BITS);
     }
 
-    void LOAD_FUN(Op &op, Reg reg, Fun *val) {
+    void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::STOP) + (reg << OP_CODE_BITS));
       *(&op+1) = reinterpret_cast<Op>(val);
     }

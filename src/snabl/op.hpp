@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "snabl/env.hpp"
+#include "snabl/fun.hpp"
 
 namespace snabl {
   using namespace std;
@@ -25,21 +26,19 @@ namespace snabl {
     return static_cast<OpCode>(op & ((1 << OP_CODE_BITS) - 1));
   }
 
-  namespace ops {
-    struct Fun;
-    
-    Op GOTO(PC pc);
+  namespace ops {    
+    void GOTO(Op &op, PC pc);
     PC goto_pc(Op op);
 
     Reg load_reg(Op op);
-    Op LOAD_FUN(Reg reg, Fun *val);
+    void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
 
-    Op NOP();
-    Op RET();
+    void NOP(Op &op);
+    void RET(Op &op);
 
     /* STOP */
     
-    Op STOP();
+    void STOP(Op &op);
   }
 }
 

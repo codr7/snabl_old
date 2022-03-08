@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "snabl/error.hpp"
-#include "snabl/op.hpp"
 #include "snabl/sym.hpp"
 #include "snabl/type.hpp"
 
@@ -34,6 +33,8 @@ namespace snabl {
     Type ret_type;
     Body body;
   };
+
+  ostream &operator <<(ostream &out, Fun *val);
 }
 
 #endif

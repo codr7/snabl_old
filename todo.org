@@ -1,7 +1,8 @@
+* add meta type and implement emit method
+** add LOAD_TYPE op
+* add int type
 * add FUN op to capture env
 * implement Fun.emit
-* add type methods from ampl
-* add int type
 * add LOAD_INT ops
 * add readers
 * add repl

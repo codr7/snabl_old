@@ -15,4 +15,9 @@ namespace snabl {
   pair<PC, optional<Error>> Fun::call(PC ret_pc, M &m) {
     return body(*this, ret_pc, m);
   }
+
+  ostream &operator <<(ostream &out, Fun *val) {
+    out << val->name << "()";
+    return out;
+  }
 }

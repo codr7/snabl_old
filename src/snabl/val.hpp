@@ -14,6 +14,9 @@ namespace snabl {
 
     Val() {}
     Val(Type type, any data): type(type), data(data) {}
+
+    template <typename T>
+    T as() { return any_cast<T>(data); }
   };
 
   ostream &operator <<(ostream &out, Val val);

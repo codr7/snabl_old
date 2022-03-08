@@ -9,7 +9,9 @@ namespace snabl {
     begin_env();
   }
 
-  Op &M::emit() {
-    return ops[emit_pc++];
+  Op &M::emit(int n) {
+    Op &op = ops[emit_pc++];
+    emit_pc += n-1;
+    return op;
   }
 }
