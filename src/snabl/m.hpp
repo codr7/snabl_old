@@ -41,7 +41,7 @@ namespace snabl {
     optional<libs::Abc> abc_lib;
 
     M();
-    Op &emit(int n);
+    Op &emit(int n = 1);
     optional<Error> eval(PC start_pc);
 
     Sym sym(string name) {

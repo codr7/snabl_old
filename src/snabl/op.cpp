@@ -3,7 +3,7 @@
 namespace snabl {
   namespace ops {
     void GOTO(Op &op, PC pc) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::STOP) + (pc << OP_CODE_BITS));
+      op = static_cast<Op>(static_cast<Op>(OpCode::GOTO) + (pc << OP_CODE_BITS));
     }
 
     PC goto_pc(Op op) {
@@ -11,14 +11,24 @@ namespace snabl {
     }
 
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::STOP) + (reg << OP_CODE_BITS));
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_FUN) + (reg << OP_CODE_BITS));
       *(&op+1) = reinterpret_cast<Op>(val);
+    }
+
+    void LOAD_TYPE(Op &op, Reg reg, snabl::Type val) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_TYPE) +
+			   (reg << OP_CODE_BITS) +
+			   (val.imp->id << LOAD_TYPE_ID_BIT));
     }
 
     Reg load_reg(Op op) {
       return static_cast<Reg>(op >> OP_CODE_BITS);
     }
 
+    snabl::Type::Id load_type_id(Op op) {
+      return static_cast<snabl::Type::Id>(op >> LOAD_TYPE_ID_BIT);
+    }
+    
     void NOP(Op &op) {
       op = static_cast<Op>(OpCode::NOP);
     }

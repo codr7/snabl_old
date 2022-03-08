@@ -9,7 +9,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&GOTO, &&LOAD_FUN, &&NOP, &&RET,
+      &&GOTO, &&LOAD_FUN, &&LOAD_TYPE, &&NOP, &&RET,
       /* STOP */
       &&STOP};
 
@@ -22,6 +22,11 @@ namespace snabl {
       Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
       env->regs[ops::load_reg(op)] = Val(abc_lib->fun_type, f);
       DISPATCH(pc+2);
+    }
+
+  LOAD_TYPE: {
+      env->regs[ops::load_reg(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
+      DISPATCH(pc+1);
     }
 
   NOP: {
