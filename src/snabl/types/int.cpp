@@ -5,7 +5,7 @@ namespace snabl::types {
   Int::Imp::Imp(Id id, Sym name): Type::Imp(id, name) {
     methods.dump = [](Val val, ostream &out) { out << val.as<DataType>(); };
     
-    methods.emit = [](Val val, Reg reg, Pos pos, M &m) {
+    methods.emit = [](Val val, snabl::Reg reg, Pos pos, M &m) {
       ops::LOAD_INT(m.emit(2), reg, val.as<DataType>());
       return nullopt;
     };

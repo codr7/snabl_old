@@ -1,4 +1,7 @@
-* implement Fun.emit
+* rename Env to State
 * add readers
 * add repl
+* add macros
+** add if-macro
+** add fun:-macro
 * fib

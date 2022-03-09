@@ -9,7 +9,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&FUN, &&GOTO,
+      &&COPY, &&FUN, &&GOTO,
       &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
       &&NOP, &&RET,
       /* STOP */
@@ -20,6 +20,11 @@ namespace snabl {
     
     DISPATCH(start_pc);
 
+
+  COPY: {
+      env->regs[ops::copy_dst(op)] = env->regs[ops::copy_src(op)];
+      DISPATCH(pc+1);
+    }
 
   FUN: {
       Fun *f = env->regs[ops::fun_reg(op)].as<Fun *>();

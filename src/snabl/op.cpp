@@ -2,6 +2,18 @@
 
 namespace snabl {
   namespace ops {
+    void COPY(Op &op, Reg dst, Reg src) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (dst << OP_CODE_BITS) + (src << COPY_SRC_BIT));
+    }
+
+    Reg copy_dst(Op op) {
+      return static_cast<Reg>((op >> OP_CODE_BITS) & ((1 << OP_REG_BITS) - 1));
+    }
+    
+    Reg copy_src(Op op) {
+      return static_cast<Reg>((op >> COPY_SRC_BIT) & ((1 << OP_REG_BITS) - 1));
+    }
+    
     void FUN(Op &op, Reg fun, PC end_pc) {
       op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (fun << OP_CODE_BITS) + (end_pc << FUN_END_PC_BIT));
     }

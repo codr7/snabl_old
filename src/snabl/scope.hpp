@@ -17,6 +17,7 @@ namespace snabl {
 
     Scope(Scope *outer);
     optional<Val> get(Sym key);
+    void set(Sym key, Type type, any data);
   };
 }
 

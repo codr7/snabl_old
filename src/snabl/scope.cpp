@@ -17,4 +17,8 @@ namespace snabl {
 
     return found->second;
   }
+
+  void Scope::set(Sym key, Type type, any data) {
+    bindings[key] = Val(type, data);
+  }
 }

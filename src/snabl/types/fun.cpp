@@ -8,7 +8,7 @@ namespace snabl::types {
       out << val.as<snabl::Fun *>();
     };
     
-    methods.emit = [](Val val, Reg reg, Pos pos, M &m) {
+    methods.emit = [](Val val, snabl::Reg reg, Pos pos, M &m) {
       ops::LOAD_FUN(m.emit(2), reg, val.as<snabl::Fun *>());
       return nullopt;
     };
