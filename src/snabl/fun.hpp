@@ -21,12 +21,12 @@ namespace snabl {
       Type type;
     };
       
-    using Body = function<pair<PC, optional<Error>> (Fun &self, PC ret_pc, M &m)>;
+    using Body = function<pair<PC, optional<Error>> (Fun &self, Reg reg, PC ret_pc, M &m)>;
     static const int ARG_COUNT = 8;
     
     Fun(Sym name, const vector<Arg> &args, Type ret_type, Body body = nullptr);
     optional<Error> emit(Form body, M &m);
-    pair<PC, optional<Error>> call(PC ret_pc, M &m);
+    pair<PC, optional<Error>> call(Reg reg, PC ret_pc, M &m);
     
     Sym name;
     array<Arg, ARG_COUNT> args;

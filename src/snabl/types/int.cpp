@@ -13,7 +13,5 @@ namespace snabl::types {
     methods.is_true = [](Val val) { return val.as<DataType>() != 0; };
   }
 
-  Int::Int(Lib &lib, Sym name): Type() {
-    imp = make_shared<const Imp>(lib.add_type(*this), name);
-  }
+  Int::Int(Lib &lib, Sym name): Type(make_shared<const Imp>(lib.add_type(*this), name)) {}
 }

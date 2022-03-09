@@ -25,7 +25,7 @@ namespace snabl {
     ops::RET(m.emit());
     ops::FUN(op, fun_reg, m.emit_pc);
 
-    this->body = [start_pc](Fun &self, PC ret_pc, M &m) {
+    this->body = [start_pc](Fun &self, Reg reg, PC ret_pc, M &m) {
       State *prstate = m.state;
       State *state = m.begin_state(self.state);
       copy(prstate->regs.begin()+1, prstate->regs.begin()+ARG_COUNT+1, state->regs.begin()+1);
@@ -36,8 +36,8 @@ namespace snabl {
     return nullopt;
   }
 
-  pair<PC, optional<Error>> Fun::call(PC ret_pc, M &m) {
-    return body(*this, ret_pc, m);
+  pair<PC, optional<Error>> Fun::call(Reg reg, PC ret_pc, M &m) {
+    return body(*this, reg, ret_pc, m);
   }
 
   ostream &operator <<(ostream &out, Fun *val) {

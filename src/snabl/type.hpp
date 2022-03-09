@@ -36,6 +36,7 @@ namespace snabl {
   };
 
   bool operator==(Type lhs, Type rhs);
+  bool operator!=(Type lhs, Type rhs);
   ostream &operator <<(ostream &out, Type val);
 }
 

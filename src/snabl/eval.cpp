@@ -9,7 +9,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&COPY, &&FUN, &&GOTO,
+      &&CALL, &&COPY, &&FUN, &&GOTO,
       &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
       &&NOP, &&RET,
       /* STOP */
@@ -19,8 +19,28 @@ namespace snabl {
     Op op = 0;
     
     DISPATCH(start_pc);
+    
+  CALL: {
+      Fun *target = state->regs[ops::call_target(op)].as<Fun *>();
+      Reg reg = ops::call_reg(op);
+      PC ret_pc = pc+1;
 
+      {
+	auto [ret_pc2, err] = target->call(reg, ret_pc, *this);
+	if (err) { return err; }
+	
+	if (ret_pc2 == ret_pc) {
+	  State *s = end_state();
+	  state->regs[reg] = s->regs[reg];
+	  deref_state(s);
+	}
 
+	ret_pc = ret_pc2;
+      }
+	  
+      DISPATCH(ret_pc); 
+    }
+    
   COPY: {
       state->regs[ops::copy_dst(op)] = state->regs[ops::copy_src(op)];
       DISPATCH(pc+1);

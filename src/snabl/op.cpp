@@ -2,8 +2,20 @@
 
 namespace snabl {
   namespace ops {
+    void CALL(Op &op, Reg target, Reg reg) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::CALL) + (target << CALL_TARGET_BIT) + (reg << CALL_REG_BIT));
+    }
+
+    Reg call_target(Op op) {
+      return static_cast<Reg>((op >> CALL_TARGET_BIT) & ((1 << OP_REG_BITS) - 1));
+    }
+    
+    Reg call_reg(Op op) {
+      return static_cast<Reg>((op >> CALL_REG_BIT) & ((1 << OP_REG_BITS) - 1));
+    }
+
     void COPY(Op &op, Reg dst, Reg src) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (dst << OP_CODE_BITS) + (src << COPY_SRC_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << OP_CODE_BITS) + (src << COPY_SRC_BIT));
     }
 
     Reg copy_dst(Op op) {

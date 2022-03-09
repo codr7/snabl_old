@@ -23,6 +23,8 @@ namespace snabl {
 
   bool operator==(Type lhs, Type rhs) { return lhs.imp->id == rhs.imp->id; }
 
+  bool operator!=(Type lhs, Type rhs) { return lhs.imp->id != rhs.imp->id; }
+
   ostream &operator <<(ostream &out, Type val) {
     out << val.imp->name;
     return out;

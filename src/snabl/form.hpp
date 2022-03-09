@@ -15,11 +15,11 @@ namespace snabl {
   struct M;
   
   struct Form {
-    struct Imp {
-      Imp(Pos pos);
-      
+    struct Imp {      
       Pos pos;
 
+      Imp(Pos pos);
+      virtual ~Imp();
       virtual void dump(ostream& out) const = 0;
       virtual optional<Error> emit(Reg reg, M &m) const = 0;
     };
@@ -27,8 +27,11 @@ namespace snabl {
     shared_ptr<const Imp> imp;
     
     Form(shared_ptr<const Imp> imp = nullptr);
-    void dump(ostream& out);
-    optional<Error> emit(Reg reg, M &m);
+    void dump(ostream& out) const;
+    optional<Error> emit(Reg reg, M &m) const;
+
+    template <typename T>
+    const typename T::Imp &as() const { return *any_cast<typename T::Imp *>(imp); }
   };
 }
 

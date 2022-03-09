@@ -12,6 +12,9 @@
 #define OP_REG_BITS 8
 #define OP_TYPE_ID_BITS 10
 
+#define CALL_TARGET_BIT OP_CODE_BITS
+#define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
+
 #define COPY_SRC_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define FUN_END_PC_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
@@ -22,7 +25,7 @@ namespace snabl {
   using Op = uint64_t;
 
   enum class OpCode {
-    COPY, FUN, GOTO,
+    CALL, COPY, FUN, GOTO,
     LOAD_FUN, LOAD_INT, LOAD_TYPE,
     NOP, RET,
     /* STOP */
@@ -34,6 +37,10 @@ namespace snabl {
   }
   
   namespace ops {
+    void CALL(Op &op, Reg target, Reg reg);
+    Reg call_target(Op op);
+    Reg call_reg(Op op);    
+
     void COPY(Op &op, Reg dst, Reg src);
     Reg copy_dst(Op op);
     Reg copy_src(Op op);    
