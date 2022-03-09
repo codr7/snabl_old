@@ -11,7 +11,7 @@
 #include "snabl/type.hpp"
 
 namespace snabl {
-  struct Env;
+  struct State;
   struct Form;
   struct M;
 
@@ -33,7 +33,7 @@ namespace snabl {
     int arg_count;
     Type ret_type;
     Body body;
-    Env *env;
+    State *state;
   };
 
   ostream &operator <<(ostream &out, Fun *val);

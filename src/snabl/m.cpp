@@ -2,11 +2,11 @@
 
 namespace snabl {
   M::M():
-    env(nullptr), free_env(nullptr),
+    state(nullptr), free_state(nullptr),
     frame(nullptr), free_frame(nullptr),
     scope(nullptr), free_scope(nullptr) {
     begin_scope();
-    begin_env(nullptr);
+    begin_state(nullptr);
   }
 
   Op &M::emit(int n) {

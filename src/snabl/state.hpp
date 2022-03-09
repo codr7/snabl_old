@@ -1,5 +1,5 @@
-#ifndef SNABL_ENV_HPP
-#define SNABL_ENV_HPP
+#ifndef SNABL_STATE_HPP
+#define SNABL_STATE_HPP
 
 #include <array>
 
@@ -8,14 +8,14 @@
 namespace snabl {
   using namespace std;
     
-  struct Env {
+  struct State {
     static const int REG_COUNT = 256;
     
-    Env *outer;
+    State *outer;
     int ref_count;
     array<Val, REG_COUNT> regs;
 
-    Env(Env *outer);
+    State(State *outer);
   };
 }
 

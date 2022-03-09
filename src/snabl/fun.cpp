@@ -26,9 +26,9 @@ namespace snabl {
     ops::FUN(op, fun_reg, m.emit_pc);
 
     this->body = [start_pc](Fun &self, PC ret_pc, M &m) {
-      Env *prenv = m.env;
-      Env *env = m.begin_env(self.env);
-      copy(prenv->regs.begin()+1, prenv->regs.begin()+ARG_COUNT+1, env->regs.begin()+1);
+      State *prstate = m.state;
+      State *state = m.begin_state(self.state);
+      copy(prstate->regs.begin()+1, prstate->regs.begin()+ARG_COUNT+1, state->regs.begin()+1);
       m.begin_frame(ret_pc);
       return pair<PC, optional<Error>>(start_pc, nullopt);
     };

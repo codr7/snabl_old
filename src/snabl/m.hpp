@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "snabl/alloc.hpp"
-#include "snabl/env.hpp"
+#include "snabl/state.hpp"
 #include "snabl/error.hpp"
 #include "snabl/frame.hpp"
 #include "snabl/libs/abc.hpp"
@@ -18,11 +18,11 @@
 namespace snabl {
   struct M {
     static const int OP_COUNT = 1024;
-    static const int ENV_SLAB_SIZE = 32;
+    static const int STATE_SLAB_SIZE = 32;
     static const int FRAME_SLAB_SIZE = 32;
     static const int SCOPE_SLAB_SIZE = 32;
 
-    Alloc<Env, ENV_SLAB_SIZE> env_alloc;
+    Alloc<State, STATE_SLAB_SIZE> state_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
     Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
     
@@ -31,7 +31,7 @@ namespace snabl {
 
     vector<Type> types;
     
-    Env *env, *free_env;
+    State *state, *free_state;
     Frame *frame, *free_frame;
     Scope *scope, *free_scope;
         
@@ -46,29 +46,29 @@ namespace snabl {
     Type::Id add_type(Type type);
     Sym sym(string name);
     
-    Env *begin_env(Env *outer) {
-      if (free_env) {
-	Env *new_env = free_env;
-	free_env = free_env->outer;
-	env = new(new_env) Env(env);
+    State *begin_state(State *outer) {
+      if (free_state) {
+	State *new_state = free_state;
+	free_state = free_state->outer;
+	state = new(new_state) State(state);
       } else {
-	env = env_alloc.make(outer);
+	state = state_alloc.make(outer);
       }
       
-      return env;
+      return state;
     }
 
-    Env *end_env() {
-      Env *old = env;
-      if (env->outer) { env->outer->regs[0] = env->regs[0]; }
-      env = env->outer;
+    State *end_state() {
+      State *old = state;
+      if (state->outer) { state->outer->regs[0] = state->regs[0]; }
+      state = state->outer;
       return old;
     }
 
-    void deref_env(Env *env) {
-      if (!env->ref_count--) {
-	env->outer = free_env;
-	free_env = env;
+    void deref_state(State *state) {
+      if (!state->ref_count--) {
+	state->outer = free_state;
+	free_state = state;
       }
     }
 

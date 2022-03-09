@@ -5,7 +5,7 @@
 #include <optional>
 #include <ostream>
 
-#include "snabl/env.hpp"
+#include "snabl/state.hpp"
 #include "snabl/error.hpp"
 #include "snabl/pos.hpp"
 

@@ -1,7 +1,7 @@
-#include "snabl/env.hpp"
+#include "snabl/state.hpp"
 
 namespace snabl {  
-  Env::Env(Env *outer): outer(outer), ref_count(1) {
+  State::State(State *outer): outer(outer), ref_count(1) {
     if (outer) {
       regs = outer->regs;
       outer->ref_count++;

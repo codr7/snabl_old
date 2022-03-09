@@ -2,7 +2,7 @@
 #define SNABL_OP_HPP
 
 #include <cstdint>
-#include "snabl/env.hpp"
+#include "snabl/state.hpp"
 #include "snabl/fun.hpp"
 #include "snabl/types/int.hpp"
 

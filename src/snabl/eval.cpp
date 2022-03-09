@@ -22,13 +22,13 @@ namespace snabl {
 
 
   COPY: {
-      env->regs[ops::copy_dst(op)] = env->regs[ops::copy_src(op)];
+      state->regs[ops::copy_dst(op)] = state->regs[ops::copy_src(op)];
       DISPATCH(pc+1);
     }
 
   FUN: {
-      Fun *f = env->regs[ops::fun_reg(op)].as<Fun *>();
-      f->env = begin_env(env);
+      Fun *f = state->regs[ops::fun_reg(op)].as<Fun *>();
+      f->state = begin_state(state);
       DISPATCH(ops::fun_end_pc(op));
     }
 
@@ -38,18 +38,18 @@ namespace snabl {
 
   LOAD_FUN: {
       Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
-      env->regs[ops::load_reg(op)] = Val(abc_lib->fun_type, f);
+      state->regs[ops::load_reg(op)] = Val(abc_lib->fun_type, f);
       DISPATCH(pc+2);
     }
 
   LOAD_INT: {
       auto v = static_cast<types::Int::DataType>(ops[pc+1]);
-      env->regs[ops::load_reg(op)] = Val(abc_lib->int_type, v);
+      state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, v);
       DISPATCH(pc+2);
     }
 
   LOAD_TYPE: {
-      env->regs[ops::load_reg(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
+      state->regs[ops::load_reg(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
       DISPATCH(pc+1);
     }
 
@@ -61,7 +61,7 @@ namespace snabl {
       Frame *f = end_frame();
       PC ret_pc = f->ret_pc;
       deref_frame(f);
-      deref_env(end_env());
+      deref_state(end_state());
       DISPATCH(ret_pc);
     }
     

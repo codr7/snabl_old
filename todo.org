@@ -1,4 +1,3 @@
-* rename Env to State
 * add readers
 * add repl
 * add macros
