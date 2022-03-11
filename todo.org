@@ -1,5 +1,6 @@
-* add repl
+* debug repl
 * add macros
+** handle in Call emit
 ** add if-macro
 ** add fun:-macro
 * fib

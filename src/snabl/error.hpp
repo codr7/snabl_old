@@ -30,8 +30,10 @@ namespace snabl {
 
     template <typename...Args>
     Error(Pos pos, string message, Args &&...args):
-      imp(make_shared<const Imp>(pos, str("Error in ", pos, ":\n", message, forward<Args>(args)...))) {}
+      imp(make_shared<const Imp>(pos, str(message, forward<Args>(args)...))) {}
   };
+
+  ostream &operator <<(ostream &out, Error val);
 }
 
 #endif
