@@ -1,9 +1,8 @@
-* emit args & ENV_BEG in Call form
-** add ENV_BEG op
+* add +/- fns
 * add debug fn
 ** toggle & return m.debug
 ** add LOAD_BOOL
-* add +/-/< fns
+* add < fn
 * add macros
 ** handle in Call emit
 ** add if-macro

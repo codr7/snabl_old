@@ -30,6 +30,9 @@ namespace snabl {
     case OpCode::RET:
       out << "RET";
       break;
+    case OpCode::STATE:
+      out << "STATE";
+      break;
     case OpCode::STOP:
       out << "STOP";
       break;
@@ -65,9 +68,7 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (fun << OP_CODE_BITS) + (end_pc << FUN_END_PC_BIT));
     }
     
-    PC fun_reg(Op op) {
-      return static_cast<Reg>(op >> OP_CODE_BITS);
-    }
+    PC fun_reg(Op op) { return static_cast<Reg>(op >> OP_CODE_BITS); }
     
     PC fun_end_pc(Op op) {
       return static_cast<PC>((op >> FUN_END_PC_BIT) & ((1 << OP_PC_BITS) - 1));
@@ -77,9 +78,7 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::GOTO) + (pc << OP_CODE_BITS));
     }
 
-    PC goto_pc(Op op) {
-      return static_cast<PC>(op >> OP_CODE_BITS);
-    }
+    PC goto_pc(Op op) { return static_cast<PC>(op >> OP_CODE_BITS); }
 
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_FUN) + (reg << OP_CODE_BITS));
@@ -97,24 +96,18 @@ namespace snabl {
 			   (val.imp->id << LOAD_TYPE_ID_BIT));
     }
 
-    Reg load_reg(Op op) {
-      return static_cast<Reg>(op >> OP_CODE_BITS);
-    }
+    Reg load_reg(Op op) { return static_cast<Reg>(op >> OP_CODE_BITS); }
 
     snabl::Type::Id load_type_id(Op op) {
       return static_cast<snabl::Type::Id>(op >> LOAD_TYPE_ID_BIT & ((1 << OP_TYPE_ID_BITS) - 1));
     }
     
-    void NOP(Op &op) {
-      op = static_cast<Op>(OpCode::NOP);
-    }
+    void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }
 
-    void RET(Op &op) {
-      op = static_cast<Op>(OpCode::RET);      
-    }
-    
-    void STOP(Op &op) {
-      op = static_cast<Op>(OpCode::STOP);
-    }
+    void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
+
+    void STATE(Op &op) { op = static_cast<Op>(OpCode::STATE); }
+
+    void STOP(Op &op) { op = static_cast<Op>(OpCode::STOP); }
   }
 }

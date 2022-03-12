@@ -26,6 +26,12 @@ namespace snabl::forms {
     optional<Val> v(m.scope->get(target.as<Id>().name));
     if (!v) { return Error(pos, "Unknown call target: ", *v); }
     if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
+    ops::STATE(m.emit());
+
+    for (int i = 0; i < args.size(); i++) {
+      if (auto err = args[i].emit(i+1, m); err) { return err; }
+    }
+    
     Reg fun_reg = m.scope->reg_count++;
     ops::LOAD_FUN(m.emit(), fun_reg, v->as<Fun *>());
     ops::CALL(m.emit(), fun_reg, reg);

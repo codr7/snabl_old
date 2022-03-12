@@ -22,7 +22,7 @@ namespace snabl {
     static const void* dispatch[] = {
       &&CALL, &&COPY, &&FUN, &&GOTO,
       &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
-      &&NOP, &&RET,
+      &&NOP, &&RET, &&STATE,
       /* STOP */
       &&STOP};
 
@@ -89,6 +89,11 @@ namespace snabl {
       ret_state(f->ret_reg);
       deref_frame(f);
       DISPATCH(ret_pc);
+    }
+
+  STATE: {
+      begin_state(state);
+      DISPATCH(pc+1);
     }
     
     /* STOP */

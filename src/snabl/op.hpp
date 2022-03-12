@@ -25,9 +25,10 @@ namespace snabl {
   using Op = uint64_t;
 
   enum class OpCode {
-    CALL, COPY, FUN, GOTO,
+    CALL, COPY,
+    FUN, GOTO,
     LOAD_FUN, LOAD_INT, LOAD_TYPE,
-    NOP, RET,
+    NOP, RET, STATE,
     /* STOP */
     STOP
   };
@@ -62,7 +63,8 @@ namespace snabl {
 
     void NOP(Op &op);
     void RET(Op &op);
-
+    void STATE(Op &op);
+    
     /* STOP */
     
     void STOP(Op &op);
