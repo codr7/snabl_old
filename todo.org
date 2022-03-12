@@ -4,3 +4,8 @@
 ** add if-macro
 ** add fun:-macro
 * fib
+* add LOAD_NIL op
+** enable nil type emit
+* add debug fn
+** toggle & return m.debug
+** add LOAD_BOOL

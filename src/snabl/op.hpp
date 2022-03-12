@@ -35,7 +35,9 @@ namespace snabl {
   inline OpCode op_code(Op op) {
     return static_cast<OpCode>(op & ((1 << OP_CODE_BITS) - 1));
   }
-  
+
+  void op_dump(Op op, ostream &out);
+
   namespace ops {
     void CALL(Op &op, Reg target, Reg reg);
     Reg call_target(Op op);

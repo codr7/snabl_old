@@ -1,6 +1,41 @@
 #include "snabl/op.hpp"
 
 namespace snabl {
+  void op_dump(Op op, ostream &out) {
+    switch (op_code(op)) {
+    case OpCode::CALL:
+      out << "CALL " << ops::call_target(op) << ' ' << ops::call_reg(op);
+      break;
+    case OpCode::COPY:
+      out << "COPY " << ops::copy_dst(op) << ' ' << ops::copy_src(op);
+      break;
+    case OpCode::FUN:
+      out << "GOTO " << ops::fun_reg(op) << ' ' << ops::fun_end_pc(op);
+      break;
+    case OpCode::GOTO:
+      out << "GOTO " << ops::goto_pc(op);
+      break;
+    case OpCode::LOAD_FUN:
+      out << "LOAD_FUN " << ops::load_reg(op);
+      break;
+    case OpCode::LOAD_INT:
+      out << "LOAD_INT " << ops::load_reg(op);
+      break;
+    case OpCode::LOAD_TYPE:
+      out << "LOAD_TYPE " << ops::load_reg(op);
+      break;
+    case OpCode::NOP:
+      out << "NOP";
+      break;
+    case OpCode::RET:
+      out << "RET";
+      break;
+    case OpCode::STOP:
+      out << "STOP";
+      break;
+    }
+  }
+
   namespace ops {
     void CALL(Op &op, Reg target, Reg reg) {
       op = static_cast<Op>(static_cast<Op>(OpCode::CALL) + (target << CALL_TARGET_BIT) + (reg << CALL_REG_BIT));
@@ -52,7 +87,7 @@ namespace snabl {
     }
 
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_FUN) + (reg << OP_CODE_BITS));
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT) + (reg << OP_CODE_BITS));
       *(&op+1) = static_cast<Op>(val);
     }
 

@@ -28,6 +28,8 @@ namespace snabl {
 	    out << *err << endl;
 	    break;
 	  }
+
+	  if (!f) { break; }
 	  
 	  if (err = f->emit(0, m); err) {
 	    out << *err << endl;
@@ -38,6 +40,7 @@ namespace snabl {
 	buf.str("");
 	buf.clear();
 	ops::STOP(m.emit());
+	m.state->regs[0] = Val(m.abc_lib->nil_type, nullptr);
 	
 	if (auto err = m.eval(start_pc); err) {
 	    out << *err << endl;

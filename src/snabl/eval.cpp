@@ -1,8 +1,19 @@
+#include <iostream>
+
 #include "snabl/fun.hpp"
 #include "snabl/m.hpp"
 
-#define DISPATCH(next_pc)						\
-  goto *dispatch[static_cast<int>(op_code(op = ops[(pc = (next_pc))]))];
+#define DISPATCH(next_pc) {						\
+    op = ops[(pc = (next_pc))];						\
+									\
+    if (debug) {							\
+      cout << pc << ' ';						\
+      op_dump(op, cout);						\
+      cout << endl;							\
+    }									\
+									\
+    goto *dispatch[static_cast<int>(op_code(op))];			\
+  }
 
 namespace snabl {
   using namespace std;

@@ -81,8 +81,8 @@ namespace snabl {
     return ReadResult(forms::Id(fpos,m.sym(buf.str())), nullopt);
   }
 
-  static pair<int, optional<Error>> read_int_base(istream &in, Pos &pos, int base) {
-    int v(0);
+  static pair<types::Int::DataType, optional<Error>> read_int_base(istream &in, Pos &pos, int base) {
+    types::Int::DataType v(0);
     
     static map<char, int8_t> char_vals = {
       {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7},
@@ -96,13 +96,13 @@ namespace snabl {
     while (in.get(c)) {
       if ((ci = char_vals.find(c)) == char_vals.end()) { break; }
       auto cv(ci->second);
-      if (cv >= base) { return pair<int, optional<Error>>(-1, Error(pos, "Invalid integer: ", c)); }
+      if (cv >= base) { return pair<types::Int::DataType, optional<Error>>(-1, Error(pos, "Invalid integer: ", c)); }
       v = v * base + cv;
       pos.column++;
     }
     
     if (!in.eof()) { in.unget();}
-    return pair<int, optional<Error>>(v, nullopt);
+    return pair<types::Int::DataType, optional<Error>>(v, nullopt);
   }
   
   ReadResult read_int(istream &in, Pos &pos, M &m) {

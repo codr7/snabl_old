@@ -17,6 +17,8 @@
 
 namespace snabl {
   struct M {
+    bool debug = true;
+
     static const int OP_COUNT = 1024;
     static const int STATE_SLAB_SIZE = 32;
     static const int FRAME_SLAB_SIZE = 32;
@@ -45,6 +47,8 @@ namespace snabl {
     optional<Error> eval(PC start_pc);
     Type::Id add_type(Type type);
     Sym sym(string name);
+    void dump_ops(PC start_pc, ostream &out);
+
     
     State *begin_state(State *outer) {
       if (free_state) {

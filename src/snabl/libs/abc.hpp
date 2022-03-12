@@ -5,6 +5,7 @@
 #include "snabl/types/fun.hpp"
 #include "snabl/types/int.hpp"
 #include "snabl/types/meta.hpp"
+#include "snabl/types/nil.hpp"
 #include "snabl/types/reg.hpp"
 
 namespace snabl::libs {
@@ -12,6 +13,7 @@ namespace snabl::libs {
     types::Fun fun_type;
     types::Int int_type;
     types::Meta meta_type;
+    types::Nil nil_type;
     types::Reg reg_type;
     
     Abc(M &m);

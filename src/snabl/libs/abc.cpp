@@ -7,10 +7,12 @@ namespace snabl::libs {
     fun_type(*this, m.sym("Fun")),
     int_type(*this, m.sym("Int")),
     meta_type(*this, m.sym("Meta")),
+    nil_type(*this, m.sym("nil")),
     reg_type(*this, m.sym("Reg")) {
     bind(m.sym("Fun"), meta_type, fun_type);
     bind(m.sym("Int"), meta_type, int_type);
     bind(m.sym("Meta"), meta_type, meta_type);
+    bind(m.sym("Nil"), meta_type, nil_type);
     bind(m.sym("Reg"), meta_type, reg_type);
   }
 }

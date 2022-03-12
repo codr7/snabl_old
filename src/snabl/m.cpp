@@ -33,4 +33,11 @@ namespace snabl {
     sym_lookup[name] = s;
     return s;
   }
+
+  void M::dump_ops(PC start_pc, ostream &out) {
+    for (int i = 0; i < emit_pc; i++) {
+      Op op = ops[i];
+      out << op << endl;
+    }
+  }
 }
