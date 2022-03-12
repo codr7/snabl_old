@@ -49,6 +49,11 @@ namespace snabl {
     Sym sym(string name);
     void dump_ops(PC start_pc, ostream &out);
 
+    void ret_state(Reg reg) {
+      State *s = end_state();
+      state->regs[reg] = s->regs[reg];
+      deref_state(s);
+    }
     
     State *begin_state(State *outer) {
       if (free_state) {
@@ -76,13 +81,13 @@ namespace snabl {
       }
     }
 
-    Frame *begin_frame(PC ret_pc) {
+    Frame *begin_frame(Reg ret_reg, PC ret_pc) {
       if (free_frame) {
 	Frame *new_frame = free_frame;
 	free_frame = free_frame->outer;
-	frame = new(new_frame) Frame(frame, ret_pc);
+	frame = new(new_frame) Frame(frame, ret_reg, ret_pc);
       } else {
-	frame = frame_alloc.make(frame, ret_pc);
+	frame = frame_alloc.make(frame, ret_reg, ret_pc);
       }
       
       return frame;

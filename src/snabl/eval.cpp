@@ -36,16 +36,10 @@ namespace snabl {
       Reg reg = ops::call_reg(op);
       PC ret_pc = pc+1;
 
-      {
-	auto [ret_pc2, err] = target->call(reg, ret_pc, *this);
-	if (err) { return err; }
-	
-	if (ret_pc2 == ret_pc) {
-	  State *s = end_state();
-	  state->regs[reg] = s->regs[reg];
-	  deref_state(s);
-	}
-
+      if (auto [ret_pc2, err] = target->call(reg, ret_pc, *this); err) {
+	return err;
+      } else if (ret_pc2 == ret_pc) {
+	ret_state(reg);
 	ret_pc = ret_pc2;
       }
 	  
@@ -91,8 +85,9 @@ namespace snabl {
   RET: {
       Frame *f = end_frame();
       PC ret_pc = f->ret_pc;
+      ret_state(f->ret_reg);
+      ret_state(f->ret_reg);
       deref_frame(f);
-      deref_state(end_state());
       DISPATCH(ret_pc);
     }
     
