@@ -1,4 +1,3 @@
-* debug repl
 * add macros
 ** handle in Call emit
 ** add if-macro
