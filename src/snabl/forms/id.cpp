@@ -11,7 +11,7 @@ namespace snabl::forms {
   void Id::Imp::dump(ostream &out) const { out << name; }
   
   optional<Error> Id::Imp::emit(Reg reg, M &m) const {
-    optional<Val> v = m.scope->get(name);
+    optional<Val> v = m.scope->find(name);
     if (!v) { return Error(pos, "Unknown id: ", name); }
     return v->type.imp->methods.emit(*v, reg, pos, m);
   }

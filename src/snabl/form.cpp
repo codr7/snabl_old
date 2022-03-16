@@ -10,4 +10,9 @@ namespace snabl {
   void Form::dump(ostream& out) const { imp->dump(out); }
 
   optional<Error> Form::emit(Reg reg, M &m) const { return imp->emit(reg, m); }
+
+  ostream &operator<<(ostream &out, Form val) {
+    val.dump(out);
+    return out;
+  }
 }

@@ -10,6 +10,7 @@
 #include "snabl/state.hpp"
 #include "snabl/error.hpp"
 #include "snabl/frame.hpp"
+#include "snabl/fun.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/op.hpp"
 #include "snabl/scope.hpp"
@@ -17,16 +18,18 @@
 
 namespace snabl {
   struct M {
-    bool debug = true;
+    bool debug = false;
 
     static const int OP_COUNT = 1024;
-    static const int STATE_SLAB_SIZE = 32;
     static const int FRAME_SLAB_SIZE = 32;
+    static const int FUN_SLAB_SIZE = 32;
     static const int SCOPE_SLAB_SIZE = 32;
+    static const int STATE_SLAB_SIZE = 32;
 
-    Alloc<State, STATE_SLAB_SIZE> state_alloc;
     Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
+    Alloc<Fun, FUN_SLAB_SIZE> fun_alloc;
     Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
+    Alloc<State, STATE_SLAB_SIZE> state_alloc;
     
     vector<Sym> syms;
     map<string, Sym> sym_lookup;
@@ -45,10 +48,10 @@ namespace snabl {
     M();
     Op &emit(int n = 1);
     optional<Error> eval(PC start_pc);
-    Type::Id add_type(Type type);
     Sym sym(string name);
     void dump_ops(PC start_pc, ostream &out);
-
+    optional<Error> use(Lib &lib, const vector<Sym> &syms, Pos pos);
+    
     void ret_state(Reg reg) {
       State *s = end_state();
       state->regs[reg] = s->regs[reg];

@@ -9,16 +9,11 @@ namespace snabl {
     }
   }
 
-  optional<Val> Scope::get(Sym key) {
+  optional<Val> Scope::find(Sym key) {
     auto found = bindings.find(key);
-    if (found == bindings.end()) {
-      return nullopt;
-    }
-
+    if (found == bindings.end()) { return nullopt; }
     return found->second;
   }
 
-  void Scope::set(Sym key, Type type, any data) {
-    bindings[key] = Val(type, data);
-  }
+  void Scope::bind(Sym key, Type type, any data) { bindings[key] = Val(type, data); }
 }

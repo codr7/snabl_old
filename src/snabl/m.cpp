@@ -15,12 +15,6 @@ namespace snabl {
     return op;
   }
 
-  Type::Id M::add_type(Type type) {
-    Type::Id id = types.size();
-    types.push_back(type);
-    return id;
-  }
-
   Sym M::sym(string name) {
     auto found = sym_lookup.find(name);
       
@@ -39,5 +33,19 @@ namespace snabl {
       Op op = ops[i];
       out << op << endl;
     }
+  }
+
+  optional<Error> M::use(Lib &lib, const vector<Sym> &syms, Pos pos) {
+    if (syms.empty()) {
+      for (auto &b: lib.bindings) { scope->bind(b.first, b.second.type, b.second.data); }
+    }
+    
+    for (Sym s: syms) {
+      optional<Val> v = lib.find(s);
+      if (!v) { return Error(pos, "Unknown id: ", lib.name, '.', s); }
+      scope->bind(s, v->type, v->data);
+    }
+
+    return nullopt;
   }
 }

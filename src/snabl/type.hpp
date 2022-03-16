@@ -29,9 +29,10 @@ namespace snabl {
       Sym name;
       Methods methods;
     };
+
+    Type();
+    Type(Lib &lib, shared_ptr<const Imp> imp);
     
-    Type(shared_ptr<const Imp> imp = nullptr);
-    Type(Lib &lib, Sym name);
     shared_ptr<const Imp> imp;
   };
 

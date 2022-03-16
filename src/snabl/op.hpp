@@ -18,6 +18,7 @@
 #define COPY_SRC_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define FUN_END_PC_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
+#define LOAD_VAL_BIT (OP_CODE_BITS + OP_REG_BITS)
 
 namespace snabl {
   using namespace std;
@@ -27,7 +28,7 @@ namespace snabl {
   enum class OpCode {
     CALL, COPY,
     FUN, GOTO,
-    LOAD_FUN, LOAD_INT, LOAD_TYPE,
+    LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_TYPE,
     NOP, RET, STATE,
     /* STOP */
     STOP
@@ -55,11 +56,13 @@ namespace snabl {
     void GOTO(Op &op, PC pc);
     PC goto_pc(Op op);
 
+    void LOAD_BOOL(Op &op, Reg reg, bool val);
+    bool load_bool_val(Op op);
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);
     void LOAD_TYPE(Op &op, Reg reg, Type val);
-    Reg load_reg(Op op);
     snabl::Type::Id load_type_id(Op op);
+    Reg load_reg(Op op);
 
     void NOP(Op &op);
     void RET(Op &op);

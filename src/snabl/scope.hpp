@@ -16,8 +16,8 @@ namespace snabl {
     int reg_count;
 
     Scope(Scope *outer);
-    optional<Val> get(Sym key);
-    void set(Sym key, Type type, any data);
+    optional<Val> find(Sym key);
+    void bind(Sym key, Type type, any data);
   };
 }
 

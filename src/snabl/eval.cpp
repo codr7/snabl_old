@@ -21,7 +21,7 @@ namespace snabl {
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
       &&CALL, &&COPY, &&FUN, &&GOTO,
-      &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
+      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
       &&NOP, &&RET, &&STATE,
       /* STOP */
       &&STOP};
@@ -59,6 +59,11 @@ namespace snabl {
 
   GOTO: {
       DISPATCH(ops::goto_pc(op));
+    }
+
+  LOAD_BOOL: {
+      state->regs[ops::load_reg(op)] = Val(abc_lib->bool_type, ops::load_bool_val(op));
+      DISPATCH(pc+1);
     }
 
   LOAD_FUN: {

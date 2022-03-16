@@ -17,7 +17,7 @@ namespace snabl {
     for (int i = 0; i < arg_count; i++) {
       Arg &a = args[i];
       Reg reg = m.scope->reg_count++;
-      m.scope->set(a.name, m.abc_lib->reg_type, reg);
+      m.scope->bind(a.name, m.abc_lib->reg_type, reg);
       ops::COPY(m.emit(), reg, Reg(i+1));
     }
 

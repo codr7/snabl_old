@@ -13,7 +13,5 @@ namespace snabl::types {
     };
   }
 
-  Reg::Reg(Lib &lib, Sym name): Type() {
-    imp = make_shared<const Imp>(lib.add_type(*this), name);
-  }
+  Reg::Reg(Lib &lib, Sym name): Type(lib, make_shared<const Imp>(lib.type_id(), name)) {}
 }

@@ -6,19 +6,15 @@ namespace snabl {
     return Error(pos, "Emit not supported: ", val);
   }
   
-  static bool default_is_true(Val val) {
-    return true;
-  }
+  static bool default_is_true(Val val) { return true; }
+
+  Type::Type() {}
+
+  Type::Type(Lib &lib, shared_ptr<const Imp> imp): imp(imp) { lib.add_type(*this); }
 
   Type::Imp::Imp(Id id, Sym name): id(id), name(name) {
     methods.emit = default_emit;
     methods.is_true = default_is_true;
-  }
-
-  Type::Type(shared_ptr<const Imp> imp): imp(imp) {
-  }
-  
-  Type::Type(Lib &lib, Sym name): imp(make_shared<const Imp>(lib.add_type(*this), name)) {
   }
 
   bool operator==(Type lhs, Type rhs) { return lhs.imp->id == rhs.imp->id; }

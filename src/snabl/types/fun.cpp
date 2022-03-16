@@ -14,7 +14,5 @@ namespace snabl::types {
     };
   }
 
-  Fun::Fun(Lib &lib, Sym name): Type() {
-    imp = make_shared<const Imp>(lib.add_type(*this), name);
-  }
+  Fun::Fun(Lib &lib, Sym name): Type(lib, make_shared<const Imp>(lib.type_id(), name)) {}
 }

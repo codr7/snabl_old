@@ -23,8 +23,9 @@ namespace snabl::forms {
   }
   
   optional<Error> Call::Imp::emit(Reg reg, M &m) const {
-    optional<Val> v(m.scope->get(target.as<Id>().name));
-    if (!v) { return Error(pos, "Unknown call target: ", *v); }
+    Sym target_id = target.as<Id>().name;
+    optional<Val> v(m.scope->find(target_id));
+    if (!v) { return Error(pos, "Unknown call target: ", target_id); }
     if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
     ops::STATE(m.emit());
 
@@ -33,7 +34,7 @@ namespace snabl::forms {
     }
     
     Reg fun_reg = m.scope->reg_count++;
-    ops::LOAD_FUN(m.emit(), fun_reg, v->as<Fun *>());
+    ops::LOAD_FUN(m.emit(2), fun_reg, v->as<Fun *>());
     ops::CALL(m.emit(), fun_reg, reg);
     return nullopt;
   }

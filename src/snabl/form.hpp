@@ -31,8 +31,10 @@ namespace snabl {
     optional<Error> emit(Reg reg, M &m) const;
 
     template <typename T>
-    const typename T::Imp &as() const { return *any_cast<typename T::Imp *>(imp); }
+    const typename T::Imp &as() const { return *static_cast<const typename T::Imp *>(imp.get()); }
   };
+
+  ostream &operator<<(ostream &out, Form val);
 }
 
 #endif

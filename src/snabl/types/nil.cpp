@@ -14,5 +14,5 @@ namespace snabl::types {
     methods.is_true = [](Val val) { return false; };
   }
 
-  Nil::Nil(Lib &lib, Sym name): Type(make_shared<const Imp>(lib.add_type(*this), name)) {}
+  Nil::Nil(Lib &lib, Sym name): Type(lib, make_shared<const Imp>(lib.type_id(), name)) {}
 }
