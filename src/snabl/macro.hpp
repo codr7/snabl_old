@@ -18,10 +18,10 @@ namespace snabl {
 
   struct Macro {
     using Result = optional<Error>;
-    using Body = function<Result (Macro &macro, Pos pos, M &m)>;
+    using Body = function<Result (Macro &macro, Reg reg, Pos pos, M &m)>;
     
     Macro(Sym name, int arg_count, Body body);
-    optional<Error> emit(deque<Form> args, Pos pos, M &m);
+    optional<Error> emit(deque<Form> args, Reg reg, Pos pos, M &m);
     
     Sym name;
     int arg_count;

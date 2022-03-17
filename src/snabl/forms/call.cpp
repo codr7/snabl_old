@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "snabl/m.hpp"
+#include "snabl/macro.hpp"
 #include "snabl/forms/call.hpp"
 #include "snabl/forms/id.hpp"
 
@@ -26,6 +27,7 @@ namespace snabl::forms {
     Sym target_id = target.as<Id>().name;
     optional<Val> v(m.scope->find(target_id));
     if (!v) { return Error(pos, "Unknown call target: ", target_id); }
+    if (v->type == m.abc_lib->macro_type) { return v->as<snabl::Macro *>()->emit(args, reg, pos, m); }
     if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
     ops::STATE(m.emit());
 
