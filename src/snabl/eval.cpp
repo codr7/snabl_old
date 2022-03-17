@@ -21,7 +21,7 @@ namespace snabl {
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
       &&CALL, &&COPY, &&FUN, &&GOTO,
-      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_TYPE,
+      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
       &&NOP, &&RET, &&STATE,
       /* STOP */
       &&STOP};
@@ -75,6 +75,12 @@ namespace snabl {
   LOAD_INT: {
       auto v = static_cast<types::Int::DataType>(ops[pc+1]);
       state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, v);
+      DISPATCH(pc+2);
+    }
+
+  LOAD_MACRO: {
+      Macro *m = reinterpret_cast<Macro *>(ops[pc+1]);
+      state->regs[ops::load_reg(op)] = Val(abc_lib->macro_type, m);
       DISPATCH(pc+2);
     }
 

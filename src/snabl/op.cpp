@@ -1,6 +1,28 @@
 #include "snabl/op.hpp"
 
 namespace snabl {
+   PC op_len(Op op, ostream &out) {
+    switch (op_code(op)) {
+    case OpCode::CALL:
+    case OpCode::LOAD_FUN:
+    case OpCode::LOAD_INT:
+    case OpCode::LOAD_MACRO:
+      return 2;
+    case OpCode::COPY:
+    case OpCode::FUN:
+    case OpCode::GOTO:
+    case OpCode::LOAD_BOOL:
+    case OpCode::LOAD_TYPE:
+    case OpCode::NOP:
+    case OpCode::RET:
+    case OpCode::STATE:
+    case OpCode::STOP:
+      break;
+    }
+
+    return 1;
+  }
+
   void op_dump(Op op, ostream &out) {
     switch (op_code(op)) {
     case OpCode::CALL:
@@ -23,6 +45,9 @@ namespace snabl {
       break;
     case OpCode::LOAD_INT:
       out << "LOAD_INT " << ops::load_reg(op);
+      break;
+    case OpCode::LOAD_MACRO:
+      out << "LOAD_MACRO " << ops::load_reg(op);
       break;
     case OpCode::LOAD_TYPE:
       out << "LOAD_TYPE " << ops::load_reg(op);
@@ -99,6 +124,11 @@ namespace snabl {
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT) + (reg << OP_CODE_BITS));
       *(&op+1) = static_cast<Op>(val);
+    }
+
+    void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_MACRO) + (reg << OP_CODE_BITS));
+      *(&op+1) = reinterpret_cast<Op>(val);
     }
 
     void LOAD_TYPE(Op &op, Reg reg, snabl::Type val) {

@@ -41,7 +41,7 @@ namespace snabl {
   }
 
   ostream &operator <<(ostream &out, Fun *val) {
-    out << val->name << "()";
+    out << "(Fun " << val->name << ')';
     return out;
   }
 }

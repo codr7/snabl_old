@@ -12,7 +12,7 @@ namespace snabl::forms {
   struct Call: Form {
     struct Imp: Form::Imp {
       Form target;
-      vector<Form> args;
+      deque<Form> args;
       
       Imp(Pos pos, Form target, const deque<Form> &args);    
       void dump(ostream& out) const override;

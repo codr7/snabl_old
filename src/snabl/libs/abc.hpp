@@ -5,6 +5,7 @@
 #include "snabl/types/bool.hpp"
 #include "snabl/types/fun.hpp"
 #include "snabl/types/int.hpp"
+#include "snabl/types/macro.hpp"
 #include "snabl/types/meta.hpp"
 #include "snabl/types/nil.hpp"
 #include "snabl/types/reg.hpp"
@@ -14,6 +15,7 @@ namespace snabl::libs {
     types::Bool bool_type;
     types::Fun fun_type;
     types::Int int_type;
+    types::Macro macro_type;
     types::Meta meta_type;
     types::Nil nil_type;
     types::Reg reg_type;

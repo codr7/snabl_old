@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include "snabl/state.hpp"
-#include "snabl/fun.hpp"
 #include "snabl/types/int.hpp"
 
 #define OP_BITS 64
@@ -23,12 +22,15 @@
 namespace snabl {
   using namespace std;
 
+  struct Fun;
+  struct Macro;
+  
   using Op = uint64_t;
 
   enum class OpCode {
     CALL, COPY,
     FUN, GOTO,
-    LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_TYPE,
+    LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
     NOP, RET, STATE,
     /* STOP */
     STOP
@@ -37,6 +39,8 @@ namespace snabl {
   inline OpCode op_code(Op op) {
     return static_cast<OpCode>(op & ((1 << OP_CODE_BITS) - 1));
   }
+
+  PC op_len(Op op);
 
   void op_dump(Op op, ostream &out);
 
@@ -60,6 +64,7 @@ namespace snabl {
     bool load_bool_val(Op op);
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);
+    void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val);
     void LOAD_TYPE(Op &op, Reg reg, Type val);
     snabl::Type::Id load_type_id(Op op);
     Reg load_reg(Op op);
