@@ -1,5 +1,14 @@
 ## Snabl
 
+```
+  (fun: fib [n Int] Int
+    (if (< n 2) n (+ (fib (dec n)) (fib (dec n 2)))))
+  
+  (fib 10)
+
+55
+```
+
 ### setup
 
 Compiling Snabl requires a C++17-compiler and CMake, the following shell spell builds and starts the REPL:
@@ -12,3 +21,11 @@ $ cmake ..
 $ make
 $ ./snabl
 ```
+
+### support
+Should you wish to support this effort and allow me to spend more of my time and energy on evolving GFun, feel free to [help](https://liberapay.com/andreas7/donate) make that economically feasible.
+
+### coder/mentor for hire
+I'm currently available for hire.<br/>
+Remote or relocation within Europe.<br/>
+Send a message to codr7 at protonmail and I'll get back to you asap.

@@ -11,6 +11,7 @@ namespace snabl {
   ReadResult read_call(istream &in, Pos &pos, M &m);
   ReadResult read_id(istream &in, Pos &pos, M &m);
   ReadResult read_int(istream &in, Pos &pos, M &m);
+  ReadResult read_slice(istream &in, Pos &pos, M &m);
   ReadResult read_ws(istream &in, Pos &pos, M &m);
 }
 

@@ -2,6 +2,7 @@
 #define SNABL_FUN_HPP
 
 #include <array>
+#include <deque>
 #include <functional>
 #include <optional>
 #include <vector>
@@ -26,7 +27,7 @@ namespace snabl {
     static const int ARG_COUNT = 8;
     
     Fun(Sym name, const vector<Arg> &args, Type ret_type, Body body);
-    optional<Error> emit(Form body, M &m);
+    optional<Error> emit(deque<Form> body, M &m);
     pair<PC, optional<Error>> call(Reg reg, PC ret_pc, M &m);
     
     Sym name;

@@ -19,7 +19,10 @@
 #define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
 
 #define COPY_SRC_BIT (OP_CODE_BITS + OP_REG_BITS)
-#define FUN_END_PC_BIT (OP_CODE_BITS + OP_REG_BITS)
+
+#define FUN_REG_BIT OP_CODE_BITS
+#define FUN_END_BIT (FUN_REG_BIT + OP_REG_BITS)
+
 #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define LOAD_VAL_BIT (OP_CODE_BITS + OP_REG_BITS)
 
@@ -66,9 +69,9 @@ namespace snabl {
     Reg copy_dst(Op op);
     Reg copy_src(Op op);    
 
-    void FUN(Op &op, Reg fun, PC end_pc);
-    PC fun_reg(Op op);
-    PC fun_end_pc(Op op);
+    void FUN(Op &op, Reg reg, PC end);
+    Reg fun_reg(Op op);
+    PC fun_end(Op op);
 
     void GOTO(Op &op, PC pc);
     PC goto_pc(Op op);

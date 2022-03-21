@@ -1,8 +1,8 @@
 #include "snabl/m.hpp"
-#include "snabl/types/int.hpp"
+#include "snabl/types/nil.hpp"
 
 namespace snabl::types {
-  Nil::Imp::Imp(Id id, Sym name): Type::Imp(id, name) {
+  Nil::Nil(Type::Id id, Sym name): Type::Imp(id, name) {
     methods.dump = [](Val val, ostream &out) { out << '_'; };
 
     /*
@@ -13,6 +13,4 @@ namespace snabl::types {
 
     methods.is_true = [](Val val) { return false; };
   }
-
-  Nil::Nil(Lib &lib, Sym name): Type(lib, make_shared<const Imp>(lib.type_id(), name)) {}
 }

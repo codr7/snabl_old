@@ -8,7 +8,7 @@ namespace snabl {
     copy(args.begin(), args.end(), this->args.begin());
   }
 
-  optional<Error> Fun::emit(Form body, M &m) {
+  optional<Error> Fun::emit(deque<Form> body, M &m) {
     Reg fun_reg = m.scope->reg_count++;
     ops::LOAD_FUN(m.emit(2), fun_reg, this);
     Op &op = m.emit();
@@ -21,7 +21,10 @@ namespace snabl {
       ops::COPY(m.emit(), reg, Reg(i+1));
     }
 
-    if (optional<Error> err = body.emit(0, m); err) { return err; }
+    for (auto f: body) {
+      if (optional<Error> err = f.emit(0, m); err) { return err; }
+    }
+    
     ops::RET(m.emit());
     ops::FUN(op, fun_reg, m.emit_pc);
 

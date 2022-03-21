@@ -4,7 +4,8 @@ namespace snabl {
   M::M():
     state(nullptr), free_state(nullptr),
     frame(nullptr), free_frame(nullptr),
-    scope(nullptr), free_scope(nullptr) {
+    scope(nullptr), free_scope(nullptr),
+    home_lib(*this, sym("home")), lib(&home_lib) {
     begin_scope();
     begin_state(nullptr);
   }

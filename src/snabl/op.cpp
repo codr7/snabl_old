@@ -36,7 +36,7 @@ namespace snabl {
       out << "COPY " << ops::copy_dst(op) << ' ' << ops::copy_src(op);
       break;
     case OpCode::FUN:
-      out << "GOTO " << ops::fun_reg(op) << ' ' << ops::fun_end_pc(op);
+      out << "FUN " << ops::fun_reg(op) << ' ' << ops::fun_end(op);
       break;
     case OpCode::GOTO:
       out << "GOTO " << ops::goto_pc(op);
@@ -109,16 +109,14 @@ namespace snabl {
       return static_cast<Reg>((op >> COPY_SRC_BIT) & ((1 << OP_REG_BITS) - 1));
     }
     
-    void FUN(Op &op, Reg fun, PC end_pc) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (fun << OP_CODE_BITS) + (end_pc << FUN_END_PC_BIT));
+    void FUN(Op &op, Reg reg, PC end) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (reg << OP_CODE_BITS) + (end << FUN_END_BIT));
     }
     
-    PC fun_reg(Op op) { return static_cast<Reg>(op >> OP_CODE_BITS); }
+    Reg fun_reg(Op op) { return get<Reg, FUN_REG_BIT, OP_REG_BITS>(op); }
     
-    PC fun_end_pc(Op op) {
-      return static_cast<PC>((op >> FUN_END_PC_BIT) & ((1 << OP_PC_BITS) - 1));
-    }
-
+    PC fun_end(Op op) { return get<PC, FUN_END_BIT, OP_PC_BITS>(op); }
+    
     void GOTO(Op &op, PC pc) {
       op = static_cast<Op>(static_cast<Op>(OpCode::GOTO) + (pc << OP_CODE_BITS));
     }

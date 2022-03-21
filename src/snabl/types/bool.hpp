@@ -6,12 +6,8 @@
 #include "snabl/type.hpp"
 
 namespace snabl::types {
-  struct Bool: Type {
-    struct Imp: Type::Imp {
-      Imp(Id id, Sym name);
-    };
-    
-    Bool(Lib &lib, Sym name);
+  struct Bool: Type::Imp {
+    Bool(Type::Id id, Sym name);
   };
 }
 

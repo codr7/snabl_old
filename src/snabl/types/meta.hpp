@@ -4,12 +4,8 @@
 #include "snabl/type.hpp"
 
 namespace snabl::types {
-  struct Meta: Type {
-    struct Imp: Type::Imp {
-      Imp(Id id, Sym name);
-    };
-    
-    Meta(Lib &lib, Sym name);
+  struct Meta: Type::Imp {
+    Meta(Type::Id id, Sym name);
   };
 }
 

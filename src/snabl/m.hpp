@@ -42,8 +42,10 @@ namespace snabl {
     array<Op, OP_COUNT> ops;
     PC emit_pc = 0;
 
+    Lib home_lib;
     optional<libs::Abc> abc_lib;
-
+    Lib *lib;
+    
     M();
     Op &emit(int n = 1);
     optional<Error> eval(PC start_pc);

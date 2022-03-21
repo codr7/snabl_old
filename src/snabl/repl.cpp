@@ -7,7 +7,7 @@
 #include "snabl/reader.hpp"
 
 namespace snabl {  
-   void repl(istream &in, ostream &out, M &m) {
+  void repl(istream &in, ostream &out, M &m) {
     stringstream buf;
   
     for (;;) {
@@ -43,8 +43,8 @@ namespace snabl {
 	m.state->regs[0] = Val(m.abc_lib->nil_type, nullptr);
 	
 	if (auto err = m.eval(start_pc); err) {
-	    out << *err << endl;
-	    break;
+	  out << *err << endl;
+	  break;
 	}
 
 	out << m.state->regs[0] << endl;

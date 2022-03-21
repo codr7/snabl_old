@@ -4,12 +4,8 @@
 #include "snabl/type.hpp"
 
 namespace snabl::types {
-  struct Macro: Type {
-    struct Imp: Type::Imp {
-      Imp(Id id, Sym name);
-    };
-    
-    Macro(Lib &lib, Sym name);
+  struct Macro: Type::Imp {
+    Macro(Type::Id id, Sym name);
   };
 }
 

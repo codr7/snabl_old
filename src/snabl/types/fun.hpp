@@ -4,12 +4,8 @@
 #include "snabl/type.hpp"
 
 namespace snabl::types {
-  struct Fun: Type {
-    struct Imp: Type::Imp {
-      Imp(Id id, Sym name);
-    };
-    
-    Fun(Lib &lib, Sym name);
+  struct Fun: Type::Imp {
+    Fun(Type::Id id, Sym name);
   };
 }
 

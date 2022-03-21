@@ -47,6 +47,7 @@ namespace snabl {
 	return err;
       } else if (ret_pc2 == ret_pc) {
 	ret_state(reg);
+      } else {
 	ret_pc = ret_pc2;
       }
 	  
@@ -61,7 +62,7 @@ namespace snabl {
   FUN: {
       Fun *f = state->regs[ops::fun_reg(op)].as<Fun *>();
       f->state = begin_state(state);
-      DISPATCH(ops::fun_end_pc(op));
+      DISPATCH(ops::fun_end(op));
     }
 
   GOTO: {

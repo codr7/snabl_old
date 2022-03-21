@@ -1,16 +1,28 @@
+#include <iostream>
+
+#include "snabl/forms/id.hpp"
+#include "snabl/forms/slice.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/m.hpp"
+
+#include "snabl/types/bool.hpp"
+#include "snabl/types/fun.hpp"
+#include "snabl/types/int.hpp"
+#include "snabl/types/macro.hpp"
+#include "snabl/types/meta.hpp"
+#include "snabl/types/nil.hpp"
+#include "snabl/types/reg.hpp"
 
 namespace snabl::libs {
   Abc::Abc(M &m):
     Lib(m, m.sym("abc")),
-    bool_type(*this, m.sym("Bool")),
-    fun_type(*this, m.sym("Fun")),
-    int_type(*this, m.sym("Int")),
-    macro_type(*this, m.sym("Macro")),
-    meta_type(*this, m.sym("Meta")),
-    nil_type(*this, m.sym("Nil")),
-    reg_type(*this, m.sym("Reg")) {
+    bool_type(*this, make_shared<types::Bool>(type_id(), m.sym("Bool"))),
+    fun_type(*this, make_shared<types::Fun>(type_id(), m.sym("Fun"))),
+    int_type(*this, make_shared<types::Int>(type_id(), m.sym("Int"))),
+    macro_type(*this, make_shared<types::Macro>(type_id(), m.sym("Macro"))),
+    meta_type(*this, make_shared<types::Meta>(type_id(), m.sym("Meta"))),
+    nil_type(*this, make_shared<types::Nil>(type_id(), m.sym("Nil"))),
+    reg_type(*this, make_shared<types::Reg>(type_id(), m.sym("Reg"))) {
     bind(m.sym("Bool"), meta_type, bool_type);
     bind(m.sym("Fun"), meta_type, fun_type);
     bind(m.sym("Int"), meta_type, int_type);
@@ -32,6 +44,24 @@ namespace snabl::libs {
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
+    bind_macro(m.sym("fun:"), 4,
+	       [this](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 Sym id = args.front().as<forms::Id>().name;
+		 args.pop_front();
+
+		 deque<Form> arg_forms = args.front().as<forms::Slice>().items;
+		 args.pop_front();
+		 vector<Fun::Arg> fargs;
+		 
+		 Sym ret_type_id = args.front().as<forms::Id>().name;
+		 args.pop_front();
+		 optional<Val> ret_type = m.scope->find(ret_type_id);
+
+		 Fun *f = m.lib->bind_fun(id, fargs, ret_type->as<Type>(), nullptr);
+		 m.scope->bind(id, fun_type, f);
+		 return f->emit(args, m);
+	       });
+    
     bind_macro(m.sym("if"), 2,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 Reg cond = m.scope->reg_count++;

@@ -1,12 +1,17 @@
-* add fun:-macro
+* parse fun: args
+* commit fun: macro
 * add bench macro
 * fib
-* add LOAD_NIL op
-** enable nil type emit
+* add DEC op
 * add CALLI op
 ** immediate fun
-* add BRET op
-** goto RET if cond
-* add DEC op
 * add op fusion
 ** GFun
+* add LOAD_NIL op
+** enable nil type emit
+
+(fun: foo [bar Int] Int bar)
+
+(fun: fib [n Int] Int
+    (if (< n 2) n (+ (fib (dec n)) (fib (dec n 2)))))
+

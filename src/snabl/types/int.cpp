@@ -2,7 +2,7 @@
 #include "snabl/types/int.hpp"
 
 namespace snabl::types {
-  Int::Imp::Imp(Id id, Sym name): Type::Imp(id, name) {
+  Int::Int(Type::Id id, Sym name): Type::Imp(id, name) {
     methods.dump = [](Val val, ostream &out) { out << val.as<DataType>(); };
     
     methods.emit = [](Val val, snabl::Reg reg, Pos pos, M &m) {
@@ -12,6 +12,4 @@ namespace snabl::types {
 
     methods.is_true = [](Val val) { return val.as<DataType>() != 0; };
   }
-
-  Int::Int(Lib &lib, Sym name): Type(lib, make_shared<const Imp>(lib.type_id(), name)) {}
 }
