@@ -12,6 +12,7 @@
 #include "snabl/frame.hpp"
 #include "snabl/fun.hpp"
 #include "snabl/libs/abc.hpp"
+#include "snabl/macro.hpp"
 #include "snabl/op.hpp"
 #include "snabl/scope.hpp"
 #include "snabl/sym.hpp"
@@ -21,15 +22,13 @@ namespace snabl {
     bool debug = false;
 
     static const int OP_COUNT = 1024;
-    static const int FRAME_SLAB_SIZE = 32;
-    static const int FUN_SLAB_SIZE = 32;
-    static const int SCOPE_SLAB_SIZE = 32;
-    static const int STATE_SLAB_SIZE = 32;
+    static const int SLAB_SIZE = 32;
 
-    Alloc<Frame, FRAME_SLAB_SIZE> frame_alloc;
-    Alloc<Fun, FUN_SLAB_SIZE> fun_alloc;
-    Alloc<Scope, SCOPE_SLAB_SIZE> scope_alloc;
-    Alloc<State, STATE_SLAB_SIZE> state_alloc;
+    Alloc<Frame, SLAB_SIZE> frame_alloc;
+    Alloc<Fun, SLAB_SIZE> fun_alloc;
+    Alloc<Macro, SLAB_SIZE> macro_alloc;
+    Alloc<Scope, SLAB_SIZE> scope_alloc;
+    Alloc<State, SLAB_SIZE> state_alloc;
     
     vector<Sym> syms;
     map<string, Sym> sym_lookup;

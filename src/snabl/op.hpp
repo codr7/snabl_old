@@ -11,6 +11,10 @@
 #define OP_REG_BITS 8
 #define OP_TYPE_ID_BITS 10
 
+#define BRANCH_COND_BIT OP_CODE_BITS
+#define BRANCH_REG_BIT (BRANCH_COND_BIT + OP_REG_BITS)
+#define BRANCH_ELSE_BIT (BRANCH_REG_BIT + OP_REG_BITS)
+
 #define CALL_TARGET_BIT OP_CODE_BITS
 #define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
 
@@ -28,6 +32,7 @@ namespace snabl {
   using Op = uint64_t;
 
   enum class OpCode {
+    BRANCH,
     CALL, COPY,
     FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
@@ -45,6 +50,14 @@ namespace snabl {
   void op_dump(Op op, ostream &out);
 
   namespace ops {
+    template <typename T, size_t pos, size_t width>
+    T get(Op op) { return static_cast<T>((op >> pos) & ((1 << width) - 1)); }
+    
+    void BRANCH(Op &op, Reg cond, Reg reg, PC else_pc);
+    Reg branch_cond(Op op);
+    Reg branch_reg(Op op);
+    PC branch_else(Op op);    
+    
     void CALL(Op &op, Reg target, Reg reg);
     Reg call_target(Op op);
     Reg call_reg(Op op);    

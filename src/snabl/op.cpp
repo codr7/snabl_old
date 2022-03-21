@@ -3,11 +3,7 @@
 namespace snabl {
    PC op_len(Op op, ostream &out) {
     switch (op_code(op)) {
-    case OpCode::CALL:
-    case OpCode::LOAD_FUN:
-    case OpCode::LOAD_INT:
-    case OpCode::LOAD_MACRO:
-      return 2;
+    case OpCode::BRANCH:
     case OpCode::COPY:
     case OpCode::FUN:
     case OpCode::GOTO:
@@ -18,6 +14,11 @@ namespace snabl {
     case OpCode::STATE:
     case OpCode::STOP:
       break;
+    case OpCode::CALL:
+    case OpCode::LOAD_FUN:
+    case OpCode::LOAD_INT:
+    case OpCode::LOAD_MACRO:
+      return 2;
     }
 
     return 1;
@@ -25,6 +26,9 @@ namespace snabl {
 
   void op_dump(Op op, ostream &out) {
     switch (op_code(op)) {
+    case OpCode::BRANCH:
+      out << "BRANCH " << ops::branch_cond(op) << ' ' << ops::branch_reg(op) << ' ' << ops::branch_else(op);
+      break;
     case OpCode::CALL:
       out << "CALL " << ops::call_target(op) << ' ' << ops::call_reg(op);
       break;
@@ -67,7 +71,20 @@ namespace snabl {
     }
   }
 
-  namespace ops {
+  namespace ops {    
+    void BRANCH(Op &op, Reg cond, Reg reg, PC else_pc) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::BRANCH) +
+			   (cond << BRANCH_COND_BIT) +
+			   (reg << BRANCH_REG_BIT) +
+			   (else_pc << BRANCH_ELSE_BIT));
+    }
+
+    Reg branch_cond(Op op) { return get<Reg, BRANCH_COND_BIT, OP_REG_BITS>(op); }
+
+    Reg branch_reg(Op op) { return get<Reg, BRANCH_REG_BIT, OP_REG_BITS>(op); }
+
+    PC branch_else(Op op) { return get<PC, BRANCH_ELSE_BIT, OP_PC_BITS>(op); }
+
     void CALL(Op &op, Reg target, Reg reg) {
       op = static_cast<Op>(static_cast<Op>(OpCode::CALL) + (target << CALL_TARGET_BIT) + (reg << CALL_REG_BIT));
     }

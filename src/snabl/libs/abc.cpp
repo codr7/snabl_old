@@ -32,6 +32,25 @@ namespace snabl::libs {
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
+    bind_macro(m.sym("if"), 2,
+	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 Reg cond = m.scope->reg_count++;
+		 if (auto err = args[0].emit(cond, m); err) { return err; }
+		 Op &branch = m.emit();
+		 if (auto err = args[1].emit(reg, m); err) { return err; }
+
+		 if (args.size() > 2) {
+		   Op &skip = m.emit();
+		   ops::BRANCH(branch, cond, reg, m.emit_pc);
+		   if (auto err = args[2].emit(reg, m); err) { return err; }
+		   ops::GOTO(skip, m.emit_pc);
+		 } else {
+		   ops::BRANCH(branch, cond, reg, m.emit_pc);		   
+		 }
+		 
+		 return nullopt;
+	       });
+    
     bind_fun(m.sym("+"),
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,

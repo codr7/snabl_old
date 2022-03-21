@@ -17,6 +17,8 @@ namespace snabl {
 
     template <typename T>
     T as() { return any_cast<T>(data); }
+
+    bool is_true() const { return type.imp->methods.is_true(*this); }
   };
 
   ostream &operator <<(ostream &out, Val val);

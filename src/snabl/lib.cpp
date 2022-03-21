@@ -17,9 +17,15 @@ namespace snabl {
   void Lib::bind(Sym key, Type type, any data) { bindings[key] = Val(type, data); }
 
   Fun *Lib::bind_fun(Sym name, const vector<Fun::Arg> &args, Type ret_type, Fun::Body body) {
-    Fun *f = m.fun_alloc.make(name, args, ret_type, body);
-    bind(name, m.abc_lib->fun_type, f);
-    return f;
+    Fun *fun = m.fun_alloc.make(name, args, ret_type, body);
+    bind(name, m.abc_lib->fun_type, fun);
+    return fun;
+  }
+
+  Macro *Lib::bind_macro(Sym name, int arg_count, Macro::Body body) {
+    Macro *macro = m.macro_alloc.make(name, arg_count, body);
+    bind(name, m.abc_lib->macro_type, macro);
+    return macro;
   }
 }
   

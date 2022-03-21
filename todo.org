@@ -1,7 +1,5 @@
-* add macros
-** add if-macro
-*** add BRANCH op
-** add fun:-macro
+* add fun:-macro
+* add bench macro
 * fib
 * add LOAD_NIL op
 ** enable nil type emit
@@ -10,4 +8,5 @@
 * add BRET op
 ** goto RET if cond
 * add DEC op
-* add GFun fusing
+* add op fusion
+** GFun

@@ -7,7 +7,7 @@ namespace snabl {
 
   Macro::Result Macro::emit(deque<Form> args, Reg reg, Pos pos, M &m) {
     if (args.size() < arg_count) { return Error(pos, "Not enough arguments: ", name); }
-    return body(*this, reg, pos, m);
+    return body(*this, args, reg, pos, m);
   }
 
   ostream &operator <<(ostream &out, Macro *val) {

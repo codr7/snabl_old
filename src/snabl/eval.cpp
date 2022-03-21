@@ -20,7 +20,9 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&CALL, &&COPY, &&FUN, &&GOTO,
+      &&BRANCH,
+      &&CALL, &&COPY,
+      &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
       &&NOP, &&RET, &&STATE,
       /* STOP */
@@ -31,6 +33,11 @@ namespace snabl {
     
     DISPATCH(start_pc);
     
+  BRANCH: {
+      Val &c = state->regs[ops::branch_cond(op)];
+      DISPATCH(c.is_true() ? pc+1 : ops::branch_else(op));
+    }
+
   CALL: {
       Fun *target = state->regs[ops::call_target(op)].as<Fun *>();
       Reg reg = ops::call_reg(op);

@@ -1,7 +1,6 @@
 #ifndef SNABL_MACRO_HPP
 #define SNABL_MACRO_HPP
 
-#include <array>
 #include <deque>
 #include <functional>
 #include <optional>
@@ -18,10 +17,10 @@ namespace snabl {
 
   struct Macro {
     using Result = optional<Error>;
-    using Body = function<Result (Macro &macro, Reg reg, Pos pos, M &m)>;
+    using Body = function<Result (Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m)>;
     
     Macro(Sym name, int arg_count, Body body);
-    optional<Error> emit(deque<Form> args, Reg reg, Pos pos, M &m);
+    Result emit(deque<Form> args, Reg reg, Pos pos, M &m);
     
     Sym name;
     int arg_count;
