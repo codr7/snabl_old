@@ -36,9 +36,14 @@ namespace snabl::forms {
       if (auto err = args[i].emit(i+1, m); err) { return err; }
     }
 
-    Reg fun_reg = m.scope->reg_count++;
-    ops::LOAD_FUN(m.emit(2), fun_reg, fun);
-    ops::CALL(m.emit(), fun_reg, reg);
+    if (reinterpret_cast<Op>(fun) <= CALLI1_TARGET_MAX) {
+      ops::CALLI1(m.emit(), reg, fun);
+    } else {
+      Reg fun_reg = m.scope->reg_count++;
+      ops::LOAD_FUN(m.emit(2), fun_reg, fun);
+      ops::CALL(m.emit(), fun_reg, reg);
+    }
+    
     return nullopt;
   }
 }

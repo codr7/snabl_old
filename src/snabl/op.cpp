@@ -5,7 +5,7 @@ namespace snabl {
    PC op_len(Op op, ostream &out) {
     switch (op_code(op)) {
     case OpCode::BENCH: case OpCode::BRANCH:
-    case OpCode::COPY:
+    case OpCode::CALLI1: case OpCode::COPY:
     case OpCode::DEC:
     case OpCode::EQ:
     case OpCode::FUN:
@@ -34,6 +34,9 @@ namespace snabl {
       break;
     case OpCode::CALL:
       out << "CALL " << ops::call_target(op) << ' ' << ops::call_reg(op);
+      break;
+    case OpCode::CALLI1:
+      out << "CALLI1 " << ops::calli1_reg(op) << ' ' << ops::calli1_target(op);
       break;
     case OpCode::COPY:
       out << "COPY " << ops::copy_dst(op) << ' ' << ops::copy_src(op);
@@ -101,6 +104,12 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::CALL) +
 			   (target << CALL_TARGET_BIT) +
 			   (reg << CALL_REG_BIT));
+    }
+
+    void CALLI1(Op &op, Reg reg, Fun *target) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::CALLI1) +
+			   (reg << CALLI1_REG_BIT) +
+			   (reinterpret_cast<Op>(target) << CALLI1_TARGET_BIT));
     }
 
     void COPY(Op &op, Reg dst, Reg src) {

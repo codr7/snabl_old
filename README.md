@@ -39,7 +39,7 @@ $ ./snabl
 ```
   (bench 100 (fib-rec 20))
 
-1272
+1105
 ```
 
 ```
@@ -48,7 +48,7 @@ $ ./snabl
 
   (bench 10000 (fib-tail 70 0 1))
 
-663
+625
 ```
 
 ### support

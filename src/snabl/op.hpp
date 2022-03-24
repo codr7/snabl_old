@@ -20,6 +20,11 @@
 #define CALL_TARGET_BIT OP_CODE_BITS
 #define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
 
+#define CALLI1_REG_BIT OP_CODE_BITS
+#define CALLI1_TARGET_BIT (CALLI1_REG_BIT + OP_REG_BITS)
+#define CALLI1_TARGET_BITS (OP_BITS - CALLI1_TARGET_BIT - 1)
+#define CALLI1_TARGET_MAX ((static_cast<Op>(1) << CALLI1_TARGET_BITS) - 1)
+
 #define COPY_DST_BIT OP_CODE_BITS
 #define COPY_SRC_BIT (COPY_DST_BIT + OP_REG_BITS)
 
@@ -55,7 +60,7 @@ namespace snabl {
 
   enum class OpCode {
     BENCH, BRANCH,
-    CALL, COPY,
+    CALL, CALLI1, COPY,
     DEC, EQ, FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
     MOVE, NOP, RET, STATE,
@@ -86,6 +91,13 @@ namespace snabl {
     void CALL(Op &op, Reg target, Reg reg);
     inline Reg call_target(Op op) { return get<Reg, CALL_TARGET_BIT, OP_REG_BITS>(op); }
     inline Reg call_reg(Op op) { return get<Reg, CALL_REG_BIT, OP_REG_BITS>(op); }
+
+    void CALLI1(Op &op, Reg reg, Fun *target);
+    inline Reg calli1_reg(Op op) { return get<Reg, CALLI1_REG_BIT, OP_REG_BITS>(op); }
+
+    inline Fun *calli1_target(Op op) {
+      return reinterpret_cast<Fun *>(get<Op, CALLI1_TARGET_BIT, CALLI1_TARGET_BITS>(op));
+    }
 
     void COPY(Op &op, Reg dst, Reg src);
     inline Reg copy_dst(Op op) { return get<Reg, COPY_DST_BIT, OP_REG_BITS>(op); }
