@@ -12,5 +12,9 @@
 ** enable nil type emit
 * add tasks
 ** pure green threads
-
-(fun: foo [n Int] Int (dec n 1))
+* add sym type/reader
+* add string type
+** add reader
+** add unquotes
+*** "foo %(42) bar"
+*** %% escape
