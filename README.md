@@ -1,10 +1,10 @@
 ## Snabl
 
 ```
-  (fun: fib [n Int] Int
-    (if (< n 2) n (+ (fib (dec n)) (fib (dec n 2)))))
+  (fun: fib-rec [n Int] Int
+    (if (< n 2) n (+ (fib-rec (dec n)) (fib-rec (dec n 2)))))
   
-  (fib 10)
+  (fib-rec 10)
 
 55
 ```
@@ -20,6 +20,12 @@ $ cd build
 $ cmake ..
 $ make
 $ ./snabl
+```
+
+### performance
+
+```
+  (bench 100 (fib-rec 20))
 ```
 
 ### support

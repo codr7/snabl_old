@@ -2,6 +2,7 @@
 
 #include "snabl/fun.hpp"
 #include "snabl/m.hpp"
+#include "snabl/timer.hpp"
 
 #define DISPATCH(next_pc) {						\
     op = ops[(pc = (next_pc))];						\
@@ -20,7 +21,7 @@ namespace snabl {
   
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
-      &&BRANCH,
+      &&BENCH, &&BRANCH,
       &&CALL, &&COPY,
       &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
@@ -32,6 +33,16 @@ namespace snabl {
     Op op = 0;
     
     DISPATCH(start_pc);
+
+  BENCH: {
+      Val &reg = *(state->regs.begin() + ops::bench_reg(op));
+      auto reps = reg.as<types::Int::DataType>();
+
+      Timer t;
+      for (int i = 0; i < reps; i++) { eval(pc+1); }
+      reg = Val(abc_lib->int_type, static_cast<types::Int::DataType>(t.ms()));
+      DISPATCH(ops::bench_end(op));
+  }
     
   BRANCH: {
       Val &c = state->regs[ops::branch_cond(op)];
