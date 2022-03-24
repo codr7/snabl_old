@@ -1,4 +1,4 @@
-## Snabl ![Lisp Mascot](lisp.png?raw=true)
+## ![Lisp Mascot](lisp.png?raw=true)
 
 ```
   (fun: fib-rec [n Int] Int
@@ -10,7 +10,7 @@
 ```
 
 ### intro
-This projects aims to implement a practical embedded Lisp interpreter in C++.
+Snabl projects aims to implement a practical embedded Lisp interpreter in C++.
 
 ### motivation
 I like command lines, almost regardless of type of application. And once you have a command line, scripting is right around the corner. So you might as well plan for it by using a solid foundation. Which means that it makes sense to take a gradual approach to avoid paying upfront. This project is intended to simplify implementing that strategy; by providing a flexible, modular framework for implementing interpreted languages in C++.
