@@ -27,7 +27,7 @@ $ ./snabl
 ```
   (bench 100 (fib-rec 20))
 
-1240
+1230
 ```
 
 ### support

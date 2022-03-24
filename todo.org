@@ -1,6 +1,7 @@
 * add fibtail
 * add = macro
-* add equal method
+* add eq method
+** add EQ op
 * add CALLI2/1 ops
 ** immediate fun
 * add LOAD_INT1

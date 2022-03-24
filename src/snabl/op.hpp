@@ -26,7 +26,7 @@
 #define DEC_DST_BIT OP_CODE_BITS
 #define DEC_SRC_BIT (DEC_DST_BIT + OP_REG_BITS)
 #define DEC_DELTA_BIT (DEC_SRC_BIT + OP_REG_BITS)
-#define DEC_DELTA_BITS 10
+#define DEC_DELTA_BITS (OP_BITS - DEC_DELTA_BIT - 1)
 
 #define FUN_REG_BIT OP_CODE_BITS
 #define FUN_END_BIT (FUN_REG_BIT + OP_REG_BITS)
@@ -64,12 +64,11 @@ namespace snabl {
   }
 
   PC op_len(Op op);
-
   void op_dump(Op op, ostream &out, M &m);
 
   namespace ops {
     template <typename T, size_t pos, size_t width>
-    T get(Op op) { return static_cast<T>((op >> pos) & ((1 << width) - 1)); }
+    T get(Op op) { return static_cast<T>((op >> pos) & ((static_cast<T>(1) << width) - 1)); }
 
     void BENCH(Op &op, Reg reg, PC end_pc);
     inline Reg bench_reg(Op op) { return get<Reg, BENCH_REG_BIT, OP_REG_BITS>(op); }

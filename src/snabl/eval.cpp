@@ -4,16 +4,16 @@
 #include "snabl/m.hpp"
 #include "snabl/timer.hpp"
 
-#define DISPATCH(next_pc) {						\
-    op = ops[(pc = (next_pc))];						\
-									\
-    if (debug) {							\
-      cout << pc << ' ';						\
-      op_dump(op, cout, *this);						\
-      cout << endl;							\
-    }									\
-									\
-    goto *dispatch[static_cast<int>(op_code(op))];			\
+#define DISPATCH(next_pc) {				\
+    op = ops[(pc = (next_pc))];				\
+							\
+    if (debug) {					\
+      cout << pc << ' ';				\
+      op_dump(op, cout, *this);				\
+      cout << endl;					\
+    }							\
+							\
+    goto *dispatch[static_cast<int>(op_code(op))];	\
   }
 
 namespace snabl {
@@ -42,7 +42,7 @@ namespace snabl {
       for (int i = 0; i < reps; i++) { eval(pc+1); }
       reg = Val(abc_lib->int_type, static_cast<types::Int::DataType>(t.ms()));
       DISPATCH(ops::bench_end(op));
-  }
+    }
     
   BRANCH: {
       optional<Val> &c = state->regs[ops::branch_cond(op)];
