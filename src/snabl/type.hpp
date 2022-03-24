@@ -20,6 +20,7 @@ namespace snabl {
       function<void (Val val, ostream &out)> dump;
       function<optional<Error> (Val val, Reg reg, Pos pos, M &m)> emit;
       function<bool (Val val)> is_true;
+      function<bool (Val left, Val right)> eq;
     };
     
     struct Imp {

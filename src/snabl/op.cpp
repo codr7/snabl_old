@@ -7,6 +7,7 @@ namespace snabl {
     case OpCode::BENCH: case OpCode::BRANCH:
     case OpCode::COPY:
     case OpCode::DEC:
+    case OpCode::EQ:
     case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_TYPE:
@@ -39,6 +40,9 @@ namespace snabl {
       break;
     case OpCode::DEC:
       out << "DEC " << ops::dec_dst(op) << ' ' << ops::dec_src(op) << ' ' << ops::dec_delta(op);
+      break;
+    case OpCode::EQ:
+      out << "EQ " << ops::eq_dst(op) << ' ' << ops::eq_left(op) << ' ' << ops::eq_right(op);
       break;
     case OpCode::FUN:
       out << "FUN " << ops::fun_reg(op) << ' ' << ops::fun_end(op);
@@ -108,6 +112,13 @@ namespace snabl {
 			   (dst << DEC_DST_BIT) +
 			   (src << DEC_SRC_BIT) +
 			   (delta << DEC_DELTA_BIT));
+    }
+
+    void EQ(Op &op, Reg dst, Reg left, Reg right) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::EQ) +
+			   (dst << EQ_DST_BIT) +
+			   (left << EQ_LEFT_BIT) +
+			   (right << EQ_RIGHT_BIT));
     }
 
     void FUN(Op &op, Reg reg, PC end) {

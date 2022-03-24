@@ -12,5 +12,7 @@ namespace snabl::types {
       ops::LOAD_TYPE(m.emit(), reg, val.as<snabl::Type>());
       return nullopt;
     };
+
+    methods.eq = [](Val left, Val right) { return left.as<snabl::Type>() == right.as<snabl::Type>(); };
   }
 }

@@ -8,8 +8,10 @@ namespace snabl::types {
     };
     
     methods.emit = [](Val val, snabl::Reg reg, Pos pos, M &m) {
-      if (snabl::Reg src = val.as<snabl::Reg>(); src != reg) { ops::MOVE(m.emit(), reg, src); }
+      if (snabl::Reg src = val.as<snabl::Reg>(); src != reg) { ops::COPY(m.emit(), reg, src); }
       return nullopt;
     };
+
+    methods.eq = [](Val left, Val right) { return left.as<snabl::Reg>() == right.as<snabl::Reg>(); };
   }
 }

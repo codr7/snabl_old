@@ -12,5 +12,7 @@ namespace snabl::types {
       };*/
 
     methods.is_true = [](Val val) { return false; };
+
+    methods.eq = [](Val left, Val right) { return true; };
   }
 }

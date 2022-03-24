@@ -9,6 +9,18 @@
 55
 ```
 
+### intro
+This projects aims to implement a practical embedded Lisp interpreter in C++.
+
+### motivation
+I like command lines, almost regardless of type of application. And once you have a command line, scripting is right around the corner. So you might as well plan for it by using a solid foundation. Which means that it makes sense to take a gradual approach to avoid paying upfront. This project is intended to simplify implementing that strategy; by providing a flexible, modular framework for implementing interpreted languages in C++.
+
+### design
+The VM is register based with sequential allocation and runs 64-bit bytecode. States and frames are slab allocated and reference counted and passed as raw pointers. Types and values are designed to be (cheaply) passed by value.
+
+### syntax
+Parens are used for calls only, brackets for vectors.
+
 ### setup
 
 Compiling Snabl requires a C++17-compiler and CMake, the following shell spell builds and starts the REPL:
@@ -27,7 +39,16 @@ $ ./snabl
 ```
   (bench 100 (fib-rec 20))
 
-1230
+1272
+```
+
+```
+  (fun: fib-tail [n Int a Int b Int] Int
+    (if (= n 0) a (if (= n 1) b (fib-tail (dec n) b (+ a b)))))
+
+  (bench 10000 (fib-tail 70 0 1))
+
+663
 ```
 
 ### support

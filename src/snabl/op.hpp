@@ -28,6 +28,10 @@
 #define DEC_DELTA_BIT (DEC_SRC_BIT + OP_REG_BITS)
 #define DEC_DELTA_BITS (OP_BITS - DEC_DELTA_BIT - 1)
 
+#define EQ_DST_BIT OP_CODE_BITS
+#define EQ_LEFT_BIT (EQ_DST_BIT + OP_REG_BITS)
+#define EQ_RIGHT_BIT (EQ_LEFT_BIT + OP_REG_BITS)
+
 #define FUN_REG_BIT OP_CODE_BITS
 #define FUN_END_BIT (FUN_REG_BIT + OP_REG_BITS)
 
@@ -52,7 +56,7 @@ namespace snabl {
   enum class OpCode {
     BENCH, BRANCH,
     CALL, COPY,
-    DEC, FUN, GOTO,
+    DEC, EQ, FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
     MOVE, NOP, RET, STATE,
     /* STOP */
@@ -91,6 +95,11 @@ namespace snabl {
     inline Reg dec_dst(Op op) { return get<Reg, DEC_DST_BIT, OP_REG_BITS>(op); }
     inline Reg dec_src(Op op) { return get<Reg, DEC_SRC_BIT, OP_REG_BITS>(op); }
     inline types::Int::DataType dec_delta(Op op) { return get<types::Int::DataType, DEC_DELTA_BIT, DEC_DELTA_BITS>(op); }
+
+    void EQ(Op &op, Reg dst, Reg left, Reg right);
+    inline Reg eq_dst(Op op) { return get<Reg, EQ_DST_BIT, OP_REG_BITS>(op); }
+    inline Reg eq_left(Op op) { return get<Reg, EQ_LEFT_BIT, OP_REG_BITS>(op); }
+    inline Reg eq_right(Op op) { return get<Reg, EQ_RIGHT_BIT, OP_REG_BITS>(op); }
 
     void FUN(Op &op, Reg reg, PC end);
     inline Reg fun_reg(Op op) { return get<Reg, FUN_REG_BIT, OP_REG_BITS>(op); }

@@ -45,6 +45,14 @@ namespace snabl::libs {
     bind(m.sym("T"), bool_type, true);
     bind(m.sym("F"), bool_type, false);
 
+    bind_macro(m.sym("="), 2,
+	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 if (auto err = pop_form(args).emit(1, m); err) { return err; }
+		 if (auto err = pop_form(args).emit(2, m); err) { return err; }
+		 ops::EQ(m.emit(), reg, 1, 2);
+		 return nullopt;
+	       });
+
     bind_macro(m.sym("bench"), 2,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 if (auto err = pop_form(args).emit(reg, m); err) { return err; }

@@ -10,6 +10,8 @@ namespace snabl::types {
       return nullopt;
     };
 
+    methods.eq = [](Val left, Val right) { return left.as<DataType>() == right.as<DataType>(); };
+
     methods.is_true = [](Val val) { return val.as<DataType>() != 0; };
   }
 }

@@ -10,5 +10,7 @@ namespace snabl::types {
       ops::LOAD_FUN(m.emit(2), reg, val.as<snabl::Fun *>());
       return nullopt;
     };
+
+    methods.eq = [](Val left, Val right) { return left.as<snabl::Fun *>() == right.as<snabl::Fun *>(); };
   }
 }
