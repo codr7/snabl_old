@@ -15,8 +15,7 @@ namespace snabl {
   }
 
   optional<Error> Fun::emit(deque<Form> body, Reg reg, M &m) {
-    Reg fun_reg = m.scope->reg_count++;
-    ops::LOAD_FUN(m.emit(2), fun_reg, this);
+    ops::LOAD_FUN(m.emit(2), reg, this);
     Op &op = m.emit();
     PC start_pc = m.emit_pc;
     int reg_count = m.scope->reg_count;
@@ -36,7 +35,7 @@ namespace snabl {
     
     m.deref_scope(m.end_scope());
     ops::RET(m.emit());
-    ops::FUN(op, fun_reg, m.emit_pc);
+    ops::FUN(op, reg, m.emit_pc);
 
     this->body = [this, start_pc, reg_count](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
       State *new_state = m.begin_state();
