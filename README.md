@@ -1,4 +1,4 @@
-## ![Lisp Mascot](lisp.png?raw=true) Snabl
+## Snabl ![Lisp Mascot](lisp.png?raw=true)
 
 ```
   (fun: fib-rec [n Int] Int
