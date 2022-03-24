@@ -17,7 +17,7 @@ namespace snabl {
     Val(Type type, any data): type(type), data(data) {}
 
     template <typename T>
-    T as() { return any_cast<T>(data); }
+    T as() const { return any_cast<T>(data); }
 
     bool is_true() const { return type.imp->methods.is_true(*this); }
   };

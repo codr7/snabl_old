@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "snabl/forms/id.hpp"
+#include "snabl/forms/lit.hpp"
 #include "snabl/forms/slice.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/m.hpp"
@@ -66,6 +67,18 @@ namespace snabl::libs {
 	       m.state->regs[ret_reg] = Val(bool_type, m.debug);
 	       return Fun::Result(ret_pc, nullopt);
 	     });
+
+    bind_macro(m.sym("dec"), 1,
+	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 Reg src = m.scope->find(args[0].as<forms::Id>().name)->as<Reg>();
+
+		 types::Int::DataType delta = (args.size() == 1)
+		   ? 1
+		   : args[1].as<forms::Lit>().val.as<types::Int::DataType>();
+		 
+		 ops::DEC(m.emit(), reg, src, delta);
+		 return nullopt;
+	       });
 
     bind_fun(m.sym("dump"),
 	     {{m.sym("x"), int_type}},

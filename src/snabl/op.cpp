@@ -6,6 +6,7 @@ namespace snabl {
     switch (op_code(op)) {
     case OpCode::BENCH: case OpCode::BRANCH:
     case OpCode::COPY:
+    case OpCode::DEC:
     case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_TYPE:
@@ -35,6 +36,9 @@ namespace snabl {
       break;
     case OpCode::COPY:
       out << "COPY " << ops::copy_dst(op) << ' ' << ops::copy_src(op);
+      break;
+    case OpCode::DEC:
+      out << "DEC " << ops::dec_dst(op) << ' ' << ops::dec_src(op) << ' ' << ops::dec_delta(op);
       break;
     case OpCode::FUN:
       out << "FUN " << ops::fun_reg(op) << ' ' << ops::fun_end(op);
@@ -98,7 +102,14 @@ namespace snabl {
     void COPY(Op &op, Reg dst, Reg src) {
       op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << COPY_DST_BIT) + (src << COPY_SRC_BIT));
     }
-    
+
+    void DEC(Op &op, Reg dst, Reg src, types::Int::DataType delta) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::DEC) +
+			   (dst << DEC_DST_BIT) +
+			   (src << DEC_SRC_BIT) +
+			   (delta << DEC_DELTA_BIT));
+    }
+
     void FUN(Op &op, Reg reg, PC end) {
       op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (reg << OP_CODE_BITS) + (end << FUN_END_BIT));
     }

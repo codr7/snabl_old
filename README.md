@@ -2,8 +2,8 @@
 
 ```
   (fun: fib-rec [n Int] Int
-    (if (< n 2) n (+ (fib-rec (- n 1)) (fib-rec (- n 2)))))
-    
+    (if (< n 2) n (+ (fib-rec (dec n)) (fib-rec (dec n 2)))))
+
   (fib-rec 10)
 
 55
@@ -27,11 +27,11 @@ $ ./snabl
 ```
   (bench 100 (fib-rec 20))
 
-1502
+1240
 ```
 
 ### support
-Should you wish to support this effort and allow me to spend more of my time and energy on evolving GFun, feel free to [help](https://liberapay.com/andreas7/donate) make that economically feasible.
+Should you wish to support this effort and allow me to spend more time and energy on evolving the project, please consider a [donation](https://liberapay.com/andreas7/donate).
 
 ### coder/mentor for hire
 I'm currently available for hire.<br/>

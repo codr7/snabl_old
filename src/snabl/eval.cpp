@@ -23,7 +23,7 @@ namespace snabl {
     static const void* dispatch[] = {
       &&BENCH, &&BRANCH,
       &&CALL, &&COPY,
-      &&FUN, &&GOTO,
+      &&DEC, &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&NOP, &&RET, &&STATE,
       /* STOP */
@@ -68,6 +68,12 @@ namespace snabl {
   COPY: {
       optional<Val> *rs = state->regs.begin();
       rs[ops::copy_dst(op)] = rs[ops::copy_src(op)];
+      DISPATCH(pc+1);
+    }
+
+  DEC: {
+      optional<Val> *rs = state->regs.begin(), &src = rs[ops::dec_src(op)];
+      rs[ops::dec_dst(op)] = src = Val(abc_lib->int_type, src->as<types::Int::DataType>() - ops::dec_delta(op));
       DISPATCH(pc+1);
     }
 
