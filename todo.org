@@ -1,6 +1,3 @@
-* add z? macro
-** add Z op
-** use instead of (= n 0)
 * add op fusion
 ** GFun
 ** fuse GOTO-RET

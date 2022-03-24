@@ -15,6 +15,7 @@ namespace snabl {
     case OpCode::NOP:
     case OpCode::RET:
     case OpCode::STATE: case OpCode::STOP:
+    case OpCode::Z:
       break;
     case OpCode::CALL:
     case OpCode::LOAD_FUN: case OpCode::LOAD_INT2: case OpCode::LOAD_MACRO:
@@ -82,6 +83,9 @@ namespace snabl {
       break;
     case OpCode::STATE:
       out << "STATE " << ops::state_reg_count(op);
+      break;
+    case OpCode::Z:
+      out << "Z " << ops::z_dst(op) << ' ' << ops::z_src(op);
       break;
     case OpCode::STOP:
       out << "STOP";
@@ -182,6 +186,10 @@ namespace snabl {
 
     void STATE(Op &op, int reg_count) {
       op = static_cast<Op>(static_cast<Op>(OpCode::STATE) + (reg_count << STATE_REG_COUNT_BIT));
+    }
+
+    void Z(Op &op, Reg dst, Reg src) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::Z) + (dst << Z_DST_BIT) + (src << Z_SRC_BIT));
     }
 
     void STOP(Op &op) { op = static_cast<Op>(OpCode::STOP); }

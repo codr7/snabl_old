@@ -54,6 +54,9 @@
 
 #define STATE_REG_COUNT_BIT OP_CODE_BITS
 
+#define Z_DST_BIT OP_CODE_BITS
+#define Z_SRC_BIT (Z_DST_BIT + OP_REG_BITS)
+
 namespace snabl {
   using namespace std;
 
@@ -67,7 +70,7 @@ namespace snabl {
     CALL, CALLI1, COPY,
     DEC, EQ, FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
-    MOVE, NOP, RET, STATE,
+    MOVE, NOP, RET, STATE, Z,
     /* STOP */
     STOP
   };
@@ -153,7 +156,11 @@ namespace snabl {
     
     void STATE(Op &op, int reg_count);
     inline int state_reg_count(Op op) { return get<int, STATE_REG_COUNT_BIT, OP_REG_BITS>(op); }
-    
+
+    void Z(Op &op, Reg dst, Reg src);
+    inline Reg z_dst(Op op) { return get<Reg, Z_DST_BIT, OP_REG_BITS>(op); }
+    inline Reg z_src(Op op) { return get<Reg, Z_SRC_BIT, OP_REG_BITS>(op); }
+
     /* STOP */
     
     void STOP(Op &op);

@@ -49,11 +49,11 @@ First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine
 Next tail recursive, Python3 takes `105`ms on the same machine.
 ```
   (fun: fib-tail [n Int a Int b Int] Int
-    (if (= n 0) a (if (= n 1) b (fib-tail (dec n) b (+ a b)))))
+    (if (z? n) a (if (= n 1) b (fib-tail (dec n) b (+ a b)))))
 
   (bench 10000 (fib-tail 70 0 1))
 
-621
+577
 ```
 
 ### support

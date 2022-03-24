@@ -25,7 +25,7 @@ namespace snabl {
       &&CALL, &&CALLI1, &&COPY,
       &&DEC, &&EQ, &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&MOVE, &&NOP, &&RET, &&STATE,
+      &&MOVE, &&NOP, &&RET, &&STATE, &&Z,
       /* STOP */
       &&STOP};
 
@@ -164,7 +164,13 @@ namespace snabl {
       begin_state(ops::state_reg_count(op));
       DISPATCH(pc+1);
     }
-    
+
+  Z: {
+      optional<Val> *rs = state->regs.begin();
+      rs[ops::z_dst(op)] = Val(abc_lib->bool_type, rs[ops::z_src(op)]->as<types::Int::DataType>() == 0);
+      DISPATCH(pc+1);
+    }
+
     /* STOP */
     
   STOP: {}
