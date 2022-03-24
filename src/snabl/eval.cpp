@@ -24,7 +24,7 @@ namespace snabl {
       &&BENCH, &&BRANCH,
       &&CALL, &&CALLI1, &&COPY,
       &&DEC, &&EQ, &&FUN, &&GOTO,
-      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
+      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&NOP, &&RET, &&STATE,
       /* STOP */
       &&STOP};
@@ -121,7 +121,12 @@ namespace snabl {
       DISPATCH(pc+2);
     }
 
-  LOAD_INT: {
+  LOAD_INT1: {
+      state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, ops::load_int1_val(op));
+      DISPATCH(pc+1);
+    }
+
+  LOAD_INT2: {
       auto v = static_cast<types::Int::DataType>(ops[pc+1]);
       state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, v);
       DISPATCH(pc+2);

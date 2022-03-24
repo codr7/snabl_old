@@ -1,5 +1,3 @@
-* add LOAD_INT1
-** rename LOAD_INT to LOAD_INT2
 * add z? macro
 ** add Z op
 ** use instead of (= n 0)

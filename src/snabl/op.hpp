@@ -42,8 +42,12 @@
 
 #define GOTO_PC_BIT OP_CODE_BITS
 
-#define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
-#define LOAD_VAL_BIT (OP_CODE_BITS + OP_REG_BITS)
+#define LOAD_INT1_VAL_BITS (OP_BITS - LOAD_VAL_BIT - 1)
+#define LOAD_INT1_VAL_MIN (-(static_cast<Op>(1) << (LOAD_INT1_VAL_BITS - 1)))
+#define LOAD_INT1_VAL_MAX ((static_cast<Op>(1) << (LOAD_INT1_VAL_BITS - 1)) - 1)
+
+#define LOAD_REG_BIT OP_CODE_BITS
+#define LOAD_VAL_BIT (LOAD_REG_BIT + OP_REG_BITS)
 
 #define MOVE_DST_BIT OP_CODE_BITS
 #define MOVE_SRC_BIT (MOVE_DST_BIT + OP_REG_BITS)
@@ -62,7 +66,7 @@ namespace snabl {
     BENCH, BRANCH,
     CALL, CALLI1, COPY,
     DEC, EQ, FUN, GOTO,
-    LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
+    LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
     MOVE, NOP, RET, STATE,
     /* STOP */
     STOP
@@ -124,11 +128,19 @@ namespace snabl {
     inline bool load_bool_val(Op op) { return get<int, LOAD_VAL_BIT, 1>(op); }
 
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
-    void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);
+
+    void LOAD_INT1(Op &op, Reg reg, snabl::types::Int::DataType val);
+
+    inline types::Int::DataType load_int1_val(Op op) {
+      return get<types::Int::DataType, LOAD_VAL_BIT, LOAD_INT1_VAL_BITS>(op);
+    }
+
+    void LOAD_INT2(Op &op, Reg reg, snabl::types::Int::DataType val);
+
     void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val);
 
     void LOAD_TYPE(Op &op, Reg reg, Type val);
-    inline snabl::Type::Id load_type_id(Op op) { return get<snabl::Type::Id, LOAD_TYPE_ID_BIT, OP_TYPE_ID_BITS>(op); }
+    inline snabl::Type::Id load_type_id(Op op) { return get<snabl::Type::Id, LOAD_VAL_BIT, OP_TYPE_ID_BITS>(op); }
 
     inline Reg load_reg(Op op) { return static_cast<Reg>((op >> OP_CODE_BITS) & ((1 << OP_REG_BITS) - 1)); }
 

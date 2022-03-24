@@ -6,7 +6,12 @@ namespace snabl::types {
     methods.dump = [](Val val, ostream &out) { out << val.as<DataType>(); };
     
     methods.emit = [](Val val, snabl::Reg reg, Pos pos, M &m) {
-      ops::LOAD_INT(m.emit(2), reg, val.as<DataType>());
+      if (auto v = val.as<DataType>(); v >= LOAD_INT1_VAL_MIN && v <= LOAD_INT1_VAL_MAX) {
+	ops::LOAD_INT1(m.emit(1), reg, v);
+      } else {
+	ops::LOAD_INT2(m.emit(2), reg, v);
+      }
+
       return nullopt;
     };
 
