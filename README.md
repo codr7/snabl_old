@@ -16,13 +16,13 @@ This projects aims to implement a practical embedded Lisp interpreter in C++.
 I like command lines, almost regardless of type of application. And once you have a command line, scripting is right around the corner. So you might as well plan for it by using a solid foundation. Which means that it makes sense to take a gradual approach to avoid paying upfront. This project is intended to simplify implementing that strategy; by providing a flexible, modular framework for implementing interpreted languages in C++.
 
 ### design
-The VM is register based with sequential allocation and runs 64-bit bytecode. The evaluation loop is implemented using computed goto for performance reasons, which means that the set of available operations is fixed at library compile time. States and frames are slab allocated, reference counted and passed as raw pointers. Types and values are designed to be (cheaply) passed by value.
+The VM is register based with sequential allocation and runs 64-bit bytecode. The evaluation loop is implemented using computed goto for performance reasons, which means that the set of available operations is fixed at library compile time. States and frames are slab allocated, reference counted and passed as raw pointers. Types and values are designed to be (cheaply) passed by value. The reader uses recursive extent and is designed to be easy to customize/extend.
 
 ### syntax
 Parens are used for calls only, brackets for vectors.
 
 ### status
-Still verifying and tweaking the design to improve performance based on initial profiling, error checking still leaves a lot to wish for.
+Verifying and tweaking the design to improve performance based on initial profiling, error checking still leaves a lot to wish for.
 
 ### setup
 Compiling Snabl requires a C++17-compiler and CMake, the following shell spell builds and starts the REPL:
