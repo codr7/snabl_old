@@ -25,7 +25,7 @@ namespace snabl {
       &&CALL, &&COPY,
       &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&NOP, &&RET, &&STATE,
+      &&MOVE, &&NOP, &&RET, &&STATE,
       /* STOP */
       &&STOP};
 
@@ -66,7 +66,8 @@ namespace snabl {
     }
     
   COPY: {
-      state->regs[ops::copy_dst(op)] = state->regs[ops::copy_src(op)];
+      optional<Val> *rs = state->regs.begin();
+      rs[ops::copy_dst(op)] = rs[ops::copy_src(op)];
       DISPATCH(pc+1);
     }
 
@@ -106,6 +107,12 @@ namespace snabl {
 
   LOAD_TYPE: {
       state->regs[ops::load_reg(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
+      DISPATCH(pc+1);
+    }
+
+  MOVE: {
+      optional<Val> *rs = state->regs.begin();
+      rs[ops::move_dst(op)] = move(rs[ops::move_src(op)]);
       DISPATCH(pc+1);
     }
 

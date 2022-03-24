@@ -20,14 +20,19 @@
 #define CALL_TARGET_BIT OP_CODE_BITS
 #define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
 
-#define COPY_SRC_BIT (OP_CODE_BITS + OP_REG_BITS)
+#define COPY_DST_BIT OP_CODE_BITS
+#define COPY_SRC_BIT (COPY_DST_BIT + OP_REG_BITS)
 
 #define FUN_REG_BIT OP_CODE_BITS
 #define FUN_END_BIT (FUN_REG_BIT + OP_REG_BITS)
 
 #define GOTO_PC_BIT OP_CODE_BITS
+
 #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define LOAD_VAL_BIT (OP_CODE_BITS + OP_REG_BITS)
+
+#define MOVE_DST_BIT OP_CODE_BITS
+#define MOVE_SRC_BIT (MOVE_DST_BIT + OP_REG_BITS)
 
 #define STATE_REG_COUNT_BIT OP_CODE_BITS
 
@@ -44,7 +49,7 @@ namespace snabl {
     CALL, COPY,
     FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT, LOAD_MACRO, LOAD_TYPE,
-    NOP, RET, STATE,
+    MOVE, NOP, RET, STATE,
     /* STOP */
     STOP
   };
@@ -75,7 +80,7 @@ namespace snabl {
     inline Reg call_reg(Op op) { return get<Reg, CALL_REG_BIT, OP_REG_BITS>(op); }
 
     void COPY(Op &op, Reg dst, Reg src);
-    inline Reg copy_dst(Op op) { return get<Reg, OP_CODE_BITS, OP_REG_BITS>(op); }
+    inline Reg copy_dst(Op op) { return get<Reg, COPY_DST_BIT, OP_REG_BITS>(op); }
     inline Reg copy_src(Op op) { return get<Reg, COPY_SRC_BIT, OP_REG_BITS>(op); }
 
     void FUN(Op &op, Reg reg, PC end);
@@ -97,6 +102,10 @@ namespace snabl {
 
     inline Reg load_reg(Op op) { return static_cast<Reg>((op >> OP_CODE_BITS) & ((1 << OP_REG_BITS) - 1)); }
 
+    void MOVE(Op &op, Reg dst, Reg src);
+    inline Reg move_dst(Op op) { return get<Reg, MOVE_DST_BIT, OP_REG_BITS>(op); }
+    inline Reg move_src(Op op) { return get<Reg, MOVE_SRC_BIT, OP_REG_BITS>(op); }
+    
     void NOP(Op &op);
     void RET(Op &op);
     

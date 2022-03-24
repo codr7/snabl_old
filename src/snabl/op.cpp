@@ -9,6 +9,7 @@ namespace snabl {
     case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_TYPE:
+    case OpCode::MOVE:
     case OpCode::NOP:
     case OpCode::RET:
     case OpCode::STATE: case OpCode::STOP:
@@ -56,6 +57,9 @@ namespace snabl {
     case OpCode::LOAD_TYPE:
       out << "LOAD_TYPE " << ops::load_reg(op);
       break;
+    case OpCode::MOVE:
+      out << "MOVE " << ops::move_dst(op) << ' ' << ops::move_src(op);
+      break;
     case OpCode::NOP:
       out << "NOP";
       break;
@@ -92,7 +96,7 @@ namespace snabl {
     }
 
     void COPY(Op &op, Reg dst, Reg src) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << OP_CODE_BITS) + (src << COPY_SRC_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << COPY_DST_BIT) + (src << COPY_SRC_BIT));
     }
     
     void FUN(Op &op, Reg reg, PC end) {
@@ -126,6 +130,10 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_TYPE) +
 			   (reg << OP_CODE_BITS) +
 			   (val.imp->id << LOAD_TYPE_ID_BIT));
+    }
+
+    void MOVE(Op &op, Reg dst, Reg src) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::MOVE) + (dst << MOVE_DST_BIT) + (src << MOVE_SRC_BIT));
     }
 
     void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }

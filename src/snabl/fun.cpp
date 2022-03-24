@@ -24,7 +24,7 @@ namespace snabl {
     for (int i = 0; i < arg_count; i++) {
       Reg areg = m.scope->reg_count++;
       m.scope->bind(args[i].name, m.abc_lib->reg_type, areg);
-      ops::COPY(m.emit(), areg, Reg(i+1));
+      ops::MOVE(m.emit(), areg, Reg(i+1));
     }
 
     emit_reg = reg;
@@ -39,7 +39,7 @@ namespace snabl {
 
     this->body = [this, start_pc](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
       State *new_state = m.begin_state(args.size()+1);
-      copy(state->regs.begin()+ARG_COUNT+1, state->regs.begin()+reg_count, new_state->regs.begin()+ARG_COUNT+1);
+      move(state->regs.begin()+ARG_COUNT+1, state->regs.begin()+reg_count, new_state->regs.begin()+ARG_COUNT+1);
       m.begin_frame(this, ret_reg, ret_pc);
       return pair<PC, optional<Error>>(start_pc, nullopt);
     };

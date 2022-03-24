@@ -56,7 +56,7 @@ namespace snabl {
     
     void ret_state(Reg reg) {
       State *old = end_state();
-      state->regs[reg] = old->regs[reg];
+      state->regs[reg] = move(old->regs[reg]);
       deref_state(old);
     }
 
@@ -101,7 +101,7 @@ namespace snabl {
     Frame *end_frame() {
       if (frame->target->emit_reg != frame->ret_reg) {
 	optional<Val> *rs = state->regs.begin();
-	rs[frame->ret_reg] = rs[frame->target->emit_reg];
+	rs[frame->ret_reg] = move(rs[frame->target->emit_reg]);
       }
 
       Frame *old = frame;
