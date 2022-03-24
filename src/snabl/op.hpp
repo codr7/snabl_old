@@ -62,43 +62,46 @@ namespace snabl {
     T get(Op op) { return static_cast<T>((op >> pos) & ((1 << width) - 1)); }
 
     void BENCH(Op &op, Reg reg, PC end_pc);
-    Reg bench_reg(Op op);
-    PC bench_end(Op op);
+    inline Reg bench_reg(Op op) { return get<Reg, BENCH_REG_BIT, OP_REG_BITS>(op); }
+    inline PC bench_end(Op op) { return get<PC, BENCH_END_BIT, OP_PC_BITS>(op); }
 
     void BRANCH(Op &op, Reg cond, Reg reg, PC else_pc);
-    Reg branch_cond(Op op);
-    Reg branch_reg(Op op);
-    PC branch_else(Op op);    
+    inline Reg branch_cond(Op op) { return get<Reg, BRANCH_COND_BIT, OP_REG_BITS>(op); }
+    inline Reg branch_reg(Op op) { return get<Reg, BRANCH_REG_BIT, OP_REG_BITS>(op); }
+    inline PC branch_else(Op op) { return get<PC, BRANCH_ELSE_BIT, OP_PC_BITS>(op); }
     
     void CALL(Op &op, Reg target, Reg reg);
-    Reg call_target(Op op);
-    Reg call_reg(Op op);    
+    inline Reg call_target(Op op) { return get<Reg, CALL_TARGET_BIT, OP_REG_BITS>(op); }
+    inline Reg call_reg(Op op) { return get<Reg, CALL_REG_BIT, OP_REG_BITS>(op); }
 
     void COPY(Op &op, Reg dst, Reg src);
-    Reg copy_dst(Op op);
-    Reg copy_src(Op op);    
+    inline Reg copy_dst(Op op) { return get<Reg, OP_CODE_BITS, OP_REG_BITS>(op); }
+    inline Reg copy_src(Op op) { return get<Reg, COPY_SRC_BIT, OP_REG_BITS>(op); }
 
     void FUN(Op &op, Reg reg, PC end);
-    Reg fun_reg(Op op);
-    PC fun_end(Op op);
+    inline Reg fun_reg(Op op) { return get<Reg, FUN_REG_BIT, OP_REG_BITS>(op); }
+    inline PC fun_end(Op op) { return get<PC, FUN_END_BIT, OP_PC_BITS>(op); }
 
     void GOTO(Op &op, PC pc);
-    PC goto_pc(Op op);
+    inline PC goto_pc(Op op) { return get<PC, GOTO_PC_BIT, OP_PC_BITS>(op); }
 
     void LOAD_BOOL(Op &op, Reg reg, bool val);
-    bool load_bool_val(Op op);
+    inline bool load_bool_val(Op op) { return get<int, LOAD_VAL_BIT, 1>(op); }
+
     void LOAD_FUN(Op &op, Reg reg, snabl::Fun *val);
     void LOAD_INT(Op &op, Reg reg, snabl::types::Int::DataType val);
     void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val);
+
     void LOAD_TYPE(Op &op, Reg reg, Type val);
-    snabl::Type::Id load_type_id(Op op);
-    Reg load_reg(Op op);
+    inline snabl::Type::Id load_type_id(Op op) { return get<snabl::Type::Id, LOAD_TYPE_ID_BIT, OP_TYPE_ID_BITS>(op); }
+
+    inline Reg load_reg(Op op) { return static_cast<Reg>((op >> OP_CODE_BITS) & ((1 << OP_REG_BITS) - 1)); }
 
     void NOP(Op &op);
     void RET(Op &op);
     
     void STATE(Op &op, int reg_count);
-    int state_reg_count(Op op);
+    inline int state_reg_count(Op op) { return get<int, STATE_REG_COUNT_BIT, OP_REG_BITS>(op); }
     
     /* STOP */
     

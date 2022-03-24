@@ -99,8 +99,11 @@ namespace snabl {
     }
 
     Frame *end_frame() {
-      optional<Val> *rs = state->regs.begin();
-      if (frame->target->emit_reg != frame->ret_reg) { rs[frame->ret_reg] = rs[frame->target->emit_reg]; }
+      if (frame->target->emit_reg != frame->ret_reg) {
+	optional<Val> *rs = state->regs.begin();
+	rs[frame->ret_reg] = rs[frame->target->emit_reg];
+      }
+
       Frame *old = frame;
       frame = frame->outer;
       return old;

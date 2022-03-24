@@ -17,7 +17,7 @@ namespace snabl {
       return *slabs.emplace_back(make_unique<Slab>());
     }
 
-    virtual T *get() {
+    T *get() {
       Slab &s = (slabs.empty() || n == N) ? push_slab() : *slabs.back();
       return reinterpret_cast<T *>(&s.slots[n++]);
     }
