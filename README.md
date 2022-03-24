@@ -57,7 +57,7 @@ Next tail recursive, Python3 takes `105`ms on the same machine.
 ```
 
 ### support
-Should you wish to support this effort and allow me to spend more time and energy on evolving the project, please consider a donation in Bitcoin `3Qv3GdBCabkAustonEoEv63mVXMS8htiB5` or Ether `0x5BD559b709800731324e32eC512d786987DAdb0F`.
+If you wish to support Snabl and help me spend more time and energy on evolving the project, please consider a donation in Bitcoin `3Qv3GdBCabkAustonEoEv63mVXMS8htiB5` or Ether `0x5BD559b709800731324e32eC512d786987DAdb0F`.
 
 ### coder/mentor for hire
 I'm currently available for hire.<br/>
