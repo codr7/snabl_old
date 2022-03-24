@@ -60,13 +60,13 @@ namespace snabl {
       deref_state(old);
     }
 
-    State *begin_state() {
+    State *begin_state(int reg_count) {
       if (free_state) {
 	State *new_state = free_state;
 	free_state = free_state->outer;
-	state = new(new_state) State(state);
+	state = new(new_state) State(state, reg_count);
       } else {
-	state = state_alloc.make(state);
+	state = state_alloc.make(state, reg_count);
       }
       
       return state;

@@ -1,16 +1,11 @@
-* add bench macro
 * add DEC op
+* fibtail
 * add CALLI op
 ** immediate fun
 * add op fusion
 ** GFun
+** fuse GOTO-RET
 * add LOAD_NIL op
 ** enable nil type emit
 * add tasks
 ** pure green threads
-
-(fun: fib [n Int] Int
-    (if (< n 2) n (+ (fib (dec n)) (fib (dec n 2)))))
-
-(fun: fib-rec [n Int] Int
-  (if (< n 2) n (+ (fib-rec (- n 1)) (fib-rec (- n 2)))))

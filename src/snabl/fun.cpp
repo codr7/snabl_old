@@ -18,7 +18,7 @@ namespace snabl {
     ops::LOAD_FUN(m.emit(2), reg, this);
     Op &op = m.emit();
     PC start_pc = m.emit_pc;
-    int reg_count = m.scope->reg_count;
+    reg_count = m.scope->reg_count;
     m.begin_scope();
     
     for (int i = 0; i < arg_count; i++) {
@@ -37,8 +37,8 @@ namespace snabl {
     ops::RET(m.emit());
     ops::FUN(op, reg, m.emit_pc);
 
-    this->body = [this, start_pc, reg_count](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
-      State *new_state = m.begin_state();
+    this->body = [this, start_pc](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
+      State *new_state = m.begin_state(args.size()+1);
       copy(state->regs.begin()+ARG_COUNT+1, state->regs.begin()+reg_count, new_state->regs.begin()+ARG_COUNT+1);
       m.begin_frame(this, ret_reg, ret_pc);
       return pair<PC, optional<Error>>(start_pc, nullopt);

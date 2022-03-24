@@ -38,6 +38,7 @@ namespace snabl {
     int arg_count;
     Type ret_type;
     Body body;
+    int reg_count;
     Reg emit_reg;
     State *state;
   };

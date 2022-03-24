@@ -72,7 +72,7 @@ namespace snabl {
 
   FUN: {
       Fun *f = state->regs[ops::fun_reg(op)]->as<Fun *>();
-      f->state = begin_state();
+      f->state = begin_state(f->reg_count);
       end_state();
       DISPATCH(ops::fun_end(op));
     }
@@ -121,7 +121,7 @@ namespace snabl {
     }
 
   STATE: {
-      begin_state();
+      begin_state(ops::state_reg_count(op));
       DISPATCH(pc+1);
     }
     

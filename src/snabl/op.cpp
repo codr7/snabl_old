@@ -63,7 +63,7 @@ namespace snabl {
       out << "RET " << m.frame->ret_reg;
       break;
     case OpCode::STATE:
-      out << "STATE";
+      out << "STATE " << ops::state_reg_count(op);
       break;
     case OpCode::STOP:
       out << "STOP";
@@ -152,7 +152,13 @@ namespace snabl {
 
     void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }
     void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
-    void STATE(Op &op) { op = static_cast<Op>(OpCode::STATE); }
+
+    void STATE(Op &op, int reg_count) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STATE) + (reg_count << STATE_REG_COUNT_BIT));
+    }
+
+    int state_reg_count(Op op) { return get<int, STATE_REG_COUNT_BIT, OP_REG_BITS>(op); }
+
     void STOP(Op &op) { op = static_cast<Op>(OpCode::STOP); }
   }
 }

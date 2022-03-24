@@ -8,7 +8,6 @@
 #define OP_BITS 64
 #define OP_CODE_BITS 6
 #define OP_PC_BITS 10
-#define OP_REG_BITS 8
 #define OP_TYPE_ID_BITS 10
 
 #define BENCH_REG_BIT OP_CODE_BITS
@@ -29,6 +28,8 @@
 #define GOTO_PC_BIT OP_CODE_BITS
 #define LOAD_TYPE_ID_BIT (OP_CODE_BITS + OP_REG_BITS)
 #define LOAD_VAL_BIT (OP_CODE_BITS + OP_REG_BITS)
+
+#define STATE_REG_COUNT_BIT OP_CODE_BITS
 
 namespace snabl {
   using namespace std;
@@ -95,7 +96,9 @@ namespace snabl {
 
     void NOP(Op &op);
     void RET(Op &op);
-    void STATE(Op &op);
+    
+    void STATE(Op &op, int reg_count);
+    int state_reg_count(Op op);
     
     /* STOP */
     

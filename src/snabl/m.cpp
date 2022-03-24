@@ -7,7 +7,7 @@ namespace snabl {
     scope(nullptr), free_scope(nullptr),
     home_lib(*this, sym("home")), lib(&home_lib) {
     begin_scope();
-    begin_state();
+    begin_state(-1);
   }
 
   Op &M::emit(int n) {
