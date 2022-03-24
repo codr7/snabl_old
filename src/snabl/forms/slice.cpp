@@ -24,4 +24,6 @@ namespace snabl::forms {
   optional<Error> Slice::Imp::emit(Reg reg, M &m) const {
     return Error(pos, "Slice emit not implemented!");
   }
+
+  bool Slice::Imp::is_atom() const { return false; }
 }

@@ -50,7 +50,7 @@ namespace snabl {
 
   PC op_len(Op op);
 
-  void op_dump(Op op, ostream &out);
+  void op_dump(Op op, ostream &out, M &m);
 
   namespace ops {
     template <typename T, size_t pos, size_t width>

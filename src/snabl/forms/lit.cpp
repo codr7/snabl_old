@@ -13,4 +13,6 @@ namespace snabl::forms {
   optional<Error> Lit::Imp::emit(Reg reg, M &m) const {
     return val.type.imp->methods.emit(val, reg, pos, m);
   }
+
+  bool Lit::Imp::is_atom() const { return true; }
 }

@@ -11,11 +11,12 @@ namespace snabl {
 
   struct Frame {
     Frame *outer;
+    Fun *target;
     Reg ret_reg;
     PC ret_pc;
     int ref_count;
 
-    Frame(Frame *outer, Reg ret_reg, PC ret_pc);
+    Frame(Frame *outer, Fun *target, Reg ret_reg, PC ret_pc);
   };
 }
 

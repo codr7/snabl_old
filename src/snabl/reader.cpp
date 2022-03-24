@@ -65,7 +65,7 @@ namespace snabl {
     char c = 0;
     
     while (in.get(c)) {
-      if (!isgraph(c) || (c == '|' && buf.tellp()) ||  c == '(' || c == ')') {
+      if (!isgraph(c) || (c == '|' && buf.tellp()) ||  c == '(' || c == ')' || c == '[' || c == ']') {
 	in.unget();
 	break;
       }
@@ -146,7 +146,7 @@ namespace snabl {
       items.push_back(*f);
     }
 
-    if (c != ']') { return ReadResult(nullopt, Error(fpos, "Open slice")); }
+    if (c != ']') { return ReadResult(nullopt, Error(fpos, "Open slice: ", c)); }
     pos.column++;
     return ReadResult(forms::Slice(fpos, items), nullopt);
   }

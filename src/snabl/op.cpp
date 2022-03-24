@@ -1,3 +1,4 @@
+#include "snabl/m.hpp"
 #include "snabl/op.hpp"
 
 namespace snabl {
@@ -24,7 +25,7 @@ namespace snabl {
     return 1;
   }
 
-  void op_dump(Op op, ostream &out) {
+  void op_dump(Op op, ostream &out, M &m) {
     switch (op_code(op)) {
     case OpCode::BRANCH:
       out << "BRANCH " << ops::branch_cond(op) << ' ' << ops::branch_reg(op) << ' ' << ops::branch_else(op);
@@ -60,7 +61,7 @@ namespace snabl {
       out << "NOP";
       break;
     case OpCode::RET:
-      out << "RET";
+      out << "RET " << m.frame->ret_reg;
       break;
     case OpCode::STATE:
       out << "STATE";
@@ -86,16 +87,16 @@ namespace snabl {
     PC branch_else(Op op) { return get<PC, BRANCH_ELSE_BIT, OP_PC_BITS>(op); }
 
     void CALL(Op &op, Reg target, Reg reg) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::CALL) + (target << CALL_TARGET_BIT) + (reg << CALL_REG_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::CALL) +
+			   (target << CALL_TARGET_BIT) +
+			   (reg << CALL_REG_BIT));
     }
 
     Reg call_target(Op op) {
       return static_cast<Reg>((op >> CALL_TARGET_BIT) & ((1 << OP_REG_BITS) - 1));
     }
-    
-    Reg call_reg(Op op) {
-      return static_cast<Reg>((op >> CALL_REG_BIT) & ((1 << OP_REG_BITS) - 1));
-    }
+
+    Reg call_reg(Op op) { return get<Reg, CALL_REG_BIT, OP_REG_BITS>(op); }
 
     void COPY(Op &op, Reg dst, Reg src) {
       op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << OP_CODE_BITS) + (src << COPY_SRC_BIT));

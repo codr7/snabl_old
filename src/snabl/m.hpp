@@ -1,6 +1,7 @@
 #ifndef SNABL_M_HPP
 #define SNABL_M_HPP
 
+#include <iostream>
 #include <map>
 #include <optional>
 #include <string>
@@ -54,18 +55,18 @@ namespace snabl {
     optional<Error> use(Lib &lib, const vector<Sym> &syms, Pos pos);
     
     void ret_state(Reg reg) {
-      State *s = end_state();
-      state->regs[reg] = s->regs[reg];
-      deref_state(s);
+      State *old = end_state();
+      state->regs[reg] = old->regs[reg];
+      deref_state(old);
     }
-    
-    State *begin_state(State *outer) {
+
+    State *begin_state() {
       if (free_state) {
 	State *new_state = free_state;
 	free_state = free_state->outer;
 	state = new(new_state) State(state);
       } else {
-	state = state_alloc.make(outer);
+	state = state_alloc.make(state);
       }
       
       return state;
@@ -73,31 +74,33 @@ namespace snabl {
 
     State *end_state() {
       State *old = state;
-      if (state->outer) { state->outer->regs[0] = state->regs[0]; }
       state = state->outer;
       return old;
     }
 
     void deref_state(State *state) {
       if (!state->ref_count--) {
+	if (state->outer) { deref_state(state->outer); }
 	state->outer = free_state;
 	free_state = state;
       }
     }
 
-    Frame *begin_frame(Reg ret_reg, PC ret_pc) {
+    Frame *begin_frame(Fun *target, Reg ret_reg, PC ret_pc) {
       if (free_frame) {
 	Frame *new_frame = free_frame;
 	free_frame = free_frame->outer;
-	frame = new(new_frame) Frame(frame, ret_reg, ret_pc);
+	frame = new(new_frame) Frame(frame, target, ret_reg, ret_pc);
       } else {
-	frame = frame_alloc.make(frame, ret_reg, ret_pc);
+	frame = frame_alloc.make(frame, target, ret_reg, ret_pc);
       }
       
       return frame;
     }
 
     Frame *end_frame() {
+      Val *rs = state->regs.begin();
+      if (frame->target->emit_reg != frame->ret_reg) { rs[frame->ret_reg] = rs[frame->target->emit_reg]; }
       Frame *old = frame;
       frame = frame->outer;
       return old;
@@ -105,6 +108,7 @@ namespace snabl {
 
     void deref_frame(Frame *frame) {
       if (!frame->ref_count--) {
+	if (frame->outer) { deref_frame(frame->outer); }
 	frame->outer = free_frame;
 	free_frame = frame;
       }

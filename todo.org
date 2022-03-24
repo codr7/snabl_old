@@ -1,7 +1,4 @@
-* parse fun: args
-* commit fun: macro
 * add bench macro
-* fib
 * add DEC op
 * add CALLI op
 ** immediate fun
@@ -9,9 +6,17 @@
 ** GFun
 * add LOAD_NIL op
 ** enable nil type emit
-
-(fun: foo [bar Int] Int bar)
+* add tasks
+** pure green threads
 
 (fun: fib [n Int] Int
     (if (< n 2) n (+ (fib (dec n)) (fib (dec n 2)))))
 
+(fun: fib [n Int] Int
+  (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))
+
+(fun: fib [n Int] Int
+  (if (< n 2) n (fib (- n 1))))
+
+(fun: fib [n Int] Int
+  (if (< n 2) n (fib (+ 0 1)))))

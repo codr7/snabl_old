@@ -11,6 +11,8 @@ namespace snabl {
 
   optional<Error> Form::emit(Reg reg, M &m) const { return imp->emit(reg, m); }
 
+  bool Form::is_atom() const { return imp->is_atom(); }
+
   ostream &operator<<(ostream &out, Form val) {
     val.dump(out);
     return out;

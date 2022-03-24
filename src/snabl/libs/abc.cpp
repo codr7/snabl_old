@@ -14,6 +14,14 @@
 #include "snabl/types/reg.hpp"
 
 namespace snabl::libs {
+  static Form pop_form(deque<Form> &in) {
+    Form f = in.front();
+    in.pop_front();
+    return f;
+  }
+
+  static Sym pop_sym(deque<Form> &in) { return pop_form(in).as<forms::Id>().name; }
+
   Abc::Abc(M &m):
     Lib(m, m.sym("abc")),
     bool_type(*this, make_shared<types::Bool>(type_id(), m.sym("Bool"))),
@@ -23,6 +31,7 @@ namespace snabl::libs {
     meta_type(*this, make_shared<types::Meta>(type_id(), m.sym("Meta"))),
     nil_type(*this, make_shared<types::Nil>(type_id(), m.sym("Nil"))),
     reg_type(*this, make_shared<types::Reg>(type_id(), m.sym("Reg"))) {
+    
     bind(m.sym("Bool"), meta_type, bool_type);
     bind(m.sym("Fun"), meta_type, fun_type);
     bind(m.sym("Int"), meta_type, int_type);
@@ -44,22 +53,33 @@ namespace snabl::libs {
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
+    bind_fun(m.sym("dump"),
+	     {{m.sym("x"), int_type}},
+	     nil_type,
+	     [](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
+	       cout << m.state->regs[1] << endl;
+	       return Fun::Result(ret_pc, nullopt);
+	     });
+
     bind_macro(m.sym("fun:"), 4,
 	       [this](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
-		 Sym id = args.front().as<forms::Id>().name;
-		 args.pop_front();
-
-		 deque<Form> arg_forms = args.front().as<forms::Slice>().items;
-		 args.pop_front();
+		 Sym id = pop_sym(args);
+		 deque<Form> arg_forms = pop_form(args).as<forms::Slice>().items;
 		 vector<Fun::Arg> fargs;
-		 
-		 Sym ret_type_id = args.front().as<forms::Id>().name;
-		 args.pop_front();
-		 optional<Val> ret_type = m.scope->find(ret_type_id);
 
+		 while (!arg_forms.empty()) {
+		   Sym arg_id = pop_sym(arg_forms);
+		   Form type_form = pop_form(arg_forms);
+		   Sym type_id = type_form.as<forms::Id>().name;
+		   optional<Val> arg_type = m.scope->find(type_id);
+		   if (!arg_type) { return Error(type_form.imp->pos, "Type not found: ", type_id); }
+		   fargs.emplace_back(arg_id, arg_type->as<Type>());
+		 }
+		 
+		 optional<Val> ret_type = m.scope->find(pop_sym(args));
 		 Fun *f = m.lib->bind_fun(id, fargs, ret_type->as<Type>(), nullptr);
 		 m.scope->bind(id, fun_type, f);
-		 return f->emit(args, m);
+		 return f->emit(args, reg, m);
 	       });
     
     bind_macro(m.sym("if"), 2,
@@ -84,9 +104,11 @@ namespace snabl::libs {
     bind_fun(m.sym("+"),
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
+	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {	       
 	       Val *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(int_type, rs[1].as<types::Int::DataType>() + rs[2].as<types::Int::DataType>());
+	       rs[ret_reg] = Val(int_type,
+				 static_cast<types::Int::DataType>(rs[1].as<types::Int::DataType>() +
+								   rs[2].as<types::Int::DataType>()));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -95,7 +117,9 @@ namespace snabl::libs {
 	     int_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
 	       Val *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(int_type, rs[1].as<types::Int::DataType>() - rs[2].as<types::Int::DataType>());
+	       rs[ret_reg] = Val(int_type,
+				 static_cast<types::Int::DataType>(rs[1].as<types::Int::DataType>() -
+								   rs[2].as<types::Int::DataType>()));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -104,7 +128,7 @@ namespace snabl::libs {
 	     bool_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
 	       Val *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(int_type, rs[1].as<types::Int::DataType>() < rs[2].as<types::Int::DataType>());
+	       rs[ret_reg] = Val(bool_type, rs[1].as<types::Int::DataType>() < rs[2].as<types::Int::DataType>());
 	       return Fun::Result(ret_pc, nullopt);
 	     });
   }

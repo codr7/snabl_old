@@ -13,6 +13,7 @@ namespace snabl {
     any data;
 
     Val() {}
+    Val(Type type): type(type) {}
     Val(Type type, any data): type(type), data(data) {}
 
     template <typename T>

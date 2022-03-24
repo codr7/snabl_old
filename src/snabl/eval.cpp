@@ -8,7 +8,7 @@
 									\
     if (debug) {							\
       cout << pc << ' ';						\
-      op_dump(op, cout);						\
+      op_dump(op, cout, *this);						\
       cout << endl;							\
     }									\
 									\
@@ -41,17 +41,17 @@ namespace snabl {
   CALL: {
       Fun *target = state->regs[ops::call_target(op)].as<Fun *>();
       Reg reg = ops::call_reg(op);
-      PC ret_pc = pc+1;
-
-      if (auto [ret_pc2, err] = target->call(reg, ret_pc, *this); err) {
+      PC ret_pc1 = pc+1;
+      
+      if (auto [ret_pc2, err] = target->call(reg, ret_pc1, *this); err) {
 	return err;
-      } else if (ret_pc2 == ret_pc) {
+      } else if (ret_pc2 == ret_pc1) {
 	ret_state(reg);
       } else {
-	ret_pc = ret_pc2;
+	ret_pc1 = ret_pc2;
       }
 	  
-      DISPATCH(ret_pc); 
+      DISPATCH(ret_pc1); 
     }
     
   COPY: {
@@ -61,7 +61,8 @@ namespace snabl {
 
   FUN: {
       Fun *f = state->regs[ops::fun_reg(op)].as<Fun *>();
-      f->state = begin_state(state);
+      f->state = begin_state();
+      end_state();
       DISPATCH(ops::fun_end(op));
     }
 
@@ -97,13 +98,11 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  NOP: {
-      DISPATCH(pc+1);
-    }
+  NOP: { DISPATCH(pc+1); }
     
   RET: {
       Frame *f = end_frame();
-      PC ret_pc = f->ret_pc;
+      PC ret_pc = f->ret_pc;      
       ret_state(f->ret_reg);
       ret_state(f->ret_reg);
       deref_frame(f);
@@ -111,7 +110,7 @@ namespace snabl {
     }
 
   STATE: {
-      begin_state(state);
+      begin_state();
       DISPATCH(pc+1);
     }
     

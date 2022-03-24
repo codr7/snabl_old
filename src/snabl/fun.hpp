@@ -20,6 +20,9 @@ namespace snabl {
     struct Arg {
       Sym name;
       Type type;
+
+      Arg();
+      Arg(Sym name, Type type);
     };
 
     using Result = pair<PC, optional<Error>>;
@@ -27,7 +30,7 @@ namespace snabl {
     static const int ARG_COUNT = 8;
     
     Fun(Sym name, const vector<Arg> &args, Type ret_type, Body body);
-    optional<Error> emit(deque<Form> body, M &m);
+    optional<Error> emit(deque<Form> body, Reg reg, M &m);
     pair<PC, optional<Error>> call(Reg reg, PC ret_pc, M &m);
     
     Sym name;
@@ -35,6 +38,7 @@ namespace snabl {
     int arg_count;
     Type ret_type;
     Body body;
+    Reg emit_reg;
     State *state;
   };
 

@@ -11,7 +11,7 @@ namespace snabl {
 
   optional<Val> Scope::find(Sym key) {
     auto found = bindings.find(key);
-    if (found == bindings.end()) { return nullopt; }
+    if (found == bindings.end()) { return outer ? outer->find(key) : nullopt; }
     return found->second;
   }
 

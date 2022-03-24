@@ -11,13 +11,13 @@ namespace snabl {
     stringstream buf;
   
     for (;;) {
+    NEXT:
       out << "  ";
      
       string line;
       if (!getline(in, line)) { break; }
        
       if (line.empty()) {
-	optional<Form> f;
 	Pos pos("repl", 1, 1);
 	PC start_pc = m.emit_pc;
 
@@ -33,14 +33,14 @@ namespace snabl {
 	  
 	  if (err = f->emit(0, m); err) {
 	    out << *err << endl;
-	    break;
+	    goto NEXT;
 	  }
 	}
-	
+
 	buf.str("");
 	buf.clear();
 	ops::STOP(m.emit());
-	m.state->regs[0] = Val(m.abc_lib->nil_type, nullptr);
+	m.state->regs[0] = Val(m.abc_lib->nil_type);
 	
 	if (auto err = m.eval(start_pc); err) {
 	  out << *err << endl;
