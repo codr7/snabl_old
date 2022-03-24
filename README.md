@@ -22,7 +22,7 @@ The VM is register based with sequential allocation and runs 64-bit bytecode. Th
 Parens are used for calls only, brackets for vectors.
 
 ### status
-Codebase is approaching 2kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
+Codebase is approaching `2`kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
 
 ### setup
 Compiling Snabl requires a C++17-compiler and CMake, the following shell spell builds and starts the REPL:
