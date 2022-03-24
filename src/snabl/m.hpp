@@ -23,7 +23,7 @@ namespace snabl {
     bool debug = false;
 
     static const int OP_COUNT = 1024;
-    static const int SLAB_SIZE = 32;
+    static const int SLAB_SIZE = 64;
 
     Alloc<Frame, SLAB_SIZE> frame_alloc;
     Alloc<Fun, SLAB_SIZE> fun_alloc;
@@ -79,7 +79,7 @@ namespace snabl {
     }
 
     void deref_state(State *state) {
-      if (!state->ref_count--) {
+      if (!--state->ref_count) {
 	if (state->outer) { deref_state(state->outer); }
 	state->outer = free_state;
 	free_state = state;
@@ -107,7 +107,7 @@ namespace snabl {
     }
 
     void deref_frame(Frame *frame) {
-      if (!frame->ref_count--) {
+      if (!--frame->ref_count) {
 	if (frame->outer) { deref_frame(frame->outer); }
 	frame->outer = free_frame;
 	free_frame = frame;
@@ -133,7 +133,7 @@ namespace snabl {
     }
 
     void deref_scope(Scope *scope) {
-      if (!scope->ref_count--) {
+      if (!--scope->ref_count) {
 	scope->outer = free_scope;
 	free_scope = scope;
       }

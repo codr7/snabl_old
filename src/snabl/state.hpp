@@ -9,7 +9,7 @@ namespace snabl {
   using namespace std;
     
   struct State {
-    static const int REG_COUNT = 256;
+    static const int REG_COUNT = 64;
     
     State *outer;
     int ref_count;

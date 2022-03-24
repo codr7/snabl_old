@@ -26,6 +26,8 @@ $ ./snabl
 
 ```
   (bench 100 (fib-rec 20))
+
+5066
 ```
 
 ### support
