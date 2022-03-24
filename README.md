@@ -37,7 +37,7 @@ $ ./snabl
 ```
 
 ### performance
-`bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing patterns in the bytecode.
+`bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing bytecode patterns.
 
 First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine.
 ```
