@@ -71,7 +71,7 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}},
 	     nil_type,
 	     [](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       cout << m.state->regs[1] << endl;
+	       cout << *m.state->regs[1] << endl;
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -119,10 +119,10 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {	       
-	       Val *rs = m.state->regs.begin();
+	       optional<Val> *rs = m.state->regs.begin();
 	       rs[ret_reg] = Val(int_type,
-				 static_cast<types::Int::DataType>(rs[1].as<types::Int::DataType>() +
-								   rs[2].as<types::Int::DataType>()));
+				 static_cast<types::Int::DataType>(rs[1]->as<types::Int::DataType>() +
+								   rs[2]->as<types::Int::DataType>()));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -130,10 +130,10 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       Val *rs = m.state->regs.begin();
+	       optional<Val> *rs = m.state->regs.begin();
 	       rs[ret_reg] = Val(int_type,
-				 static_cast<types::Int::DataType>(rs[1].as<types::Int::DataType>() -
-								   rs[2].as<types::Int::DataType>()));
+				 static_cast<types::Int::DataType>(rs[1]->as<types::Int::DataType>() -
+								   rs[2]->as<types::Int::DataType>()));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -141,8 +141,8 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     bool_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       Val *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(bool_type, rs[1].as<types::Int::DataType>() < rs[2].as<types::Int::DataType>());
+	       optional<Val> *rs = m.state->regs.begin();
+	       rs[ret_reg] = Val(bool_type, rs[1]->as<types::Int::DataType>() < rs[2]->as<types::Int::DataType>());
 	       return Fun::Result(ret_pc, nullopt);
 	     });
   }

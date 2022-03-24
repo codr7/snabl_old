@@ -35,8 +35,8 @@ namespace snabl {
     DISPATCH(start_pc);
 
   BENCH: {
-      Val &reg = *(state->regs.begin() + ops::bench_reg(op));
-      auto reps = reg.as<types::Int::DataType>();
+      optional<Val> &reg = *(state->regs.begin() + ops::bench_reg(op));
+      auto reps = reg->as<types::Int::DataType>();
 
       Timer t;
       for (int i = 0; i < reps; i++) { eval(pc+1); }
@@ -45,12 +45,12 @@ namespace snabl {
   }
     
   BRANCH: {
-      Val &c = state->regs[ops::branch_cond(op)];
-      DISPATCH(c.is_true() ? pc+1 : ops::branch_else(op));
+      optional<Val> &c = state->regs[ops::branch_cond(op)];
+      DISPATCH(c->is_true() ? pc+1 : ops::branch_else(op));
     }
 
   CALL: {
-      Fun *target = state->regs[ops::call_target(op)].as<Fun *>();
+      Fun *target = state->regs[ops::call_target(op)]->as<Fun *>();
       Reg reg = ops::call_reg(op);
       PC ret_pc1 = pc+1;
       
@@ -71,7 +71,7 @@ namespace snabl {
     }
 
   FUN: {
-      Fun *f = state->regs[ops::fun_reg(op)].as<Fun *>();
+      Fun *f = state->regs[ops::fun_reg(op)]->as<Fun *>();
       f->state = begin_state();
       end_state();
       DISPATCH(ops::fun_end(op));

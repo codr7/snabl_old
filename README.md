@@ -2,7 +2,7 @@
 
 ```
   (fun: fib-rec [n Int] Int
-    (if (< n 2) n (+ (fib-rec (dec n)) (fib-rec (dec n 2)))))
+    (if (< n 2) n (+ (fib-rec (- n 1)) (fib-rec (- n 2)))))
   
   (fib-rec 10)
 
@@ -27,7 +27,7 @@ $ ./snabl
 ```
   (bench 100 (fib-rec 20))
 
-5066
+2268
 ```
 
 ### support

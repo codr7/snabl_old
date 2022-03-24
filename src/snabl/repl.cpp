@@ -47,7 +47,7 @@ namespace snabl {
 	  break;
 	}
 
-	out << m.state->regs[0] << endl;
+	out << *m.state->regs[0] << endl;
       } else {
 	buf << line << endl;
       }

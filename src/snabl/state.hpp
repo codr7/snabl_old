@@ -13,7 +13,7 @@ namespace snabl {
     
     State *outer;
     int ref_count;
-    array<Val, REG_COUNT> regs;
+    array<optional<Val>, REG_COUNT> regs;
 
     State(State *outer);
   };
