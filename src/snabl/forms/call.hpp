@@ -17,7 +17,6 @@ namespace snabl::forms {
       Imp(Pos pos, Form target, const deque<Form> &args);    
       void dump(ostream& out) const override;
       optional<Error> emit(Reg reg, M &m) const override;
-      bool is_atom() const override;
     };
 
     Call(Pos pos, Form target, const deque<Form> &args);

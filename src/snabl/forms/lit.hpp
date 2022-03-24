@@ -13,7 +13,6 @@ namespace snabl::forms {
       Imp(Pos pos, Type type, any data);    
       void dump(ostream& out) const override;
       optional<Error> emit(Reg reg, M &m) const override;
-      bool is_atom() const override;
     };
 
     Lit(Pos pos, Type type, any data);

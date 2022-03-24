@@ -15,6 +15,4 @@ namespace snabl::forms {
     if (!v) { return Error(pos, "Unknown id: ", name); }
     return v->type.imp->methods.emit(*v, reg, pos, m);
   }
-
-  bool Id::Imp::is_atom() const { return true; }
 }

@@ -13,7 +13,6 @@ namespace snabl::forms {
       Imp(Pos pos, Sym name);    
       void dump(ostream& out) const override;
       optional<Error> emit(Reg reg, M &m) const override;
-      bool is_atom() const override;
     };
 
     Id(Pos pos, Sym name);

@@ -41,6 +41,4 @@ namespace snabl::forms {
     ops::CALL(m.emit(), fun_reg, reg);
     return nullopt;
   }
-
-  bool Call::Imp::is_atom() const { return false; }
 }
