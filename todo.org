@@ -1,9 +1,11 @@
-* add more fuses
 * add let macro
-* add fun macro
 * add test op
 ** fib
 ** closure
+* add multi id support to fun arg list
+** n a b Int
+* add fun macro
+** create lambda
 * add CALLI2 op
 ** fun as separate op
 * add LOAD_NIL op
@@ -15,6 +17,8 @@
 * add fun call type check
 * add multi
 ** add DISP op
+* add pattern matching in fun arg list
+** anything but Id
 * add string type
 ** add reader
 ** add unquotes

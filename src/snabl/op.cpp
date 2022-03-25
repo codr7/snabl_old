@@ -2,7 +2,7 @@
 #include "snabl/op.hpp"
 
 namespace snabl {
-   PC op_len(Op op) {
+  PC op_len(Op op) {
     switch (op_code(op)) {
     case OpCode::BENCH: case OpCode::BRANCH:
     case OpCode::CALLI1: case OpCode::COPY:
@@ -24,6 +24,95 @@ namespace snabl {
     }
 
     return 1;
+  }
+
+  bool op_reads(Op op, Reg reg) {
+    switch (op_code(op)) {
+    case OpCode::BENCH:
+    case OpCode::CALLI1:
+    case OpCode::FENCE:
+    case OpCode::GOTO:
+    case OpCode::LOAD_BOOL:
+    case OpCode::LOAD_FUN:
+    case OpCode::LOAD_INT1:
+    case OpCode::LOAD_INT2:
+    case OpCode::LOAD_MACRO:
+    case OpCode::LOAD_TYPE:
+    case OpCode::NOP:
+    case OpCode::RET:
+    case OpCode::STOP:
+      break;
+    case OpCode::BRANCH:
+      return reg == ops::branch_cond(op);
+    case OpCode::CALL:
+      return (reg > 1 && reg < Fun::ARG_COUNT) || (reg == ops::call_target(op));
+    case OpCode::COPY:
+      return reg == ops::copy_src(op);
+    case OpCode::DEC:
+      return reg == ops::dec_src(op);
+    case OpCode::EQ:
+      return reg == ops::eq_left(op) || reg == ops::eq_right(op);
+    case OpCode::FUN:
+      return reg == ops::fun_reg(op);
+    case OpCode::MOVE:
+      return reg == ops::move_src(op);
+    case OpCode::ONE:
+      return reg == ops::one_src(op);
+    case OpCode::REC:
+      return (reg > 1 && reg < Fun::ARG_COUNT);
+    case OpCode::STATE:
+      return true;
+    case OpCode::Z:
+      return reg == ops::z_src(op);
+    }
+    
+    return false;
+  }
+
+  bool op_writes(Op op, Reg reg) {
+    switch (op_code(op)) {
+    case OpCode::FENCE:
+    case OpCode::GOTO:
+    case OpCode::NOP:
+    case OpCode::STOP:
+    case OpCode::STATE:
+      break;
+    case OpCode::BENCH:
+      return reg == ops::bench_reg(op);
+    case OpCode::CALLI1:
+      return reg == ops::calli1_reg(op);
+    case OpCode::LOAD_BOOL:
+    case OpCode::LOAD_FUN:
+    case OpCode::LOAD_INT1:
+    case OpCode::LOAD_INT2:
+    case OpCode::LOAD_MACRO:
+    case OpCode::LOAD_TYPE:
+      return reg == ops::load_reg(op);
+    case OpCode::RET:
+      return true;
+    case OpCode::BRANCH:
+      return reg == ops::branch_reg(op);
+    case OpCode::CALL:
+      return reg == ops::call_reg(op);
+    case OpCode::COPY:
+      return reg == ops::copy_dst(op);
+    case OpCode::DEC:
+      return reg == ops::dec_dst(op);
+    case OpCode::EQ:
+      return reg == ops::eq_dst(op);
+    case OpCode::FUN:
+      return reg == ops::fun_reg(op);
+    case OpCode::MOVE:
+      return reg == ops::move_dst(op);
+    case OpCode::ONE:
+      return reg == ops::one_dst(op);
+    case OpCode::REC:
+      return true;
+    case OpCode::Z:
+      return reg == ops::z_dst(op);
+    }
+    
+    return false;
   }
 
   void op_dump(Op op, ostream &out, M &m) {

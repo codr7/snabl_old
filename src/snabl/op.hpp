@@ -85,6 +85,8 @@ namespace snabl {
   }
 
   PC op_len(Op op);
+  bool op_reads(Op op, Reg reg);
+  bool op_writes(Op op, Reg reg);
   void op_dump(Op op, ostream &out, M &m);
 
   namespace ops {
