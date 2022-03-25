@@ -2,7 +2,7 @@
 
 #include "snabl/form.hpp"
 #include "snabl/fun.hpp"
-#include "snabl/fuses/fun.hpp"
+#include "snabl/fuses/all.hpp"
 #include "snabl/m.hpp"
 
 namespace snabl {
@@ -37,7 +37,7 @@ namespace snabl {
     m.deref_scope(m.end_scope());
     ops::RET(m.emit());
     ops::FUN(op, reg, m.emit_pc);
-    fuses::fun(this, m);
+    fuses::all(this, m);
 
     this->body = [this](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
       State *new_state = m.begin_state(args.size()+1);

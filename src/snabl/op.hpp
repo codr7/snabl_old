@@ -68,7 +68,9 @@ namespace snabl {
   enum class OpCode {
     BENCH, BRANCH,
     CALL, CALLI1, COPY,
-    DEC, EQ, FUN, GOTO,
+    DEC, EQ,
+    FENCE, FUN,
+    GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
     MOVE, NOP, REC, RET, STATE, Z,
     /* STOP */
@@ -119,6 +121,8 @@ namespace snabl {
     inline Reg eq_dst(Op op) { return get<Reg, EQ_DST_BIT, OP_REG_BITS>(op); }
     inline Reg eq_left(Op op) { return get<Reg, EQ_LEFT_BIT, OP_REG_BITS>(op); }
     inline Reg eq_right(Op op) { return get<Reg, EQ_RIGHT_BIT, OP_REG_BITS>(op); }
+
+    void FENCE(Op &op);
 
     void FUN(Op &op, Reg reg, PC end);
     inline Reg fun_reg(Op op) { return get<Reg, FUN_REG_BIT, OP_REG_BITS>(op); }

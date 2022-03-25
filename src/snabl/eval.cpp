@@ -23,7 +23,9 @@ namespace snabl {
     static const void* dispatch[] = {
       &&BENCH, &&BRANCH,
       &&CALL, &&CALLI1, &&COPY,
-      &&DEC, &&EQ, &&FUN, &&GOTO,
+      &&DEC, &&EQ,
+      &&FENCE, &&FUN,
+      &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&NOP, &&REC, &&RET, &&STATE, &&Z,
       /* STOP */
@@ -149,7 +151,7 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  NOP: { DISPATCH(pc+1); }
+  FENCE: NOP: { DISPATCH(pc+1); }
 
   REC: {
       State *prev = end_state();
