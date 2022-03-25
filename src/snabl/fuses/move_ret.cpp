@@ -3,12 +3,12 @@
 #include "snabl/fuses/move_ret.hpp"
 
 namespace snabl::fuses {
-  int move_ret(Fun *fun, PC start_pc, M &m) {
+  int move_ret(Fun *fun, M &m) {
     int n = 0;
     bool done = false;
     vector<PC> ret_pcs;
     
-    for (PC pc = start_pc; !done && pc < m.emit_pc;) {
+    for (PC pc = fun->start_pc; !done && pc < m.emit_pc;) {
       Op op = m.ops[pc];
       
       switch (op_code(op)) {

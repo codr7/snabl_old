@@ -8,7 +8,7 @@ namespace snabl {
 }
 
 namespace snabl::fuses {
-  int move_ret(Fun *fun, PC start_pc, M &m);  
+  int move_ret(Fun *fun, M &m);  
 }
 
 #endif

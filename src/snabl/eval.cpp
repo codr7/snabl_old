@@ -25,7 +25,7 @@ namespace snabl {
       &&CALL, &&CALLI1, &&COPY,
       &&DEC, &&EQ, &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&MOVE, &&NOP, &&RET, &&STATE, &&Z,
+      &&MOVE, &&NOP, &&REC, &&RET, &&STATE, &&Z,
       /* STOP */
       &&STOP};
 
@@ -150,6 +150,13 @@ namespace snabl {
     }
 
   NOP: { DISPATCH(pc+1); }
+
+  REC: {
+      State *prev = end_state();
+      for (Reg i = 1; i < Fun::ARG_COUNT+1; i++) { state->regs[i] = move(prev->regs[i]); }
+      deref_state(prev);
+      DISPATCH(frame->target->start_pc);
+    }
     
   RET: {
       Frame *f = end_frame();

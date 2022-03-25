@@ -13,7 +13,7 @@ namespace snabl {
     case OpCode::LOAD_BOOL: case OpCode::LOAD_INT1: case OpCode::LOAD_TYPE:
     case OpCode::MOVE:
     case OpCode::NOP:
-    case OpCode::RET:
+    case OpCode::REC: case OpCode::RET:
     case OpCode::STATE: case OpCode::STOP:
     case OpCode::Z:
       break;
@@ -77,6 +77,9 @@ namespace snabl {
       break;
     case OpCode::NOP:
       out << "NOP";
+      break;
+    case OpCode::REC:
+      out << "REC";
       break;
     case OpCode::RET:
       out << "RET " << m.frame->ret_reg;
@@ -182,6 +185,7 @@ namespace snabl {
     }
 
     void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }
+    void REC(Op &op) { op = static_cast<Op>(OpCode::REC); }
     void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
 
     void STATE(Op &op, int reg_count) {

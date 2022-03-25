@@ -1,5 +1,3 @@
-* fuse tail call
-** add REC op
 * add one? macro
 ** add ONE op
 ** use in fib-tail

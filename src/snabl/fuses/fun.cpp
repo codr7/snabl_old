@@ -4,30 +4,80 @@
 #include "snabl/fuses/move_ret.hpp"
 
 namespace snabl::fuses {
-  void fun(Fun *fun, PC start_pc, M &m) {
-    while (move_ret(fun, start_pc, m));
+  void fun(Fun *fun, M &m) {
+    while (move_ret(fun, m) ||
+	   fun_entry(fun, m) ||
+	   fun_tail(fun, m));
   }
 
-  PC fun_entry(Fun *fun, PC start_pc, M &m) {
+  int fun_entry(Fun *fun, M &m) {
+    int n = 0;
     bool done = false;
     
-    while (!done && start_pc < m.emit_pc) {
-      Op op = m.ops[start_pc];
+    while (!done && fun->start_pc < m.emit_pc) {
+      Op op = m.ops[fun->start_pc];
       
       switch (op_code(op)) {
       case OpCode::GOTO:
-	start_pc = ops::goto_pc(op);
-	cout << "Fusing " << fun << " entry: " << start_pc << endl;
+	fun->start_pc = ops::goto_pc(op);
+	cout << "Fusing " << fun << " entry: " << fun->start_pc << endl;
+	n++;
 	break;
       case OpCode::NOP:
-	start_pc++;
-	cout << "Fusing " << fun << " entry: " << start_pc << endl;
+	fun->start_pc++;
+	cout << "Fusing " << fun << " entry: " << fun->start_pc << endl;
+	n++;
 	break;
       default:
 	done = true;
       }
     }
+
+    return n;
+  }
+
+  int fun_tail(Fun *fun, M &m) {
+    int n = 0;
+    bool done = false;
+    PC pc = fun->start_pc;
+    vector<PC> rpcs;
     
-    return start_pc;
+    while (!done && pc < m.emit_pc) {
+      Op &op = m.ops[pc];
+
+      switch (op_code(op)) {
+      case OpCode::CALLI1:
+	if (ops::calli1_target(op) == fun) { rpcs.push_back(pc); }
+	pc++;
+	break;
+      case OpCode::GOTO:
+	if (rpcs.empty()) {
+	  pc++;
+	} else {
+	  pc = ops::goto_pc(op);
+	}
+	
+	break;
+      case OpCode::NOP:
+	pc++;
+	break;
+      case OpCode::RET:
+	for (PC rpc: rpcs) {
+	  cout << "Fusing " << fun << " FUN TAIL: " << rpc << endl;
+	  ops::REC(m.ops[rpc]);
+	  n++;
+	}
+
+	rpcs.clear();
+	pc++;
+	break;
+      default:
+	rpcs.clear();
+	pc += op_len(op);
+	break;
+      }
+    }
+
+    return n;
   }
 }

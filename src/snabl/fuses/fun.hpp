@@ -8,8 +8,9 @@ namespace snabl {
 }
 
 namespace snabl::fuses {
-  void fun(Fun *fun, PC start_pc, M &m);  
-  PC fun_entry(Fun *fun, PC start_pc, M &m);
+  void fun(Fun *fun, M &m);  
+  int fun_entry(Fun *fun, M &m);
+  int fun_tail(Fun *fun, M &m);
 }
 
 #endif

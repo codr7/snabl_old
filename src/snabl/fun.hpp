@@ -41,6 +41,7 @@ namespace snabl {
     int reg_count;
     Reg emit_reg;
     State *state;
+    PC start_pc;
   };
 
   ostream &operator <<(ostream &out, Fun *val);

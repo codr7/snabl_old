@@ -70,7 +70,7 @@ namespace snabl {
     CALL, CALLI1, COPY,
     DEC, EQ, FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
-    MOVE, NOP, RET, STATE, Z,
+    MOVE, NOP, REC, RET, STATE, Z,
     /* STOP */
     STOP
   };
@@ -152,6 +152,7 @@ namespace snabl {
     inline Reg move_src(Op op) { return get<Reg, MOVE_SRC_BIT, OP_REG_BITS>(op); }
     
     void NOP(Op &op);
+    void REC(Op &op);
     void RET(Op &op);
     
     void STATE(Op &op, int reg_count);
