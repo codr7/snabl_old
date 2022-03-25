@@ -43,7 +43,7 @@ First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine
 ```
   (bench 100 (fib-rec 20))
 
-1105
+1053
 ```
 
 Next tail recursive, Python3 takes `105`ms on the same machine.
@@ -53,7 +53,7 @@ Next tail recursive, Python3 takes `105`ms on the same machine.
 
   (bench 10000 (fib-tail 70 0 1))
 
-577
+542
 ```
 
 ### support

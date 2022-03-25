@@ -1,6 +1,7 @@
-* add op fusion
-** GFun
-** fuse GOTO-RET
+* add one? macro
+** add ONE op
+** use in fib-tail
+* add more fuses
 * add let macro
 * add fun macro
 * add test op
@@ -10,11 +11,20 @@
 ** fun as separate op
 * add LOAD_NIL op
 ** enable nil type emit
-* add tasks
+* add tusks
 ** pure green threads
 * add sym type/reader
+* add Type.isa
+* add fun call type check
+* add multi
+** add DISP op
 * add string type
 ** add reader
 ** add unquotes
 *** "foo %(42) bar"
 *** %% escape
+* add fix type
+** encoded in uint64
+** add reader
+*** .25
+

@@ -2,7 +2,7 @@
 #include "snabl/op.hpp"
 
 namespace snabl {
-   PC op_len(Op op, ostream &out) {
+   PC op_len(Op op) {
     switch (op_code(op)) {
     case OpCode::BENCH: case OpCode::BRANCH:
     case OpCode::CALLI1: case OpCode::COPY:
