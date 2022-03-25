@@ -1,6 +1,3 @@
-* add one? macro
-** add ONE op
-** use in fib-tail
 * add more fuses
 * add let macro
 * add fun macro

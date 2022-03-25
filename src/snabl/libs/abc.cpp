@@ -135,6 +135,13 @@ namespace snabl::libs {
 		 
 		 return nullopt;
 	       });
+    
+    bind_macro(m.sym("one?"), 1,
+	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 if (auto err = pop_form(args).emit(1, m); err) { return err; }
+		 ops::ONE(m.emit(), reg, 1);
+		 return nullopt;
+	       });
 
     bind_macro(m.sym("z?"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {

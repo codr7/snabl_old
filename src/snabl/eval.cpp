@@ -27,7 +27,7 @@ namespace snabl {
       &&FENCE, &&FUN,
       &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&MOVE, &&NOP, &&REC, &&RET, &&STATE, &&Z,
+      &&MOVE, &&NOP, &&ONE, &&REC, &&RET, &&STATE, &&Z,
       /* STOP */
       &&STOP};
 
@@ -152,6 +152,12 @@ namespace snabl {
     }
 
   FENCE: NOP: { DISPATCH(pc+1); }
+
+  ONE: {
+      optional<Val> *rs = state->regs.begin();
+      rs[ops::one_dst(op)] = Val(abc_lib->bool_type, rs[ops::one_src(op)]->as<types::Int::DataType>() == 1);
+      DISPATCH(pc+1);
+    }
 
   REC: {
       State *prev = end_state();

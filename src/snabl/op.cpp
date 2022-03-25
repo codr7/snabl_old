@@ -8,12 +8,12 @@ namespace snabl {
     case OpCode::CALLI1: case OpCode::COPY:
     case OpCode::DEC:
     case OpCode::EQ:
-    case OpCode::FENCE:
-    case OpCode::FUN:
+    case OpCode::FENCE: case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_INT1: case OpCode::LOAD_TYPE:
     case OpCode::MOVE:
     case OpCode::NOP:
+    case OpCode::ONE:
     case OpCode::REC: case OpCode::RET:
     case OpCode::STATE: case OpCode::STOP:
     case OpCode::Z:
@@ -84,6 +84,9 @@ namespace snabl {
       break;
     case OpCode::REC:
       out << "REC";
+      break;
+    case OpCode::ONE:
+      out << "ONE " << ops::one_dst(op) << ' ' << ops::one_src(op);
       break;
     case OpCode::RET:
       out << "RET " << m.frame->ret_reg;
@@ -192,6 +195,11 @@ namespace snabl {
 
     void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }
     void REC(Op &op) { op = static_cast<Op>(OpCode::REC); }
+
+    void ONE(Op &op, Reg dst, Reg src) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::ONE) + (dst << ONE_DST_BIT) + (src << ONE_SRC_BIT));
+    }
+
     void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
 
     void STATE(Op &op, int reg_count) {

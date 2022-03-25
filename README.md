@@ -52,11 +52,11 @@ Snabl detects and fuses tail calls automagically at compile time.
 
 ```
   (fun: fib-tail [n Int a Int b Int] Int
-    (if (z? n) a (if (= n 1) b (fib-tail (dec n) b (+ a b)))))
+    (if (z? n) a (if (one? n) b (fib-tail (dec n) b (+ a b)))))
 
   (bench 10000 (fib-tail 70 0 1))
 
-476
+426
 ```
 
 ### support
