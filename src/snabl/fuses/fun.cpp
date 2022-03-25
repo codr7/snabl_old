@@ -1,11 +1,11 @@
 #include "snabl/m.hpp"
 #include "snabl/op.hpp"
 #include "snabl/fuses/fun.hpp"
-#include "snabl/fuses/goto_ret.hpp"
+#include "snabl/fuses/move_ret.hpp"
 
 namespace snabl::fuses {
   void fun(Fun *fun, PC start_pc, M &m) {
-    while (goto_ret(fun, start_pc, m));
+    while (move_ret(fun, start_pc, m));
   }
 
   PC fun_entry(Fun *fun, PC start_pc, M &m) {
