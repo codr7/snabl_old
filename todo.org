@@ -1,4 +1,11 @@
-
+* fuse copy runs
+** add COPYS op
+*** beg1, beg2, len
+*** use std::copy
+* fuse move runs
+** add MOVES op
+*** beg1, beg2, len
+*** use std::move
 * fuse unused
 ** copy/move/load
 ** add Reg op_dst/src() accessors
