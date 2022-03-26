@@ -69,7 +69,7 @@ Snabl detects and fuses tail calls automagically at compile time.
     (if (z? n) a (if (one? n) b (fib-tail (dec n) b (+ a b)))))
 
   (bench 10000 (fib-tail 70 0 1))
-
+  
 397
 ```
 

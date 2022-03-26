@@ -24,7 +24,7 @@ namespace snabl {
       &&BENCH, &&BRANCH,
       &&CALL, &&CALLI1, &&COPY, &&COPYS,
       &&DEC, &&EQ,
-      &&FENCE, &&FUN,
+      &&FUN,
       &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&MOVES,
@@ -164,7 +164,7 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  FENCE: NOP: { DISPATCH(pc+1); }
+  NOP: { DISPATCH(pc+1); }
 
   ONE: {
       optional<Val> *rs = state->regs.begin();

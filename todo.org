@@ -1,7 +1,6 @@
 * add NOP fuse
 ** replace runs with goto
 ** fib-tail
-* remove fence
 * use COPYS/MOVES directly where possible
 * add BRANCH if pc
 ** default +1

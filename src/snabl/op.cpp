@@ -8,7 +8,7 @@ namespace snabl {
     case OpCode::CALLI1: case OpCode::COPY: case OpCode::COPYS:
     case OpCode::DEC:
     case OpCode::EQ:
-    case OpCode::FENCE: case OpCode::FUN:
+    case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_INT1: case OpCode::LOAD_TYPE:
     case OpCode::MOVE: case OpCode::MOVES:
@@ -30,7 +30,6 @@ namespace snabl {
     switch (op_code(op)) {
     case OpCode::BENCH:
     case OpCode::CALLI1:
-    case OpCode::FENCE:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL:
     case OpCode::LOAD_FUN:
@@ -76,7 +75,6 @@ namespace snabl {
 
   bool op_writes(Op op, Reg reg) {
     switch (op_code(op)) {
-    case OpCode::FENCE:
     case OpCode::GOTO:
     case OpCode::NOP:
     case OpCode::STOP:
@@ -151,9 +149,6 @@ namespace snabl {
       break;
     case OpCode::EQ:
       out << "EQ " << ops::eq_dst(op) << ' ' << ops::eq_left(op) << ' ' << ops::eq_right(op);
-      break;
-    case OpCode::FENCE:
-      out << "FENCE";
       break;
     case OpCode::FUN:
       out << "FUN " << ops::fun_reg(op) << ' ' << ops::fun_end(op);
@@ -262,8 +257,6 @@ namespace snabl {
 			   (left << EQ_LEFT_BIT) +
 			   (right << EQ_RIGHT_BIT));
     }
-
-    void FENCE(Op &op) { op = static_cast<Op>(OpCode::FENCE); }
 
     void FUN(Op &op, Reg reg, PC end) {
       op = static_cast<Op>(static_cast<Op>(OpCode::FUN) + (reg << OP_CODE_BITS) + (end << FUN_END_BIT));
