@@ -1,14 +1,12 @@
-* add BRANCH END fuse
-** move branch end while nop/goto
 * add GOTO fuse
 ** move pc while nop/goto
-* add NOP fuse
-** replace runs with goto
 * fuse unused
 ** copy/move/load
 ** add Reg op_dst/src() accessors
 ** fibtail copy 2 11 twice with state_beg in between
 *** 11 not written between
+* add NOP fuse
+** replace runs with goto
 * add test op
 ** fib
 ** closure
