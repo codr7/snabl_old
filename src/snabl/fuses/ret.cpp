@@ -5,10 +5,9 @@
 namespace snabl::fuses {
   int ret(Fun *fun, M &m) {
     int n = 0;
-    bool done = false;
     vector<PC> ret_pcs;
     
-    for (PC pc = fun->start_pc; !done && pc < m.emit_pc;) {
+    for (PC pc = fun->start_pc; pc < m.emit_pc;) {
       Op op = m.ops[pc];
       
       switch (op_code(op)) {
@@ -26,8 +25,9 @@ namespace snabl::fuses {
 	  ops::RET(m.ops[rpc]);
 	  n++;
 	}
-	
-	done = true;
+
+	ret_pcs.clear();
+	pc++;
 	break;
       default:
 	ret_pcs.clear();

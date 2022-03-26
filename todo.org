@@ -1,5 +1,4 @@
-* add GOTO fuse
-** move pc while nop/goto
+
 * fuse unused
 ** copy/move/load
 ** add Reg op_dst/src() accessors

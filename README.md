@@ -67,7 +67,7 @@ Snabl detects and fuses tail calls automagically at compile time.
 
   (bench 10000 (fib-tail 70 0 1))
 
-398
+397
 ```
 
 ### support
