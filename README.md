@@ -19,15 +19,16 @@ I like command lines, almost regardless of type of application. And once you hav
 The [VM](https://github.com/codr7/snabl/blob/main/src/snabl/m.hpp) is register based with sequential allocation and runs 64-bit [bytecode](https://github.com/codr7/snabl/blob/main/src/snabl/op.hpp). The [evaluation loop](https://github.com/codr7/snabl/blob/main/src/snabl/m.hpp) is implemented using computed goto for performance reasons, which means that the set of available operations is fixed. [States](https://github.com/codr7/snabl/blob/main/src/snabl/state.hpp) and [frames](https://github.com/codr7/snabl/blob/main/src/snabl/frame.hpp) are [slab](https://github.com/codr7/snabl/blob/main/src/snabl/frame.hpp) allocated, reference counted and passed as raw pointers. [Types](https://github.com/codr7/snabl/tree/main/src/snabl/types) and [values](https://github.com/codr7/snabl/blob/main/src/snabl/val.hpp) are designed to be (cheaply) passed by value. The [reader](https://github.com/codr7/snabl/blob/main/src/snabl/reader.hpp) is implemented using recursive descent and designed to be easy to customize/extend.
 
 ### language
-The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common Lisp while leaving the cruft behind.
+The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common Lisp while dropping cruft & ceremony.
 
 - TIMTOWTDI
 - Parens are for calls, vectors use brackets
 - Everything is a method
 - `let*` is defult
+- Globals look special by definition
 
 ### status
-The codebase is approaching `2`kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
+The codebase is approaching `3`kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
 
 ### setup
 Building the project requires a C++17-compiler and CMake, the following shell spell builds and starts the REPL:

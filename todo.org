@@ -1,17 +1,22 @@
-* add NOP fuse
-** replace runs with goto
-** fib-tail
+* add GOTO fuse
+** extend while landing on NOP/GOTO
+* add globals
+** add Glob struct
+** add alloc
+** add glob type
+** readme
+(fun: get-foo [] Int (G foo))
+(let [(G foo) 35 bar (+ (get-foo) 7)] bar)
+* add test op
+** fib
+** closure
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
 * fuse unused
 ** copy/move/load
-** add Reg op_dst/src() accessors
-** fibtail copy 2 11 twice with state_beg in between
+** fibtail calls (copy 1 n) & (copy 2 m) repeatedly
 *** 11 not written between
-* add test op
-** fib
-** closure
 * add multi id support to fun arg list
 ** n a b Int
 * add fun macro
@@ -24,6 +29,7 @@
 ** pure green threads
 * add sym type/reader
 * add Type.isa
+* add scope & state to bench macro like (let)
 * add fun call type check
 * add multi
 ** add DISP op
@@ -38,3 +44,6 @@
 ** encoded in uint64
 ** add reader
 *** .25
+* move readers into M
+* add Fuse type
+** move fuses into M
