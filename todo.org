@@ -11,6 +11,9 @@
 * add test op
 ** fib
 ** closure
+* add optional<Val> Form.val()
+** implement for id & lit
+** bind at compile time in let if set
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
@@ -48,3 +51,5 @@
 * move readers into M
 * add Fuse type
 ** move fuses into M
+* ucp
+* raygui

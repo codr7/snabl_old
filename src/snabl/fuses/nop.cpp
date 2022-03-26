@@ -21,7 +21,7 @@ namespace snabl::fuses {
 	if (nops) {
 	  cout << "Fusing " << fun << " NOP: " << pc1 << endl;
 	  ops::GOTO(op1, pc1+nops+1);
-	  n++;
+	  n += nops;
 	}
       }
 
