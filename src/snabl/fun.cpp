@@ -23,11 +23,11 @@ namespace snabl {
     m.begin_scope();
     
     for (int i = 0; i < arg_count; i++) {
-      Reg areg = m.scope->reg_count++;
-      m.scope->bind(args[i].name, m.abc_lib->reg_type, areg);
-      ops::MOVE(m.emit(), areg, Reg(i+1));
+      m.scope->bind(args[i].name, m.abc_lib->reg_type, m.scope->reg_count + i);
     }
 
+    ops::MOVES(m.emit(), m.scope->reg_count, Reg(1), arg_count);
+    m.scope->reg_count += arg_count;
     emit_reg = reg;
     
     for (auto f: body) {
