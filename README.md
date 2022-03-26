@@ -21,7 +21,6 @@ The [VM](https://github.com/codr7/snabl/blob/main/src/snabl/m.hpp) is register b
 ### language
 The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common Lisp while dropping cruft & ceremony.
 
-- TIMTOWTDI
 - Parens are for calls, vectors use brackets
 - Everything is a method
 - `let*` is defult
