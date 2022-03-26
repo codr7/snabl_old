@@ -43,8 +43,8 @@
 #define GOTO_PC_BIT OP_CODE_BITS
 
 #define LOAD_INT1_VAL_BITS (OP_BITS - LOAD_VAL_BIT - 1)
-#define LOAD_INT1_VAL_MIN (-(static_cast<Op>(1) << (LOAD_INT1_VAL_BITS - 1)))
-#define LOAD_INT1_VAL_MAX ((static_cast<Op>(1) << (LOAD_INT1_VAL_BITS - 1)) - 1)
+#define LOAD_INT1_VAL_MIN (-(static_cast<types::Int::DataType>(1) << (LOAD_INT1_VAL_BITS - 1)))
+#define LOAD_INT1_VAL_MAX ((static_cast<types::Int::DataType>(1) << (LOAD_INT1_VAL_BITS - 1)) - 1)
 
 #define LOAD_REG_BIT OP_CODE_BITS
 #define LOAD_VAL_BIT (LOAD_REG_BIT + OP_REG_BITS)

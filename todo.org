@@ -27,4 +27,5 @@
 ** encoded in uint64
 ** add reader
 *** .25
-
+* fuse unused writes
+** GFun

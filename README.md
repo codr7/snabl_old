@@ -3,7 +3,7 @@
 ```
   (fun: fib-rec [n Int] Int
     (if (< n 2) n (+ (fib-rec (dec n)) (fib-rec (dec n 2)))))
-
+    
   (fib-rec 10)
 
 55
@@ -65,7 +65,7 @@ Snabl detects and fuses tail calls automagically at compile time.
 
   (bench 10000 (fib-tail 70 0 1))
 
-421
+398
 ```
 
 ### support
