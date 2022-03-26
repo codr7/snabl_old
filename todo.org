@@ -4,8 +4,6 @@
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
-* add BRANCH RET fuse
-** add op
 * fuse unused
 ** copy/move/load
 ** add Reg op_dst/src() accessors
