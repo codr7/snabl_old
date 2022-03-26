@@ -1,3 +1,17 @@
+* add counter to STATE_BEG
+** add fuse
+*** nop
+* add BRANCH END fuse
+** move branch end while nop/goto
+* add GOTO fuse
+** move pc while nop/goto
+* add NOP fuse
+** replace runs with goto
+* fuse unused writes
+** copy/move/load
+** add Reg op_dst/src() accessors
+** fibtail copy 2 11 twice with state_beg in between
+*** 11 not written between
 * add test op
 ** fib
 ** closure
@@ -27,5 +41,3 @@
 ** encoded in uint64
 ** add reader
 *** .25
-* fuse unused writes
-** GFun
