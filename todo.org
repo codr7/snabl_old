@@ -1,14 +1,18 @@
-* fuse move runs
-** add MOVES op
-*** beg1, beg2, len
-*** use std::move
+* add NOP fuse
+** replace runs with goto
+** fib-tail
+* remove fence
+* use COPYS/MOVES directly where possible
+* add BRANCH if pc
+** default +1
+** fuse if like else
+* add BRANCH RET fuse
+** add op
 * fuse unused
 ** copy/move/load
 ** add Reg op_dst/src() accessors
 ** fibtail copy 2 11 twice with state_beg in between
 *** 11 not written between
-* add NOP fuse
-** replace runs with goto
 * add test op
 ** fib
 ** closure

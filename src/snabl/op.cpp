@@ -11,7 +11,7 @@ namespace snabl {
     case OpCode::FENCE: case OpCode::FUN:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL: case OpCode::LOAD_INT1: case OpCode::LOAD_TYPE:
-    case OpCode::MOVE:
+    case OpCode::MOVE: case OpCode::MOVES:
     case OpCode::NOP:
     case OpCode::ONE:
     case OpCode::REC: case OpCode::RET:
@@ -58,6 +58,8 @@ namespace snabl {
       return reg == ops::fun_reg(op);
     case OpCode::MOVE:
       return reg == ops::move_src(op);
+    case OpCode::MOVES:
+      return reg >= ops::move_src(op) && reg < (ops::move_src(op) + ops::moves_len(op));
     case OpCode::ONE:
       return reg == ops::one_src(op);
     case OpCode::REC:
@@ -109,6 +111,8 @@ namespace snabl {
       return reg == ops::fun_reg(op);
     case OpCode::MOVE:
       return reg == ops::move_dst(op);
+    case OpCode::MOVES:
+      return reg >= ops::move_dst(op) && reg < (ops::move_dst(op) + ops::moves_len(op));
     case OpCode::ONE:
       return reg == ops::one_dst(op);
     case OpCode::REC:
@@ -177,6 +181,9 @@ namespace snabl {
       break;
     case OpCode::MOVE:
       out << "MOVE " << ops::move_dst(op) << ' ' << ops::move_src(op);
+      break;
+    case OpCode::MOVES:
+      out << "MOVES " << ops::move_dst(op) << ' ' << ops::move_src(op) << ops::moves_len(op);
       break;
     case OpCode::NOP:
       out << "NOP";
@@ -302,6 +309,13 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::MOVE) + (dst << MOVE_DST_BIT) + (src << MOVE_SRC_BIT));
     }
 
+    void MOVES(Op &op, Reg dst, Reg src, int len) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::MOVES) +
+			   (dst << MOVE_DST_BIT) +
+			   (src << MOVE_SRC_BIT) +
+			   (len << MOVES_LEN_BIT));
+    }
+    
     void NOP(Op &op) { op = static_cast<Op>(OpCode::NOP); }
     void REC(Op &op) { op = static_cast<Op>(OpCode::REC); }
 

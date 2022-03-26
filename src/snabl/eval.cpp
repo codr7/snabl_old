@@ -27,7 +27,8 @@ namespace snabl {
       &&FENCE, &&FUN,
       &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&MOVE, &&NOP, &&ONE, &&REC, &&RET, &&STATE_BEG, &&STATE_END, &&Z,
+      &&MOVE, &&MOVES,
+      &&NOP, &&ONE, &&REC, &&RET, &&STATE_BEG, &&STATE_END, &&Z,
       /* STOP */
       &&STOP};
 
@@ -154,6 +155,12 @@ namespace snabl {
   MOVE: {
       optional<Val> *rs = state->regs.begin();
       rs[ops::move_dst(op)] = move(rs[ops::move_src(op)]);
+      DISPATCH(pc+1);
+    }
+
+  MOVES: {
+      optional<Val> *rs = state->regs.begin(), *src = rs+ops::move_src(op);
+      move(src, src+ops::copys_len(op), rs+ops::move_dst(op));
       DISPATCH(pc+1);
     }
 

@@ -55,6 +55,9 @@
 #define MOVE_DST_BIT OP_CODE_BITS
 #define MOVE_SRC_BIT (MOVE_DST_BIT + OP_REG_BITS)
 
+#define MOVES_LEN_BITS OP_REG_BITS
+#define MOVES_LEN_BIT (MOVE_SRC_BIT + OP_REG_BITS)
+
 #define ONE_DST_BIT OP_CODE_BITS
 #define ONE_SRC_BIT (ONE_DST_BIT + OP_REG_BITS)
 
@@ -82,7 +85,8 @@ namespace snabl {
     FENCE, FUN,
     GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
-    MOVE, NOP, ONE, REC, RET, STATE_BEG, STATE_END, Z,
+    MOVE, MOVES,
+    NOP, ONE, REC, RET, STATE_BEG, STATE_END, Z,
     /* STOP */
     STOP
   };
@@ -171,7 +175,11 @@ namespace snabl {
     void MOVE(Op &op, Reg dst, Reg src);
     inline Reg move_dst(Op op) { return get<Reg, MOVE_DST_BIT, OP_REG_BITS>(op); }
     inline Reg move_src(Op op) { return get<Reg, MOVE_SRC_BIT, OP_REG_BITS>(op); }
-    
+
+    void MOVES(Op &op, Reg dst, Reg src, int len);
+
+    inline int moves_len(Op op) { return get<int, MOVES_LEN_BIT, MOVES_LEN_BITS>(op); }
+
     void NOP(Op &op);
     void REC(Op &op);
 
