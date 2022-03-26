@@ -28,6 +28,9 @@
 #define COPY_DST_BIT OP_CODE_BITS
 #define COPY_SRC_BIT (COPY_DST_BIT + OP_REG_BITS)
 
+#define COPYS_LEN_BITS OP_REG_BITS
+#define COPYS_LEN_BIT (COPY_SRC_BIT + OP_REG_BITS)
+
 #define DEC_DST_BIT OP_CODE_BITS
 #define DEC_SRC_BIT (DEC_DST_BIT + OP_REG_BITS)
 #define DEC_DELTA_BIT (DEC_SRC_BIT + OP_REG_BITS)
@@ -74,7 +77,7 @@ namespace snabl {
 
   enum class OpCode {
     BENCH, BRANCH,
-    CALL, CALLI1, COPY,
+    CALL, CALLI1, COPY, COPYS,
     DEC, EQ,
     FENCE, FUN,
     GOTO,
@@ -118,8 +121,13 @@ namespace snabl {
     }
 
     void COPY(Op &op, Reg dst, Reg src);
+
     inline Reg copy_dst(Op op) { return get<Reg, COPY_DST_BIT, OP_REG_BITS>(op); }
     inline Reg copy_src(Op op) { return get<Reg, COPY_SRC_BIT, OP_REG_BITS>(op); }
+
+    void COPYS(Op &op, Reg dst, Reg src, int len);
+
+    inline int copys_len(Op op) { return get<int, COPYS_LEN_BIT, COPYS_LEN_BITS>(op); }
 
     void DEC(Op &op, Reg dst, Reg src, types::Int::DataType delta);
     inline Reg dec_dst(Op op) { return get<Reg, DEC_DST_BIT, OP_REG_BITS>(op); }

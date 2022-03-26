@@ -5,7 +5,7 @@ namespace snabl {
   PC op_len(Op op) {
     switch (op_code(op)) {
     case OpCode::BENCH: case OpCode::BRANCH:
-    case OpCode::CALLI1: case OpCode::COPY:
+    case OpCode::CALLI1: case OpCode::COPY: case OpCode::COPYS:
     case OpCode::DEC:
     case OpCode::EQ:
     case OpCode::FENCE: case OpCode::FUN:
@@ -48,6 +48,8 @@ namespace snabl {
       return (reg > 1 && reg < Fun::ARG_COUNT) || (reg == ops::call_target(op));
     case OpCode::COPY:
       return reg == ops::copy_src(op);
+    case OpCode::COPYS:
+      return reg >= ops::copy_src(op) && reg < (ops::copy_src(op) + ops::copys_len(op));
     case OpCode::DEC:
       return reg == ops::dec_src(op);
     case OpCode::EQ:
@@ -97,6 +99,8 @@ namespace snabl {
       return reg == ops::call_reg(op);
     case OpCode::COPY:
       return reg == ops::copy_dst(op);
+    case OpCode::COPYS:
+      return reg >= ops::copy_dst(op) && reg < (ops::copy_dst(op) + ops::copys_len(op));
     case OpCode::DEC:
       return reg == ops::dec_dst(op);
     case OpCode::EQ:
@@ -134,6 +138,9 @@ namespace snabl {
       break;
     case OpCode::COPY:
       out << "COPY " << ops::copy_dst(op) << ' ' << ops::copy_src(op);
+      break;
+    case OpCode::COPYS:
+      out << "COPYS " << ops::copy_dst(op) << ' ' << ops::copy_src(op) << ' ' << ops::copys_len(op);
       break;
     case OpCode::DEC:
       out << "DEC " << ops::dec_dst(op) << ' ' << ops::dec_src(op) << ' ' << ops::dec_delta(op);
@@ -226,6 +233,13 @@ namespace snabl {
 
     void COPY(Op &op, Reg dst, Reg src) {
       op = static_cast<Op>(static_cast<Op>(OpCode::COPY) + (dst << COPY_DST_BIT) + (src << COPY_SRC_BIT));
+    }
+
+    void COPYS(Op &op, Reg dst, Reg src, int len) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::COPYS) +
+			   (dst << COPY_DST_BIT) +
+			   (src << COPY_SRC_BIT) +
+			   (len << COPYS_LEN_BIT));
     }
 
     void DEC(Op &op, Reg dst, Reg src, types::Int::DataType delta) {

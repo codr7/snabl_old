@@ -22,7 +22,7 @@ namespace snabl {
   optional<Error> M::eval(PC start_pc) {
     static const void* dispatch[] = {
       &&BENCH, &&BRANCH,
-      &&CALL, &&CALLI1, &&COPY,
+      &&CALL, &&CALLI1, &&COPY, &&COPYS,
       &&DEC, &&EQ,
       &&FENCE, &&FUN,
       &&GOTO,
@@ -86,6 +86,12 @@ namespace snabl {
   COPY: {
       optional<Val> *rs = state->regs.begin();
       rs[ops::copy_dst(op)] = rs[ops::copy_src(op)];
+      DISPATCH(pc+1);
+    }
+
+  COPYS: {
+      optional<Val> *rs = state->regs.begin(), *src = rs+ops::copy_src(op);
+      copy(src, src+ops::copys_len(op), rs+ops::copy_dst(op));
       DISPATCH(pc+1);
     }
 
@@ -176,7 +182,10 @@ namespace snabl {
     }
 
   STATE_BEG: {
-      for (int i = 0; i < ops::state_beg_count(op); i++, begin_state(ops::state_beg_reg_count(op)));
+      for (int i = 0; i < ops::state_beg_count(op); i++) {
+	begin_state(ops::state_beg_reg_count(op));
+      }
+      
       DISPATCH(pc+1);
     }
 
