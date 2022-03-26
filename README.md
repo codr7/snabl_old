@@ -39,7 +39,7 @@ $ ./snabl
 ```
 
 ### bindings
-`let` may be used to bind values to identifiers within a scope.
+`let` may be used to bind values to identifiers within a [scope](https://github.com/codr7/snabl/blob/main/src/snabl/scope.hpp).
 
 ```
   (let [foo 35 bar (+ foo 7)] bar)
