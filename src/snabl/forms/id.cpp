@@ -15,4 +15,6 @@ namespace snabl::forms {
     if (!v) { return Error(pos, "Unknown id: ", name); }
     return v->type.imp->methods.emit(*v, reg, pos, m);
   }
+
+  optional<Val> Id::Imp::val(M &m) const { return m.scope->find(name); }
 }

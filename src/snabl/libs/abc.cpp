@@ -8,6 +8,7 @@
 
 #include "snabl/types/bool.hpp"
 #include "snabl/types/fun.hpp"
+#include "snabl/types/glob.hpp"
 #include "snabl/types/int.hpp"
 #include "snabl/types/macro.hpp"
 #include "snabl/types/meta.hpp"
@@ -27,6 +28,7 @@ namespace snabl::libs {
     Lib(m, m.sym("abc")),
     bool_type(*this, make_shared<types::Bool>(type_id(), m.sym("Bool"))),
     fun_type(*this, make_shared<types::Fun>(type_id(), m.sym("Fun"))),
+    glob_type(*this, make_shared<types::Fun>(type_id(), m.sym("Glob"))),
     int_type(*this, make_shared<types::Int>(type_id(), m.sym("Int"))),
     macro_type(*this, make_shared<types::Macro>(type_id(), m.sym("Macro"))),
     meta_type(*this, make_shared<types::Meta>(type_id(), m.sym("Meta"))),
@@ -35,6 +37,7 @@ namespace snabl::libs {
     
     bind(m.sym("Bool"), meta_type, bool_type);
     bind(m.sym("Fun"), meta_type, fun_type);
+    bind(m.sym("Glob"), meta_type, glob_type);
     bind(m.sym("Int"), meta_type, int_type);
     bind(m.sym("Macro"), meta_type, macro_type);
     bind(m.sym("Meta"), meta_type, meta_type);
@@ -82,7 +85,7 @@ namespace snabl::libs {
 
 		 types::Int::DataType delta = (args.size() == 1)
 		   ? 1
-		   : args[1].as<forms::Lit>().val.as<types::Int::DataType>();
+		   : args[1].as<forms::Lit>()._val.as<types::Int::DataType>();
 		 
 		 ops::DEC(m.emit(), reg, src, delta);
 		 return nullopt;
@@ -145,9 +148,14 @@ namespace snabl::libs {
 		 while (!bfs.empty()) {
 		   Sym id = pop_sym(bfs);
 		   Form vf = pop_form(bfs);
-		   Reg breg = m.scope->reg_count++;
-		   m.scope->bind(id, m.abc_lib->reg_type, breg);
-		   if (auto err = vf.emit(breg, m); err) { return err; }
+
+		   if (auto v = vf.val(m); v) {
+		     m.scope->bind(id, v->type, v->data);
+		   } else {
+		     Reg breg = m.scope->reg_count++;
+		     m.scope->bind(id, m.abc_lib->reg_type, breg);
+		     if (auto err = vf.emit(breg, m); err) { return err; }
+		   }
 		 }
 
 		 for (const Form &f: args) {

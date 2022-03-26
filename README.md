@@ -52,7 +52,7 @@ $ ./snabl
 ```
 
 ### performance
-`bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing bytecode patterns.
+`bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing bytecode [patterns](https://github.com/codr7/snabl/tree/main/src/snabl/fuses).
 
 First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine.
 
@@ -63,7 +63,7 @@ First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine
 ```
 
 Next tail recursive, Python3 takes `105`ms on the same machine.<br/>
-Snabl detects and fuses tail calls automagically at compile time.
+Snabl detects and fuses tail calls [automagically](https://github.com/codr7/snabl/blob/main/src/snabl/fuses/tail_call.cpp) at compile time.
 
 ```
   (fun: fib-tail [n Int a Int b Int] Int

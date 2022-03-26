@@ -9,10 +9,12 @@ namespace snabl::forms {
   
   struct Lit: Form {
     struct Imp: Form::Imp {
-      Val val;
+      Val _val;
+      
       Imp(Pos pos, Type type, any data);    
       void dump(ostream& out) const override;
       optional<Error> emit(Reg reg, M &m) const override;
+      optional<Val> val(M &m) const override;
     };
 
     Lit(Pos pos, Type type, any data);

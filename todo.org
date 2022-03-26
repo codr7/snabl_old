@@ -1,19 +1,20 @@
+* finish globs
+** add G macro
+*** return Glob val or nil
+** add State::load(Reg, type, data)
+*** special case globs
+**** inline
+**** store in glob.val
+*** call from all load ops
+** test && readme
+(fun: get-foo [] Int (G foo))
+(let [(G foo) 35 bar (+ (get-foo) 7)] bar)
 * add GOTO fuse
 ** extend while landing on NOP/GOTO
 *** reuse drill_pc()
-* add globals
-** add Glob struct
-** add alloc
-** add glob type
-** readme
-(fun: get-foo [] Int (G foo))
-(let [(G foo) 35 bar (+ (get-foo) 7)] bar)
 * add test op
 ** fib
 ** closure
-* add optional<Val> Form.val()
-** implement for id & lit
-** bind at compile time in let if set
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
@@ -52,4 +53,4 @@
 * add Fuse type
 ** move fuses into M
 * ucp
-* raygui
+* raygui<

@@ -22,6 +22,7 @@ namespace snabl {
       virtual ~Imp();
       virtual void dump(ostream& out) const = 0;
       virtual optional<Error> emit(Reg reg, M &m) const = 0;
+      virtual optional<Val> val(M &m) const;
     };
 
     shared_ptr<const Imp> imp;
@@ -29,6 +30,7 @@ namespace snabl {
     Form(shared_ptr<const Imp> imp = nullptr);
     void dump(ostream& out) const;
     optional<Error> emit(Reg reg, M &m) const;
+    optional<Val> val(M &m) const;
 
     template <typename T>
     const typename T::Imp &as() const { return *static_cast<const typename T::Imp *>(imp.get()); }
