@@ -1,5 +1,6 @@
 * add GOTO fuse
 ** extend while landing on NOP/GOTO
+*** reuse drill_pc()
 * add globals
 ** add Glob struct
 ** add alloc

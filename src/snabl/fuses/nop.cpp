@@ -19,13 +19,9 @@ namespace snabl::fuses {
 	}
 
 	if (nops) {
-	  ops::GOTO(op1, pc1+nops--);
-	  
-	  for (PC pc2 = pc1+1; nops; nops--, pc2++) {
-	    cout << "Fusing " << fun << " NOP: " << pc2 << endl;
-	    ops::NOP(m.ops[pc2]);
-	    n++;
-	  }
+	  cout << "Fusing " << fun << " NOP: " << pc1 << endl;
+	  ops::GOTO(op1, pc1+nops+1);
+	  n++;
 	}
       }
 
