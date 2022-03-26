@@ -55,7 +55,8 @@
 #define ONE_DST_BIT OP_CODE_BITS
 #define ONE_SRC_BIT (ONE_DST_BIT + OP_REG_BITS)
 
-#define STATE_REG_COUNT_BIT OP_CODE_BITS
+#define STATE_BEG_REG_COUNT_BIT OP_CODE_BITS
+#define STATE_END_REG_BIT OP_CODE_BITS
 
 #define Z_DST_BIT OP_CODE_BITS
 #define Z_SRC_BIT (Z_DST_BIT + OP_REG_BITS)
@@ -75,7 +76,7 @@ namespace snabl {
     FENCE, FUN,
     GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
-    MOVE, NOP, ONE, REC, RET, STATE, Z,
+    MOVE, NOP, ONE, REC, RET, STATE_BEG, STATE_END, Z,
     /* STOP */
     STOP
   };
@@ -169,8 +170,11 @@ namespace snabl {
     
     void RET(Op &op);
     
-    void STATE(Op &op, int reg_count);
-    inline int state_reg_count(Op op) { return get<int, STATE_REG_COUNT_BIT, OP_REG_BITS>(op); }
+    void STATE_BEG(Op &op, int reg_count);
+    inline int state_beg_reg_count(Op op) { return get<int, STATE_BEG_REG_COUNT_BIT, OP_REG_BITS>(op); }
+
+    void STATE_END(Op &op, Reg reg);
+    inline Reg state_end_reg(Op op) { return get<Reg, STATE_END_REG_BIT, OP_REG_BITS>(op); }
 
     void Z(Op &op, Reg dst, Reg src);
     inline Reg z_dst(Op op) { return get<Reg, Z_DST_BIT, OP_REG_BITS>(op); }

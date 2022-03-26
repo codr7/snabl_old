@@ -36,6 +36,15 @@ $ make
 $ ./snabl
 ```
 
+### bindings
+`let` may be used to bind values to identifiers within a scope.
+
+```
+  (let [foo 35 bar (+ foo 7)] bar)
+
+42
+```
+
 ### performance
 `bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing bytecode patterns.
 

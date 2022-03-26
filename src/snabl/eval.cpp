@@ -27,7 +27,7 @@ namespace snabl {
       &&FENCE, &&FUN,
       &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
-      &&MOVE, &&NOP, &&ONE, &&REC, &&RET, &&STATE, &&Z,
+      &&MOVE, &&NOP, &&ONE, &&REC, &&RET, &&STATE_BEG, &&STATE_END, &&Z,
       /* STOP */
       &&STOP};
 
@@ -175,8 +175,13 @@ namespace snabl {
       DISPATCH(ret_pc);
     }
 
-  STATE: {
-      begin_state(ops::state_reg_count(op));
+  STATE_BEG: {
+      begin_state(ops::state_beg_reg_count(op));
+      DISPATCH(pc+1);
+    }
+
+  STATE_END: {
+      ret_state(ops::state_end_reg(op));
       DISPATCH(pc+1);
     }
 

@@ -1,4 +1,3 @@
-* add let macro
 * add test op
 ** fib
 ** closure

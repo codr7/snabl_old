@@ -15,7 +15,7 @@ namespace snabl {
     case OpCode::NOP:
     case OpCode::ONE:
     case OpCode::REC: case OpCode::RET:
-    case OpCode::STATE: case OpCode::STOP:
+    case OpCode::STATE_BEG: case OpCode::STATE_END: case OpCode::STOP:
     case OpCode::Z:
       break;
     case OpCode::CALL:
@@ -60,7 +60,8 @@ namespace snabl {
       return reg == ops::one_src(op);
     case OpCode::REC:
       return (reg > 1 && reg < Fun::ARG_COUNT);
-    case OpCode::STATE:
+    case OpCode::STATE_BEG:
+    case OpCode::STATE_END:
       return true;
     case OpCode::Z:
       return reg == ops::z_src(op);
@@ -75,7 +76,7 @@ namespace snabl {
     case OpCode::GOTO:
     case OpCode::NOP:
     case OpCode::STOP:
-    case OpCode::STATE:
+    case OpCode::STATE_BEG:
       break;
     case OpCode::BENCH:
       return reg == ops::bench_reg(op);
@@ -107,6 +108,8 @@ namespace snabl {
     case OpCode::ONE:
       return reg == ops::one_dst(op);
     case OpCode::REC:
+      return true;
+    case OpCode::STATE_END:
       return true;
     case OpCode::Z:
       return reg == ops::z_dst(op);
@@ -180,8 +183,11 @@ namespace snabl {
     case OpCode::RET:
       out << "RET " << m.frame->ret_reg;
       break;
-    case OpCode::STATE:
-      out << "STATE " << ops::state_reg_count(op);
+    case OpCode::STATE_BEG:
+      out << "STATE_BEG " << ops::state_beg_reg_count(op);
+      break;
+    case OpCode::STATE_END:
+      out << "STATE_END";
       break;
     case OpCode::Z:
       out << "Z " << ops::z_dst(op) << ' ' << ops::z_src(op);
@@ -291,8 +297,12 @@ namespace snabl {
 
     void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
 
-    void STATE(Op &op, int reg_count) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::STATE) + (reg_count << STATE_REG_COUNT_BIT));
+    void STATE_BEG(Op &op, int reg_count) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STATE_BEG) + (reg_count << STATE_BEG_REG_COUNT_BIT));
+    }
+
+    void STATE_END(Op &op, Reg reg) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STATE_END) + (reg << STATE_END_REG_BIT));
     }
 
     void Z(Op &op, Reg dst, Reg src) {
