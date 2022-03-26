@@ -30,7 +30,7 @@ namespace snabl::forms {
     if (v->type == m.abc_lib->macro_type) { return v->as<snabl::Macro *>()->emit(args, reg, pos, m); }
     if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
     Fun *fun = v->as<Fun *>();
-    ops::STATE_BEG(m.emit(), m.scope->reg_count);
+    ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
 
     for (int i = 0; i < args.size(); i++) {
       if (auto err = args[i].emit(i+1, m); err) { return err; }

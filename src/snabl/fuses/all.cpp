@@ -4,6 +4,7 @@
 #include "snabl/fuses/circle.hpp"
 #include "snabl/fuses/entry.hpp"
 #include "snabl/fuses/ret.hpp"
+#include "snabl/fuses/state.hpp"
 #include "snabl/fuses/tail_call.hpp"
 
 namespace snabl::fuses {
@@ -11,6 +12,7 @@ namespace snabl::fuses {
     while (circle(fun, m) ||
 	   entry(fun, m) ||
 	   ret(fun, m) ||
+	   state(fun, m) ||
 	   tail_call(fun, m));
   }
 }

@@ -176,7 +176,7 @@ namespace snabl {
     }
 
   STATE_BEG: {
-      begin_state(ops::state_beg_reg_count(op));
+      for (int i = 0; i < ops::state_beg_count(op); i++, begin_state(ops::state_beg_reg_count(op)));
       DISPATCH(pc+1);
     }
 

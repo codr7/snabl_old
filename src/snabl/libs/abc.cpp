@@ -139,7 +139,7 @@ namespace snabl::libs {
     bind_macro(m.sym("let"), 2,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 deque<Form> bfs = pop_form(args).as<forms::Slice>().items;
-		 ops::STATE_BEG(m.emit(), m.scope->reg_count);
+		 ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
 		 m.begin_scope();
 
 		 while (!bfs.empty()) {

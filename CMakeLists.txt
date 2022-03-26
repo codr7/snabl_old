@@ -4,7 +4,7 @@ project(snabl)
 
 set(CMAKE_CXX_COMPILER clang++)
 
-add_compile_options(-std=c++17 -stdlib=libc++ -fno-exceptions -Wall -Werror -g -O2)
+add_compile_options(-std=c++17 -stdlib=libc++ -fno-exceptions -Wno-empty-body -Wall -Werror -g -O2)
 
 file(GLOB_RECURSE src src/snabl/*.cpp)
 add_executable(snabl ${src} src/main.cpp)

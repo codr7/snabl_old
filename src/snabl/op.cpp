@@ -184,7 +184,7 @@ namespace snabl {
       out << "RET " << m.frame->ret_reg;
       break;
     case OpCode::STATE_BEG:
-      out << "STATE_BEG " << ops::state_beg_reg_count(op);
+      out << "STATE_BEG " << ops::state_beg_count(op) << ' ' << ops::state_beg_reg_count(op);
       break;
     case OpCode::STATE_END:
       out << "STATE_END";
@@ -297,8 +297,10 @@ namespace snabl {
 
     void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
 
-    void STATE_BEG(Op &op, int reg_count) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::STATE_BEG) + (reg_count << STATE_BEG_REG_COUNT_BIT));
+    void STATE_BEG(Op &op, int count, int reg_count) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::STATE_BEG) +
+			   (count << STATE_BEG_COUNT_BIT) +
+			   (reg_count << STATE_BEG_REG_COUNT_BIT));
     }
 
     void STATE_END(Op &op, Reg reg) {

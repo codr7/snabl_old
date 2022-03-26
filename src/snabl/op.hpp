@@ -55,7 +55,10 @@
 #define ONE_DST_BIT OP_CODE_BITS
 #define ONE_SRC_BIT (ONE_DST_BIT + OP_REG_BITS)
 
-#define STATE_BEG_REG_COUNT_BIT OP_CODE_BITS
+#define STATE_BEG_COUNT_BIT OP_CODE_BITS
+#define STATE_BEG_COUNT_BITS 4
+#define STATE_BEG_REG_COUNT_BIT (STATE_BEG_COUNT_BIT + STATE_BEG_COUNT_BITS)
+
 #define STATE_END_REG_BIT OP_CODE_BITS
 
 #define Z_DST_BIT OP_CODE_BITS
@@ -170,7 +173,8 @@ namespace snabl {
     
     void RET(Op &op);
     
-    void STATE_BEG(Op &op, int reg_count);
+    void STATE_BEG(Op &op, int count, int reg_count);
+    inline int state_beg_count(Op op) { return get<int, STATE_BEG_COUNT_BIT, STATE_BEG_COUNT_BITS>(op); }
     inline int state_beg_reg_count(Op op) { return get<int, STATE_BEG_REG_COUNT_BIT, OP_REG_BITS>(op); }
 
     void STATE_END(Op &op, Reg reg);
