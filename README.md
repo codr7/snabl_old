@@ -74,6 +74,15 @@ Test 42 = 42...OK
 ```
 
 ### debugging
+`dump` may be used to dump any value to `STDOUT`.
+
+```
+  (dump 42)
+
+42
+_
+```
+
 `debug` may be used to turn tracing on/off.
 
 ```

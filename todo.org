@@ -1,8 +1,4 @@
-* add tests/all/abc.sl
-** add m.include(fs path)
-** fib
-** closure
-** add include macro
+* add closure test
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
