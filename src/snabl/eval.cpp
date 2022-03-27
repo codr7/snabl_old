@@ -23,16 +23,13 @@ namespace snabl {
     static const void* dispatch[] = {
       &&BENCH, &&BRANCH,
       &&CALL, &&CALLI1, &&COPY, &&COPYS,
-      &&DEC, &&EQ,
-      &&FUN,
-      &&GOTO,
+      &&DEC, &&EQ, &&FUN, &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&MOVES,
       &&NOP, &&ONE,
       &&REC, &&RET,
       &&STATE_BEG, &&STATE_END,
-      &&TEST,
-      &&Z,
+      &&TEST, &&Z,
       /* STOP */
       &&STOP};
 

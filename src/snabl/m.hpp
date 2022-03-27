@@ -8,14 +8,16 @@
 #include <vector>
 
 #include "snabl/alloc.hpp"
-#include "snabl/state.hpp"
+#include "snabl/defer.hpp"
 #include "snabl/error.hpp"
 #include "snabl/frame.hpp"
 #include "snabl/fun.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/macro.hpp"
 #include "snabl/op.hpp"
+#include "snabl/path.hpp"
 #include "snabl/scope.hpp"
+#include "snabl/state.hpp"
 #include "snabl/sym.hpp"
 
 namespace snabl {
@@ -46,12 +48,14 @@ namespace snabl {
     Lib home_lib;
     optional<libs::Abc> abc_lib;
     Lib *lib;
+    fs::path load_path;
     
     M();
     Op &emit(int n = 1);
     optional<Error> eval(PC start_pc);
     Sym sym(string name);
     void dump_ops(PC start_pc, ostream &out);
+    optional<Error> include(fs::path path, Pos pos);
     optional<Error> use(Lib &lib, const vector<Sym> &syms, Pos pos);
     
     void ret_state(Reg reg) {

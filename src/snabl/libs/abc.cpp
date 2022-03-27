@@ -78,13 +78,16 @@ namespace snabl::libs {
 
     bind_macro(m.sym("dec"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
-		 Reg src = m.scope->find(args[0].as<forms::Id>().name)->as<Reg>();
+		 Sym id = args[0].as<forms::Id>().name;
+		 auto val = m.scope->find(id);
+		 if (!val) { return Error(pos, "Unknown id: ", id); }
+		 if (val->type != m.abc_lib->reg_type) { return Error(pos, "Invalid target: ", id); }
 
 		 types::Int::DataType delta = (args.size() == 1)
 		   ? 1
 		   : args[1].as<forms::Lit>()._val.as<types::Int::DataType>();
-		 
-		 ops::DEC(m.emit(), reg, src, delta);
+
+		 ops::DEC(m.emit(), reg, val->as<Reg>(), delta);
 		 return nullopt;
 	       });
 
@@ -145,14 +148,9 @@ namespace snabl::libs {
 		 while (!bfs.empty()) {
 		   Sym id = pop_sym(bfs);
 		   Form vf = pop_form(bfs);
-
-		   if (auto v = vf.val(m); v) {
-		     m.scope->bind(id, v->type, v->data);
-		   } else {
-		     Reg breg = m.scope->reg_count++;
-		     m.scope->bind(id, m.abc_lib->reg_type, breg);
-		     if (auto err = vf.emit(breg, m); err) { return err; }
-		   }
+		   Reg breg = m.scope->reg_count++;
+		   m.scope->bind(id, m.abc_lib->reg_type, breg);
+		   if (auto err = vf.emit(breg, m); err) { return err; }
 		 }
 
 		 for (const Form &f: args) {

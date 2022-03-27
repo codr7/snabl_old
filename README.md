@@ -64,6 +64,8 @@ Test 42 = 42...OK
 T
 ```
 
+Snabl comes with a modest but growing [regression test suite]().
+
 ### debugging
 `debug` may be used to turn tracing on/off.
 

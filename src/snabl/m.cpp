@@ -1,4 +1,7 @@
+#include <fstream>
+
 #include "snabl/m.hpp"
+#include "snabl/reader.hpp"
 
 namespace snabl {
   M::M():
@@ -34,6 +37,26 @@ namespace snabl {
       Op op = ops[i];
       out << op << endl;
     }
+  }
+
+  optional<Error> M::include(fs::path path, Pos pos) {
+    auto in_path(path.is_absolute() ? path : load_path/path);
+    ifstream in(in_path);
+    if (in.fail()) { return Error(pos, "File not found: ", in_path); }
+    PC start_pc = emit_pc;
+
+    for (;;) {
+      auto [f, err] = read_form(in, pos, *this);
+      if (err) { return err; }
+      if (!f) { break; }
+      if (err = f->emit(0, *this); err) { return err;}      
+    }
+
+    ops::STOP(emit());
+    auto prev_path(load_path);
+    load_path = path.parent_path();
+    auto restore_load_path(defer([&]() { load_path = prev_path; }));
+    return eval(start_pc);
   }
 
   optional<Error> M::use(Lib &lib, const vector<Sym> &syms, Pos pos) {
