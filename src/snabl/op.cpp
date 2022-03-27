@@ -16,6 +16,7 @@ namespace snabl {
     case OpCode::ONE:
     case OpCode::REC: case OpCode::RET:
     case OpCode::STATE_BEG: case OpCode::STATE_END: case OpCode::STOP:
+    case OpCode::TEST:
     case OpCode::Z:
       break;
     case OpCode::CALL:
@@ -41,6 +42,9 @@ namespace snabl {
     case OpCode::RET:
     case OpCode::STOP:
       break;
+    case OpCode::STATE_BEG:
+    case OpCode::STATE_END:
+      return true;
     case OpCode::BRANCH:
       return reg == ops::branch_cond(op);
     case OpCode::CALL:
@@ -63,9 +67,8 @@ namespace snabl {
       return reg == ops::one_src(op);
     case OpCode::REC:
       return (reg > 1 && reg < Fun::ARG_COUNT);
-    case OpCode::STATE_BEG:
-    case OpCode::STATE_END:
-      return true;
+    case OpCode::TEST:
+      return reg == ops::test_expected(op) || reg == ops::test_actual(op);
     case OpCode::Z:
       return reg == ops::z_src(op);
     }
@@ -80,6 +83,10 @@ namespace snabl {
     case OpCode::STOP:
     case OpCode::STATE_BEG:
       break;
+    case OpCode::RET:
+    case OpCode::REC:
+    case OpCode::STATE_END:
+      return true;
     case OpCode::BENCH:
       return reg == ops::bench_reg(op);
     case OpCode::CALLI1:
@@ -91,8 +98,6 @@ namespace snabl {
     case OpCode::LOAD_MACRO:
     case OpCode::LOAD_TYPE:
       return reg == ops::load_reg(op);
-    case OpCode::RET:
-      return true;
     case OpCode::BRANCH:
       return reg == ops::branch_reg(op);
     case OpCode::CALL:
@@ -113,10 +118,8 @@ namespace snabl {
       return reg >= ops::move_dst(op) && reg < (ops::move_dst(op) + ops::moves_len(op));
     case OpCode::ONE:
       return reg == ops::one_dst(op);
-    case OpCode::REC:
-      return true;
-    case OpCode::STATE_END:
-      return true;
+    case OpCode::TEST:
+      return reg == ops::test_result(op);
     case OpCode::Z:
       return reg == ops::z_dst(op);
     }
@@ -197,6 +200,12 @@ namespace snabl {
       break;
     case OpCode::STATE_END:
       out << "STATE_END";
+      break;
+    case OpCode::TEST:
+      out << "TEST " <<
+	ops::test_expected(op) << ' ' <<
+	ops::test_actual(op) << ' ' <<
+	ops::test_result(op);      
       break;
     case OpCode::Z:
       out << "Z " << ops::z_dst(op) << ' ' << ops::z_src(op);
@@ -326,6 +335,13 @@ namespace snabl {
 
     void STATE_END(Op &op, Reg reg) {
       op = static_cast<Op>(static_cast<Op>(OpCode::STATE_END) + (reg << STATE_END_REG_BIT));
+    }
+
+    void TEST(Op &op, Reg expected, Reg actual, Reg result) {
+      op = static_cast<Op>(static_cast<Op>(OpCode::TEST) +
+			   (expected << TEST_EXPECTED_BIT) +
+			   (actual << TEST_ACTUAL_BIT) +
+			   (result << TEST_RESULT_BIT));
     }
 
     void Z(Op &op, Reg dst, Reg src) {

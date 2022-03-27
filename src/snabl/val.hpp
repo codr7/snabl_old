@@ -22,6 +22,10 @@ namespace snabl {
     bool is_true() const { return type.imp->methods.is_true(*this); }
   };
 
+  inline bool operator ==(Val left, Val right) {
+    return (left.type == right.type) ? left.type.imp->methods.eq(left, right) : false;
+  }
+  
   ostream &operator <<(ostream &out, Val val);
 }
 

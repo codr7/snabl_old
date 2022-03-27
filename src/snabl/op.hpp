@@ -67,6 +67,10 @@
 
 #define STATE_END_REG_BIT OP_CODE_BITS
 
+#define TEST_EXPECTED_BIT OP_CODE_BITS
+#define TEST_ACTUAL_BIT (TEST_EXPECTED_BIT + OP_REG_BITS)
+#define TEST_RESULT_BIT (TEST_ACTUAL_BIT + OP_REG_BITS)
+
 #define Z_DST_BIT OP_CODE_BITS
 #define Z_SRC_BIT (Z_DST_BIT + OP_REG_BITS)
 
@@ -85,7 +89,10 @@ namespace snabl {
     GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
     MOVE, MOVES,
-    NOP, ONE, REC, RET, STATE_BEG, STATE_END, Z,
+    NOP, ONE,
+    REC, RET,
+    STATE_BEG, STATE_END,
+    TEST, Z,
     /* STOP */
     STOP
   };
@@ -193,6 +200,11 @@ namespace snabl {
     void STATE_END(Op &op, Reg reg);
     inline Reg state_end_reg(Op op) { return get<Reg, STATE_END_REG_BIT, OP_REG_BITS>(op); }
 
+    void TEST(Op &op, Reg expected, Reg actual, Reg result);
+    inline Reg test_expected(Op op) { return get<Reg, TEST_EXPECTED_BIT, OP_REG_BITS>(op); }
+    inline Reg test_actual(Op op) { return get<Reg, TEST_ACTUAL_BIT, OP_REG_BITS>(op); }
+    inline Reg test_result(Op op) { return get<Reg, TEST_RESULT_BIT, OP_REG_BITS>(op); }
+    
     void Z(Op &op, Reg dst, Reg src);
     inline Reg z_dst(Op op) { return get<Reg, Z_DST_BIT, OP_REG_BITS>(op); }
     inline Reg z_src(Op op) { return get<Reg, Z_SRC_BIT, OP_REG_BITS>(op); }

@@ -50,6 +50,41 @@ $ ./snabl
 42
 ```
 
+### tests
+`test` may be used to check the result of a piece of code,
+
+```
+(test 1 2)
+
+Test 2 = 1...FAIL
+F
+  (test 42 42)
+
+Test 42 = 42...OK
+T
+```
+
+### debugging
+`debug` may be used to turn tracing on/off.
+
+```
+ (+ 1 2)
+
+3
+  (debug)
+
+7 STOP
+T
+  (+ 1 2)
+
+8 STATE_BEG 1 9
+9 LOAD_INT1 1 1
+10 LOAD_INT1 2 2
+11 CALLI1 0 (Fun +)
+12 STOP
+3
+```
+
 ### performance
 `bench` returns elapsed time in milliseconds for specified number of repetitions. The current performance focus is identifying and fusing bytecode [patterns](https://github.com/codr7/snabl/tree/main/src/snabl/fuses).
 

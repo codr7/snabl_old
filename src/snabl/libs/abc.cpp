@@ -171,6 +171,23 @@ namespace snabl::libs {
 		 return nullopt;
 	       });
 
+    bind_macro(m.sym("test"), 1,
+	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
+		 if (auto err = pop_form(args).emit(1, m); err) { return err; }
+
+		 ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
+		 m.begin_scope();
+		 
+		 for (const Form &f: args) {
+		   if (auto err = f.emit(2, m); err) { return err; }
+		 }
+
+		 m.deref_scope(m.end_scope());
+		 ops::STATE_END(m.emit(), 2);
+		 ops::TEST(m.emit(), 1, 2, reg);
+		 return nullopt;
+	       });
+    
     bind_macro(m.sym("z?"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 if (auto err = pop_form(args).emit(1, m); err) { return err; }

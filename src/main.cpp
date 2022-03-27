@@ -10,7 +10,7 @@ int main() {
   m.use(*m.abc_lib, {}, pos);
 
   cout <<
-    "Snabl v2" << endl << endl <<
+    "Snabl v3" << endl << endl <<
     "Hit Enter twice to evaluate," << endl <<
     "Ctrl+D quits." << endl << endl;
   

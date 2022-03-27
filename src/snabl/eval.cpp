@@ -28,7 +28,11 @@ namespace snabl {
       &&GOTO,
       &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
       &&MOVE, &&MOVES,
-      &&NOP, &&ONE, &&REC, &&RET, &&STATE_BEG, &&STATE_END, &&Z,
+      &&NOP, &&ONE,
+      &&REC, &&RET,
+      &&STATE_BEG, &&STATE_END,
+      &&TEST,
+      &&Z,
       /* STOP */
       &&STOP};
 
@@ -103,8 +107,13 @@ namespace snabl {
     }
 
   EQ: {
-      optional<Val> *rs = state->regs.begin(), &left = rs[ops::eq_left(op)], &right = rs[ops::eq_right(op)];
-      rs[ops::eq_dst(op)] = Val(abc_lib->bool_type, left->type.imp->methods.eq(*left, *right));
+      optional<Val> *rs = state->regs.begin();
+
+      {
+	Val left = *rs[ops::eq_left(op)], right = *rs[ops::eq_right(op)];
+	rs[ops::eq_dst(op)] = Val(abc_lib->bool_type, left == right);
+      }
+      
       DISPATCH(pc+1);
     }
 
@@ -201,6 +210,21 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
+  TEST: {
+      auto rs = state->regs.begin();
+      cout << "Test " << *rs[ops::test_actual(op)] << " = " << *rs[ops::test_expected(op)] << "...";
+
+      if (rs[ops::test_actual(op)] == rs[ops::test_expected(op)]) {
+	rs[ops::test_result(op)] = Val(abc_lib->bool_type, true);
+	cout << "OK" << endl;
+      } else {
+	rs[ops::test_result(op)] = Val(abc_lib->bool_type, false);
+	cout << "FAIL" << endl;
+      }
+      
+      DISPATCH(pc+1);
+    }
+    
   Z: {
       optional<Val> *rs = state->regs.begin();
       rs[ops::z_dst(op)] = Val(abc_lib->bool_type, rs[ops::z_src(op)]->as<types::Int::DataType>() == 0);
