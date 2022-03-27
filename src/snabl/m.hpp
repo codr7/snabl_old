@@ -12,7 +12,6 @@
 #include "snabl/error.hpp"
 #include "snabl/frame.hpp"
 #include "snabl/fun.hpp"
-#include "snabl/glob.hpp"
 #include "snabl/libs/abc.hpp"
 #include "snabl/macro.hpp"
 #include "snabl/op.hpp"
@@ -28,7 +27,6 @@ namespace snabl {
 
     Alloc<Frame, SLAB_SIZE> frame_alloc;
     Alloc<Fun, SLAB_SIZE> fun_alloc;
-    Alloc<Glob, SLAB_SIZE> glob_alloc;
     Alloc<Macro, SLAB_SIZE> macro_alloc;
     Alloc<Scope, SLAB_SIZE> scope_alloc;
     Alloc<State, SLAB_SIZE> state_alloc;

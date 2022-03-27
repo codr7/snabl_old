@@ -1,14 +1,3 @@
-* finish globs
-** add G macro
-*** return Glob val or nil
-** add State::load(Reg, type, data)
-*** special case globs
-**** inline
-**** store in glob.val
-*** call from all load ops
-** test && readme
-(fun: get-foo [] Int (G foo))
-(let [(G foo) 35 bar (+ (get-foo) 7)] bar)
 * add GOTO fuse
 ** extend while landing on NOP/GOTO
 *** reuse drill_pc()

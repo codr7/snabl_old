@@ -8,7 +8,6 @@
 
 #include "snabl/types/bool.hpp"
 #include "snabl/types/fun.hpp"
-#include "snabl/types/glob.hpp"
 #include "snabl/types/int.hpp"
 #include "snabl/types/macro.hpp"
 #include "snabl/types/meta.hpp"
@@ -28,7 +27,6 @@ namespace snabl::libs {
     Lib(m, m.sym("abc")),
     bool_type(*this, make_shared<types::Bool>(type_id(), m.sym("Bool"))),
     fun_type(*this, make_shared<types::Fun>(type_id(), m.sym("Fun"))),
-    glob_type(*this, make_shared<types::Fun>(type_id(), m.sym("Glob"))),
     int_type(*this, make_shared<types::Int>(type_id(), m.sym("Int"))),
     macro_type(*this, make_shared<types::Macro>(type_id(), m.sym("Macro"))),
     meta_type(*this, make_shared<types::Meta>(type_id(), m.sym("Meta"))),
@@ -37,7 +35,6 @@ namespace snabl::libs {
     
     bind(m.sym("Bool"), meta_type, bool_type);
     bind(m.sym("Fun"), meta_type, fun_type);
-    bind(m.sym("Glob"), meta_type, glob_type);
     bind(m.sym("Int"), meta_type, int_type);
     bind(m.sym("Macro"), meta_type, macro_type);
     bind(m.sym("Meta"), meta_type, meta_type);
