@@ -5,6 +5,7 @@
 #include "snabl/fuses/circle.hpp"
 #include "snabl/fuses/copys.hpp"
 #include "snabl/fuses/entry.hpp"
+#include "snabl/fuses/goto.hpp"
 #include "snabl/fuses/moves.hpp"
 #include "snabl/fuses/nop.hpp"
 #include "snabl/fuses/ret.hpp"
@@ -17,6 +18,7 @@ namespace snabl::fuses {
 	   circle(fun, m) ||
 	   copys(fun, m) ||
 	   entry(fun, m) ||
+	   _goto(fun, m) ||
 	   moves(fun, m) ||
 	   nop(fun, m) ||
 	   ret(fun, m) ||
