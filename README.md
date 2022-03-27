@@ -64,7 +64,7 @@ Test 42 = 42...OK
 T
 ```
 
-Snabl comes with a modest but growing [regression test suite]().
+Snabl comes with a modest but growing [regression test suite](https://github.com/codr7/snabl/blob/main/test/all.sl).
 
 ### debugging
 `debug` may be used to turn tracing on/off.
