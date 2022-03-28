@@ -52,7 +52,7 @@ $ ./snabl
 ```
 
 ### closures
-Methods are closures.
+Functions are closures.
 
 ```
   (let [foo (let [bar 42]
