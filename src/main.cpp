@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 
   if (argc == 1) {
     cout <<
-      "Snabl v3" << endl << endl <<
+      "Snabl v4" << endl << endl <<
       "Hit Enter twice to evaluate," << endl <<
       "Ctrl+D quits." << endl << endl;
     
