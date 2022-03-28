@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "snabl/defer.hpp"
 #include "snabl/m.hpp"
 #include "snabl/reader.hpp"
 

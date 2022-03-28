@@ -1,4 +1,3 @@
-* add closure test
 * improve goto fuse
 ** fuse all skiped ops to goto
 * add BRANCH if pc

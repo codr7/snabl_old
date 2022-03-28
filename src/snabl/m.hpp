@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "snabl/alloc.hpp"
-#include "snabl/defer.hpp"
 #include "snabl/error.hpp"
 #include "snabl/frame.hpp"
 #include "snabl/fun.hpp"

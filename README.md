@@ -51,6 +51,19 @@ $ ./snabl
 42
 ```
 
+### closures
+Methods are closures.
+
+```
+  (let [foo (let [bar 42]
+              (fun: baz [] Int bar)
+              baz)
+        bar 0]
+    (foo))
+
+42
+```
+
 ### tests
 `test` may be used to check the result of evaluating a block of code.
 

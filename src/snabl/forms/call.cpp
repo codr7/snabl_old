@@ -27,21 +27,27 @@ namespace snabl::forms {
     Sym target_id = target.as<Id>().name;
     optional<Val> v(m.scope->find(target_id));
     if (!v) { return Error(pos, "Unknown call target: ", target_id); }
+    
     if (v->type == m.abc_lib->macro_type) { return v->as<snabl::Macro *>()->emit(args, reg, pos, m); }
-    if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
-    Fun *fun = v->as<Fun *>();
+
     ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
 
     for (int i = 0; i < args.size(); i++) {
       if (auto err = args[i].emit(i+1, m); err) { return err; }
     }
 
-    if (reinterpret_cast<Op>(fun) <= CALLI1_TARGET_MAX) {
-      ops::CALLI1(m.emit(), reg, fun);
-    } else {
-      Reg fun_reg = m.scope->reg_count++;
-      ops::LOAD_FUN(m.emit(2), fun_reg, fun);
-      ops::CALL(m.emit(), fun_reg, reg);
+    if (v->type == m.abc_lib->reg_type) { ops::CALL(m.emit(), v->as<Reg>(), reg); }
+    else {
+      if (v->type != m.abc_lib->fun_type) { return Error(pos, "Invalid call target: ", *v); }
+      Fun *fun = v->as<Fun *>();
+      
+      if (reinterpret_cast<Op>(fun) <= CALLI1_TARGET_MAX) {
+	ops::CALLI1(m.emit(), reg, fun);
+      } else {
+	Reg fun_reg = m.scope->reg_count++;
+	ops::LOAD_FUN(m.emit(2), fun_reg, fun);
+	ops::CALL(m.emit(), fun_reg, reg);
+      }
     }
     
     return nullopt;

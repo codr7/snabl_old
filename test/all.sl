@@ -14,6 +14,14 @@
 (test 42 (let [foo 35 bar (+ foo 7)] bar))
 
 
+(test 42
+  (let [foo (let [bar 42]
+              (fun: baz [] Int bar)
+              baz)
+        bar 0]
+    (foo)))
+    
+
 (test 55
 
   (fun: fib-rec [n Int] Int
