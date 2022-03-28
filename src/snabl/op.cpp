@@ -16,7 +16,7 @@ namespace snabl {
     case OpCode::ONE:
     case OpCode::REC: case OpCode::RET:
     case OpCode::STATE_BEG: case OpCode::STATE_END: case OpCode::STOP:
-    case OpCode::TEST:
+    case OpCode::TEST: case OpCode::TRACE:
     case OpCode::Z:
       break;
     case OpCode::CALL:
@@ -40,6 +40,7 @@ namespace snabl {
     case OpCode::LOAD_TYPE:
     case OpCode::NOP:
     case OpCode::RET:
+    case OpCode::TRACE:
     case OpCode::STOP:
       break;
     case OpCode::STATE_BEG:
@@ -82,6 +83,7 @@ namespace snabl {
     case OpCode::NOP:
     case OpCode::STOP:
     case OpCode::STATE_BEG:
+    case OpCode::TRACE:
       break;
     case OpCode::RET:
     case OpCode::REC:
@@ -127,7 +129,10 @@ namespace snabl {
     return false;
   }
 
-  void op_dump(Op op, ostream &out, M &m) {
+  void op_trace(PC pc, ostream &out, M &m) {
+    out << pc << ' ';					\
+    Op op = m.ops[pc];
+    
     switch (op_code(op)) {
     case OpCode::BENCH:
       out << "BENCH " << ops::bench_reg(op) << ' ' << ops::bench_end(op);
@@ -212,6 +217,9 @@ namespace snabl {
 	ops::test_actual(op) << ' ' <<
 	ops::test_result(op);      
       break;
+    case OpCode::TRACE:
+      out << "TRACE";
+      break;
     case OpCode::Z:
       out << "Z " << ops::z_dst(op) << ' ' << ops::z_src(op);
       break;
@@ -219,6 +227,8 @@ namespace snabl {
       out << "STOP";
       break;
     }
+
+    out << endl;
   }
 
   namespace ops {    
@@ -349,6 +359,8 @@ namespace snabl {
 			   (actual << TEST_ACTUAL_BIT) +
 			   (result << TEST_RESULT_BIT));
     }
+
+    void TRACE(Op &op) { op = static_cast<Op>(OpCode::TRACE); }
 
     void Z(Op &op, Reg dst, Reg src) {
       op = static_cast<Op>(static_cast<Op>(OpCode::Z) + (dst << Z_DST_BIT) + (src << Z_SRC_BIT));

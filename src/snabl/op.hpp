@@ -92,7 +92,8 @@ namespace snabl {
     NOP, ONE,
     REC, RET,
     STATE_BEG, STATE_END,
-    TEST, Z,
+    TEST, TRACE,
+    Z,
     /* STOP */
     STOP
   };
@@ -104,7 +105,7 @@ namespace snabl {
   PC op_len(Op op);
   bool op_reads(Op op, Reg reg);
   bool op_writes(Op op, Reg reg);
-  void op_dump(Op op, ostream &out, M &m);
+  void op_trace(PC pc, ostream &out, M &m);
 
   namespace ops {
     template <typename T, size_t pos, size_t width>
@@ -205,7 +206,9 @@ namespace snabl {
     inline Reg test_expected(Op op) { return get<Reg, TEST_EXPECTED_BIT, OP_REG_BITS>(op); }
     inline Reg test_actual(Op op) { return get<Reg, TEST_ACTUAL_BIT, OP_REG_BITS>(op); }
     inline Reg test_result(Op op) { return get<Reg, TEST_RESULT_BIT, OP_REG_BITS>(op); }
-    
+
+    void TRACE(Op &op);
+
     void Z(Op &op, Reg dst, Reg src);
     inline Reg z_dst(Op op) { return get<Reg, Z_DST_BIT, OP_REG_BITS>(op); }
     inline Reg z_src(Op op) { return get<Reg, Z_SRC_BIT, OP_REG_BITS>(op); }

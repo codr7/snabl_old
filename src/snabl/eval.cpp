@@ -4,17 +4,8 @@
 #include "snabl/m.hpp"
 #include "snabl/timer.hpp"
 
-#define DISPATCH(next_pc) {				\
-    op = ops[(pc = (next_pc))];				\
-							\
-    if (debug) {					\
-      cout << pc << ' ';				\
-      op_dump(op, cout, *this);				\
-      cout << endl;					\
-    }							\
-							\
-    goto *dispatch[static_cast<int>(op_code(op))];	\
-  }
+#define DISPATCH(next_pc)						\
+  goto *dispatch[static_cast<int>(op_code(op = ops[pc = (next_pc)]))]	\
 
 namespace snabl {
   using namespace std;
@@ -29,7 +20,8 @@ namespace snabl {
       &&NOP, &&ONE,
       &&REC, &&RET,
       &&STATE_BEG, &&STATE_END,
-      &&TEST, &&Z,
+      &&TEST, &&TRACE,
+      &&Z,
       /* STOP */
       &&STOP};
 
@@ -219,6 +211,11 @@ namespace snabl {
 	cout << "FAIL" << endl;
       }
       
+      DISPATCH(pc+1);
+    }
+
+  TRACE: {
+      op_trace(pc+1, cout, *this);
       DISPATCH(pc+1);
     }
     

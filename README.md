@@ -97,23 +97,28 @@ Test 42 = 42...OK
 _
 ```
 
-`debug` may be used to turn tracing on/off.
+`trace` may be used to turn tracing on/off.
 
 ```
- (+ 1 2)
+ (trace)
 
-3
-  (debug)
-
-7 STOP
 T
   (+ 1 2)
 
-8 STATE_BEG 1 9
-9 LOAD_INT1 1 1
-10 LOAD_INT1 2 2
-11 CALLI1 0 (Fun +)
+4 STATE_BEG 1 9
+6 LOAD_INT1 1 1
+8 LOAD_INT1 2 2
+10 CALLI1 0 (Fun +)
 12 STOP
+3
+  (trace)
+
+14 STATE_BEG 1 9
+16 CALLI1 0 (Fun trace)
+18 STOP
+F
+  (+ 1 2)
+
 3
 ```
 

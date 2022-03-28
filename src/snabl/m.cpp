@@ -14,7 +14,8 @@ namespace snabl {
     begin_state(-1);
   }
 
-  Op &M::emit(int n) {
+  Op &M::emit(int n, bool skip_trace) {
+    if (trace && !skip_trace) { ops::TRACE(emit(1, true)); }
     Op &op = ops[emit_pc++];
     emit_pc += n-1;
     return op;

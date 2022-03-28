@@ -21,7 +21,7 @@
 
 namespace snabl {
   struct M {
-    bool debug = false;
+    bool trace = false;
 
     static const int OP_COUNT = 1024;
     static const int SLAB_SIZE = 64;
@@ -50,7 +50,7 @@ namespace snabl {
     fs::path load_path;
     
     M();
-    Op &emit(int n = 1);
+    Op &emit(int n = 1, bool skip_trace = false);
     optional<Error> eval(PC start_pc);
     Sym sym(string name);
     void dump_ops(PC start_pc, ostream &out);

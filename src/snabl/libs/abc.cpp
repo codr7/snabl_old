@@ -67,15 +67,6 @@ namespace snabl::libs {
 		 return nullopt;
 	       });
     
-    bind_fun(m.sym("debug"),
-	     {},
-	     bool_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       m.debug = !m.debug;
-	       m.state->regs[ret_reg] = Val(bool_type, m.debug);
-	       return Fun::Result(ret_pc, nullopt);
-	     });
-
     bind_macro(m.sym("dec"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 Sym id = args[0].as<forms::Id>().name;
@@ -186,6 +177,15 @@ namespace snabl::libs {
 		 ops::TEST(m.emit(), 1, 2, reg);
 		 return nullopt;
 	       });
+
+    bind_fun(m.sym("trace"),
+	     {},
+	     bool_type,
+	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
+	       m.trace = !m.trace;
+	       m.state->regs[ret_reg] = Val(bool_type, m.trace);
+	       return Fun::Result(ret_pc, nullopt);
+	     });
     
     bind_macro(m.sym("z?"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
