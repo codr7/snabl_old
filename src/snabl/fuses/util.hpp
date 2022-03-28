@@ -10,7 +10,7 @@ namespace snabl {
 namespace snabl::fuses {
   using namespace snabl;
   
-  PC drill_pc(PC pc, M &m);
+  vector<PC> drill_pc(PC pc, M &m);
 }
 
 #endif

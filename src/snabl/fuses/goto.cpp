@@ -8,18 +8,20 @@ namespace snabl::fuses {
     int n = 0;
     
     for (PC pc1 = fun->start_pc; pc1 < m.emit_pc;) {
-      Op &op1 = m.ops[pc1];
+      Op op1 = m.ops[pc1];
 
       if (op_code(op1) == OpCode::GOTO) {
 	pc1 = ops::goto_pc(op1);
 	
-	if (PC pc2 = drill_pc(pc1, m); pc2 != pc1) {
-	  cout << "Fusing " << fun << " GOTO: " << pc2 << endl;
-	  ops::GOTO(op1, pc2);
-	  n++;
+	if (auto pcs = drill_pc(pc1, m); pcs.back() != pc1) {
+	  for (PC pc2: pcs) {
+	    cout << "Fusing " << fun << " GOTO: " << pc2 << endl;
+	    ops::GOTO(m.ops[pc2], pc2);
+	    n++;
+	  }
 	}
       }
-
+      
       pc1 += op_len(op1);
     }
 

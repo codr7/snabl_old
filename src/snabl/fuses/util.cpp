@@ -2,22 +2,26 @@
 #include "snabl/fuses/util.hpp"
 
 namespace snabl::fuses {
-  PC drill_pc(PC pc, M &m) {
+ vector<PC> drill_pc(PC pc, M &m) {
+   vector<PC> out;
+   out.push_back(pc);
+   
     while (pc < m.emit_pc) {
       Op op = m.ops[pc];
 
       switch (op_code(op)) {
       case OpCode::NOP:
-	pc++;
+	out.push_back(pc++);
 	break;
       case OpCode::GOTO:
+	out.push_back(pc);
 	pc = ops::goto_pc(op);
 	break;
       default:
-	return pc;
+	return out;
       }
     }
 
-    return pc;
+    return out;
   }
 }

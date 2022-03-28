@@ -1,5 +1,3 @@
-* improve goto fuse
-** fuse all skiped ops to goto
 * add BRANCH if pc
 ** default +1
 ** fuse if like else
@@ -40,3 +38,5 @@
 ** move fuses into M
 * ucp
 * raygui<
+
+(let [foo 1 bar 2])
