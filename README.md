@@ -52,7 +52,7 @@ $ ./snabl
 ```
 
 ### tests
-`test` may be used to check the result of a piece of code,
+`test` may be used to check the result of evaluating a block of code.
 
 ```
 (test 1 2)
