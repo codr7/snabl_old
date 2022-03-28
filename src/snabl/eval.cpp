@@ -50,7 +50,7 @@ namespace snabl {
     
   BRANCH: {
       optional<Val> &c = state->regs[ops::branch_cond(op)];
-      DISPATCH(c->is_true() ? pc+1 : ops::branch_else(op));
+      DISPATCH(c->is_true() ? ops::branch_if_pc(op) : ops::branch_else_pc(op));
     }
 
   CALL: {

@@ -125,15 +125,16 @@ namespace snabl::libs {
 		 Reg cond = m.scope->reg_count++;
 		 if (auto err = args[0].emit(cond, m); err) { return err; }
 		 Op &branch = m.emit();
+		 PC if_pc = m.emit_pc;
 		 if (auto err = args[1].emit(reg, m); err) { return err; }
 
 		 if (args.size() > 2) {
 		   Op &skip = m.emit();
-		   ops::BRANCH(branch, cond, reg, m.emit_pc);
+		   ops::BRANCH(branch, cond, reg, if_pc, m.emit_pc);
 		   if (auto err = args[2].emit(reg, m); err) { return err; }
 		   ops::GOTO(skip, m.emit_pc);
 		 } else {
-		   ops::BRANCH(branch, cond, reg, m.emit_pc);		   
+		   ops::BRANCH(branch, cond, reg, if_pc, m.emit_pc);		   
 		 }
 		 
 		 return nullopt;

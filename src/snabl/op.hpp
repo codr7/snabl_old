@@ -15,7 +15,8 @@
 
 #define BRANCH_COND_BIT OP_CODE_BITS
 #define BRANCH_REG_BIT (BRANCH_COND_BIT + OP_REG_BITS)
-#define BRANCH_ELSE_BIT (BRANCH_REG_BIT + OP_REG_BITS)
+#define BRANCH_IF_BIT (BRANCH_REG_BIT + OP_REG_BITS)
+#define BRANCH_ELSE_BIT (BRANCH_IF_BIT + OP_PC_BITS)
 
 #define CALL_TARGET_BIT OP_CODE_BITS
 #define CALL_REG_BIT (CALL_TARGET_BIT + OP_REG_BITS)
@@ -85,8 +86,7 @@ namespace snabl {
   enum class OpCode {
     BENCH, BRANCH,
     CALL, CALLI1, COPY, COPYS,
-    DEC, EQ, FUN,
-    GOTO,
+    DEC, EQ, FUN, GOTO,
     LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
     MOVE, MOVES,
     NOP, ONE,
@@ -114,10 +114,11 @@ namespace snabl {
     inline Reg bench_reg(Op op) { return get<Reg, BENCH_REG_BIT, OP_REG_BITS>(op); }
     inline PC bench_end(Op op) { return get<PC, BENCH_END_BIT, OP_PC_BITS>(op); }
 
-    void BRANCH(Op &op, Reg cond, Reg reg, PC else_pc);
+    void BRANCH(Op &op, Reg cond, Reg reg, PC if_pc, PC else_pc);
     inline Reg branch_cond(Op op) { return get<Reg, BRANCH_COND_BIT, OP_REG_BITS>(op); }
     inline Reg branch_reg(Op op) { return get<Reg, BRANCH_REG_BIT, OP_REG_BITS>(op); }
-    inline PC branch_else(Op op) { return get<PC, BRANCH_ELSE_BIT, OP_PC_BITS>(op); }
+    inline PC branch_if_pc(Op op) { return get<PC, BRANCH_IF_BIT, OP_PC_BITS>(op); }
+    inline PC branch_else_pc(Op op) { return get<PC, BRANCH_ELSE_BIT, OP_PC_BITS>(op); }
     
     void CALL(Op &op, Reg target, Reg reg);
     inline Reg call_target(Op op) { return get<Reg, CALL_TARGET_BIT, OP_REG_BITS>(op); }

@@ -133,7 +133,12 @@ namespace snabl {
       out << "BENCH " << ops::bench_reg(op) << ' ' << ops::bench_end(op);
       break;
     case OpCode::BRANCH:
-      out << "BRANCH " << ops::branch_cond(op) << ' ' << ops::branch_reg(op) << ' ' << ops::branch_else(op);
+      out << "BRANCH " <<
+	ops::branch_cond(op) << ' ' <<
+	ops::branch_reg(op) << ' ' <<
+	ops::branch_if_pc(op) << ' ' <<
+	ops::branch_else_pc(op);
+      
       break;
     case OpCode::CALL:
       out << "CALL " << ops::call_target(op) << ' ' << ops::call_reg(op);
@@ -223,10 +228,11 @@ namespace snabl {
 			   (end_pc << BENCH_END_BIT));
     }
     
-    void BRANCH(Op &op, Reg cond, Reg reg, PC else_pc) {
+    void BRANCH(Op &op, Reg cond, Reg reg, PC if_pc, PC else_pc) {
       op = static_cast<Op>(static_cast<Op>(OpCode::BRANCH) +
 			   (cond << BRANCH_COND_BIT) +
 			   (reg << BRANCH_REG_BIT) +
+			   (if_pc << BRANCH_IF_BIT) +
 			   (else_pc << BRANCH_ELSE_BIT));
     }
 
