@@ -85,7 +85,7 @@ namespace snabl::libs {
     bind_fun(m.sym("dump"),
 	     {{m.sym("x"), int_type}},
 	     nil_type,
-	     [](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
+	     [](Fun &fun, PC ret_pc, M &m) {
 	       cout << m.state->get(1) << endl;
 	       return Fun::Result(ret_pc, nullopt);
 	     });
@@ -189,9 +189,9 @@ namespace snabl::libs {
     bind_fun(m.sym("trace"),
 	     {},
 	     bool_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
+	     [this](Fun &fun, PC ret_pc, M &m) {
 	       m.trace = !m.trace;
-	       m.state->set(ret_reg, Val(bool_type, m.trace));
+	       m.state->set(0, Val(bool_type, m.trace));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
     
@@ -206,10 +206,10 @@ namespace snabl::libs {
     bind_fun(m.sym("+"),
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {	       
-	       m.state->set(ret_reg, Val(int_type,
-					 static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() +
-									   m.state->get(2).as<types::Int::DataType>())));
+	     [this](Fun &fun, PC ret_pc, M &m) {	       
+	       m.state->set(0, Val(int_type,
+				   static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() +
+								     m.state->get(2).as<types::Int::DataType>())));
 			    
 	       return Fun::Result(ret_pc, nullopt);
 	     });
@@ -217,10 +217,10 @@ namespace snabl::libs {
     bind_fun(m.sym("-"),
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       m.state->set(ret_reg, Val(int_type,
-					 static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() -
-									   m.state->get(2).as<types::Int::DataType>())));
+	     [this](Fun &fun, PC ret_pc, M &m) {
+	       m.state->set(0, Val(int_type,
+				   static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() -
+								     m.state->get(2).as<types::Int::DataType>())));
 			    
 	       return Fun::Result(ret_pc, nullopt);
 	     });
@@ -228,8 +228,8 @@ namespace snabl::libs {
     bind_fun(m.sym("<"),
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     bool_type,
-	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       m.state->set(ret_reg,
+	     [this](Fun &fun, PC ret_pc, M &m) {
+	       m.state->set(0,
 			    Val(bool_type,
 				m.state->get(1).as<types::Int::DataType>() < m.state->get(2).as<types::Int::DataType>()));
 	       

@@ -26,12 +26,12 @@ namespace snabl {
     };
 
     using Result = pair<PC, optional<Error>>;
-    using Body = function<Result (Fun &fun, Reg ret_reg, PC ret_pc, M &m)>;
+    using Body = function<Result (Fun &fun, PC ret_pc, M &m)>;
     static const int ARG_COUNT = 8;
     
     Fun(Sym name, const vector<Arg> &args, Type ret_type, Body body);
     optional<Error> emit(deque<Form> body, Reg reg, M &m);
-    pair<PC, optional<Error>> call(Reg reg, PC ret_pc, M &m);
+    pair<PC, optional<Error>> call(Reg ret_reg, PC ret_pc, M &m);
     
     Sym name;
     array<Arg, ARG_COUNT> args;

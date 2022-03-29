@@ -30,27 +30,23 @@ namespace snabl {
     emit_reg = reg;
     
     for (auto f: body) {
-      if (optional<Error> err = f.emit(reg, m); err) { return err; }
+      if (optional<Error> err = f.emit(emit_reg, m); err) { return err; }
     }
 
     reg_count = m.scope->reg_count;
     m.deref_scope(m.end_scope());
-    ops::RET(m.emit(), reg);
+    ops::RET(m.emit(), emit_reg);
     ops::FUN(op, reg, m.emit_pc);
     fuses::all(this, m);
-
-    this->body = [this](Fun &self, Reg ret_reg, PC ret_pc, M &m) {
-      State *new_state = m.begin_state();
-      copy(state->_regs.begin()+ARG_COUNT+1, state->_regs.begin()+reg_count, new_state->_regs.begin()+ARG_COUNT+1);
-      m.begin_frame(this, ret_reg, ret_pc);
-      return pair<PC, optional<Error>>(start_pc, nullopt);
-    };
-      
     return nullopt;
   }
 
-  pair<PC, optional<Error>> Fun::call(Reg reg, PC ret_pc, M &m) {
-    return body(*this, reg, ret_pc, m);
+  pair<PC, optional<Error>> Fun::call(Reg ret_reg, PC ret_pc, M &m) {
+    if (body) { return body(*this, ret_pc, m); }
+    State *new_state = m.begin_state();
+    copy(state->_regs.begin()+ARG_COUNT+1, state->_regs.begin()+reg_count, new_state->_regs.begin()+ARG_COUNT+1);
+    m.begin_frame(this, ret_reg, ret_pc);
+    return pair<PC, optional<Error>>(start_pc, nullopt);
   }
 
   ostream &operator <<(ostream &out, Fun *val) {

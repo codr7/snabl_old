@@ -1,7 +1,3 @@
-* remove fun call ret reg
-** always use 0
-** move if needed in call ops
-** remove optional arg to m.ret_state()
 * add quote reader
 ** add sym type
 ** add form type
@@ -34,19 +30,4 @@
 * add Fuse type
 ** move fuses into M
 * ucp
-* raygui<
-
-13 Z 12 1
-15 BRANCH 12 0 16 21
-23 ONE 13 1
-25 BRANCH 13 0 26 30
-31 STATE_BEG 1 14
-33 DEC 1 9 1
-35 COPY 2 11
-37 STATE_BEG 1 14
-39 COPY 1 10
-41 COPY 2 11
-43 CALLI1 3 (Fun +)
-45 REC
-9 COPYS 9 1 3
-11 NOP
+* raygui

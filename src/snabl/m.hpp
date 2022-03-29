@@ -57,10 +57,18 @@ namespace snabl {
     optional<Error> include(fs::path path, Pos pos);
     optional<Error> use(Lib &lib, const vector<Sym> &syms, Pos pos);
     
-    void ret_state(Reg reg1, optional<Reg> reg2 = nullopt) {
+    void ret_state(Reg dst, Reg src = -1) {
+      if (src == -1) { src = dst; }
       State *old = end_state();
-      state->set(reg1, move(old->get(reg1)));
-      if (reg2 && *reg2 != reg1) { state->set(*reg2, move(old->get(*reg2))); }
+
+      if (dst == src) {
+	state->set(src, move(old->get(src)));
+      } else {
+	Val v = move(old->get(src));
+	state->set(src, v);
+	state->set(dst, move(v));
+      }
+      
       deref_state(old);
     }
 
@@ -114,10 +122,6 @@ namespace snabl {
     }
 
     Frame *end_frame() {
-      if (frame->target->emit_reg != frame->ret_reg) {
-	state->set(frame->ret_reg, move(state->get(frame->target->emit_reg)));
-      }
-
       Frame *old = frame;
       frame = frame->outer;
       return old;
