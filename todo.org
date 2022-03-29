@@ -1,10 +1,12 @@
-* handle STATE_END in state fuse
-** convert empty states to GOTO
 * profile
 * add multi id support to fun arg list
 ** n a b Int
 * add fun macro
 ** create lambda
+* remove fun call ret reg
+** always use 0
+** move if needed in call ops
+** remove optional arg to m.ret_state()
 * add CALLI2 op
 ** fun as separate op
 * add LOAD_NIL op

@@ -26,7 +26,7 @@ namespace snabl {
       m.scope->bind(args[i].name, m.abc_lib->reg_type, m.scope->reg_count + i);
     }
 
-    ops::MOVES(m.emit(), m.scope->reg_count, Reg(1), arg_count);
+    if (arg_count) { ops::MOVES(m.emit(), m.scope->reg_count, Reg(1), arg_count); }
     m.scope->reg_count += arg_count;
     emit_reg = reg;
     

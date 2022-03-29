@@ -191,7 +191,7 @@ namespace snabl {
       out << "MOVE " << ops::move_dst(op) << ' ' << ops::move_src(op);
       break;
     case OpCode::MOVES:
-      out << "MOVES " << ops::move_dst(op) << ' ' << ops::move_src(op) << ops::moves_len(op);
+      out << "MOVES " << ops::move_dst(op) << ' ' << ops::move_src(op) << ' ' << ops::moves_len(op);
       break;
     case OpCode::NOP:
       out << "NOP";

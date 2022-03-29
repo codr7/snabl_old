@@ -31,7 +31,7 @@ The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common 
 The codebase is pushing `3`kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
 
 ### setup
-Building the project requires a C++17-compiler and CMake, the following shell spell builds and starts the [REPL](https://github.com/codr7/snabl/blob/main/src/snabl/repl.cpp):
+Building the project requires a C++17-compiler and CMake, the following shell spell builds and starts the [REPL](https://github.com/codr7/snabl/blob/main/src/snabl/repl.cpp); `rlwrap` is not recommended but not required.
 
 ```
 $ snabl
@@ -39,7 +39,7 @@ $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ ./snabl
+$ ./rlwrap snabl
 ```
 
 ### bindings
