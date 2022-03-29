@@ -30,7 +30,6 @@ namespace snabl {
   bool op_reads(Op op, Reg reg) {
     switch (op_code(op)) {
     case OpCode::BENCH:
-    case OpCode::CALLI1:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL:
     case OpCode::LOAD_FUN:
@@ -40,15 +39,17 @@ namespace snabl {
     case OpCode::LOAD_TYPE:
     case OpCode::NOP:
     case OpCode::TRACE:
+    case OpCode::STATE_BEG:
     case OpCode::STATE_END:
     case OpCode::STOP:
       break;
-    case OpCode::STATE_BEG:
-      return true;
     case OpCode::BRANCH:
       return reg == ops::branch_cond(op);
+    case OpCode::CALLI1:
+    case OpCode::REC:
+      return (reg >= 1 && reg < Fun::ARG_COUNT+1);
     case OpCode::CALL:
-      return (reg > 1 && reg < Fun::ARG_COUNT) || (reg == ops::call_target(op));
+      return (reg >= 1 && reg < Fun::ARG_COUNT+1) || (reg == ops::call_target(op));
     case OpCode::COPY:
       return reg == ops::copy_src(op);
     case OpCode::COPYS:
@@ -67,8 +68,6 @@ namespace snabl {
       return reg == ops::one_src(op);
     case OpCode::RET:
       return reg == ops::ret_reg(op);
-    case OpCode::REC:
-      return (reg > 1 && reg < Fun::ARG_COUNT);
     case OpCode::TEST:
       return reg == ops::test_expected(op) || reg == ops::test_actual(op);
     case OpCode::Z:
@@ -82,13 +81,12 @@ namespace snabl {
     switch (op_code(op)) {
     case OpCode::GOTO:
     case OpCode::NOP:
+    case OpCode::REC:
     case OpCode::STOP:
     case OpCode::STATE_BEG:
     case OpCode::STATE_END:
     case OpCode::TRACE:
       break;
-    case OpCode::REC:
-      return true;
     case OpCode::BENCH:
       return reg == ops::bench_reg(op);
     case OpCode::CALLI1:

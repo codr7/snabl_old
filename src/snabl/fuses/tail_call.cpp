@@ -23,11 +23,13 @@ namespace snabl::fuses {
 	pc++;
 	break;
       case OpCode::NOP:
+      case OpCode::TRACE:
 	pc++;
 	break;
       case OpCode::RET:
 	for (PC rpc: rpcs) {
-	  cout << "Fusing " << fun << " TAIL CALL: " << rpc << endl;
+	  cout << "Fusing " << fun << " TAIL CALL: ";
+	  op_trace(rpc, cout, m);
 	  ops::REC(m.ops[rpc]);
 	  n++;
 	}

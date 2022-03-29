@@ -17,7 +17,8 @@ namespace snabl::fuses {
 	if ((op_code(op2) == OpCode::COPY || op_code(op2) == OpCode::MOVE) &&
 	    ops::copy_src(op2) == ops::copy_dst(op1) &&
 	    ops::copy_dst(op2) == ops::copy_src(op1)) {
-	  cout << "Fusing " << fun << " CIRCLE: " << pc2 << endl;
+	  cout << "Fusing " << fun << " CIRCLE: ";
+	  op_trace(pc2, cout, m);
 	  if (op_code(op1) == OpCode::MOVE) { ops::COPY(op1, ops::move_dst(op1), ops::move_src(op1)); }
 	  ops::NOP(op2);
 	  n++;

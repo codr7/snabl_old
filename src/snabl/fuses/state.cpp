@@ -21,6 +21,7 @@ namespace snabl::fuses {
 	    pc2 = ops::goto_pc(op2);
 	    break;
 	  case OpCode::NOP:
+	  case OpCode::TRACE:
 	    pc2++;
 	    break;
 	  case OpCode::STATE_BEG:
@@ -33,7 +34,8 @@ namespace snabl::fuses {
 	}
 
 	for (PC pc: pcs) {
-	  cout << "Fusing " << fun << " STATE: " << pc << endl;
+	  cout << "Fusing " << fun << " STATE: ";
+	  op_trace(pc, cout, m);
 	  ops::NOP(m.ops[pc]);
 	  n++;
 	}

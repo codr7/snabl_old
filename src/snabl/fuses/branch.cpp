@@ -15,7 +15,8 @@ namespace snabl::fuses {
 	bool changed = false;
 	
 	if (if_pc != ops::branch_if_pc(b)) {
-	  cout << "Fusing " << fun << " BRANCH IF: " << if_pc << endl;
+	  cout << "Fusing " << fun << " BRANCH IF: ";
+	  op_trace(if_pc, cout, m);
 	  changed = true;
 	  n++;
 	}
@@ -23,7 +24,8 @@ namespace snabl::fuses {
 	PC else_pc = drill_pc(ops::branch_else_pc(b), m).back();
 
 	if (else_pc != ops::branch_else_pc(b)) {
-	  cout << "Fusing " << fun << " BRANCH ELSE: " << else_pc << endl;
+	  cout << "Fusing " << fun << " BRANCH ELSE: ";
+	  op_trace(else_pc, cout, m);
 	  changed = true;
 	  n++;
 	}

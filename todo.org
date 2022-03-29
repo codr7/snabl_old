@@ -1,3 +1,5 @@
+* handle STATE_END in state fuse
+** convert empty states to GOTO
 * profile
 * add multi id support to fun arg list
 ** n a b Int

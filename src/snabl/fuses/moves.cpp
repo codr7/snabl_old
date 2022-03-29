@@ -29,7 +29,8 @@ namespace snabl::fuses {
 	  ops::MOVES(op1, ops::copy_dst(op1), ops::copy_src(op1), nops--);
 	  
 	  for (PC pc2 = pc1+1; nops; nops--, pc2++) {
-	    cout << "Fusing " << fun << " MOVES: " << pc2 << endl;
+	    cout << "Fusing " << fun << " MOVES: ";
+	    op_trace(pc2, cout, m);
 	    ops::NOP(m.ops[pc2]);
 	  }
 	}

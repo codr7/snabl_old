@@ -6,20 +6,26 @@ namespace snabl::fuses {
   int entry(Fun *fun, M &m) {
     int n = 0;
     bool done = false;
+    PC pc = fun->start_pc;
     
-    while (!done && fun->start_pc < m.emit_pc) {
-      Op op = m.ops[fun->start_pc];
+    while (!done && pc < m.emit_pc) {
+      Op op = m.ops[pc];
       
       switch (op_code(op)) {
       case OpCode::GOTO:
-	fun->start_pc = ops::goto_pc(op);
-	cout << "Fusing " << fun << " ENTRY: " << fun->start_pc << endl;
+	pc = fun->start_pc = ops::goto_pc(op);
+	cout << "Fusing " << fun << " ENTRY: ";
+	op_trace(pc, cout, m);
 	n++;
 	break;
       case OpCode::NOP:
-	fun->start_pc++;
-	cout << "Fusing " << fun << " ENTRY: " << fun->start_pc << endl;
+	pc = ++fun->start_pc;
+	cout << "Fusing " << fun << " ENTRY: ";
+	op_trace(pc, cout, m);
 	n++;
+	break;
+      case OpCode::TRACE:
+	pc++;
 	break;
       default:
 	done = true;

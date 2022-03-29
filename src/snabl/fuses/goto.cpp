@@ -15,7 +15,8 @@ namespace snabl::fuses {
 	
 	if (auto pcs = drill_pc(pc1, m); pcs.back() != pc1) {
 	  for (PC pc2: pcs) {
-	    cout << "Fusing " << fun << " GOTO: " << pc2 << endl;
+	    cout << "Fusing " << fun << " GOTO: ";
+	    op_trace(pc2, cout, m);
 	    ops::GOTO(m.ops[pc2], pc2);
 	    n++;
 	  }

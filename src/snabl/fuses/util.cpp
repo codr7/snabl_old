@@ -17,6 +17,9 @@ namespace snabl::fuses {
 	out.push_back(pc);
 	pc = ops::goto_pc(op);
 	break;
+      case OpCode::TRACE:
+	pc++;
+	break;
       default:
 	return out;
       }
