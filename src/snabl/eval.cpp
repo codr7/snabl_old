@@ -42,9 +42,8 @@ namespace snabl {
       DISPATCH(ops::bench_end(op));
     }
     
-  BRANCH: {
-      DISPATCH(state->get(ops::branch_cond(op)).is_true() ? ops::branch_if_pc(op) : ops::branch_else_pc(op));
-    }
+  BRANCH:
+    DISPATCH(state->get(ops::branch_cond(op)).is_true() ? ops::branch_if_pc(op) : ops::branch_else_pc(op));
 
   CALL: {
       Fun *target = state->get(ops::call_target(op)).as<Fun *>();
@@ -78,10 +77,9 @@ namespace snabl {
       DISPATCH(ret_pc1); 
     }
 
-  COPY: {
-      state->set(ops::copy_dst(op), state->get(ops::copy_src(op)));
-      DISPATCH(pc+1);
-    }
+  COPY:
+    state->set(ops::copy_dst(op), state->get(ops::copy_src(op)));
+    DISPATCH(pc+1);
 
   COPYS: {
       Reg di = ops::copy_dst(op), si = ops::copy_src(op);
@@ -90,70 +88,55 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  DEC: {
-      state->set(ops::dec_dst(op),
-		 Val(abc_lib->int_type,
-		     state->get(ops::dec_src(op)).as<types::Int::DataType>() - ops::dec_delta(op)));
+  DEC:
+    state->set(ops::dec_dst(op),
+	       Val(abc_lib->int_type,
+		   state->get(ops::dec_src(op)).as<types::Int::DataType>() - ops::dec_delta(op)));
       
-      DISPATCH(pc+1);
-    }
+    DISPATCH(pc+1);
 
-  EQ: {
-      state->set(ops::eq_dst(op),
-		 Val(abc_lib->bool_type,
-		     state->get(ops::eq_left(op)) == state->get(ops::eq_right(op))));
+  EQ:
+    state->set(ops::eq_dst(op),
+	       Val(abc_lib->bool_type,
+		   state->get(ops::eq_left(op)) == state->get(ops::eq_right(op))));
       
-      DISPATCH(pc+1);
-    }
+    DISPATCH(pc+1);
 
-  FUN: {
-      Fun *f = state->get(ops::fun_reg(op)).as<Fun *>();
-      f->state = begin_state();
-      end_state();
-      DISPATCH(ops::fun_end(op));
-    }
+  FUN:
+    state->get(ops::fun_reg(op)).as<Fun *>()->state = begin_state();
+    end_state();
+    DISPATCH(ops::fun_end(op));
 
-  GOTO: {
-      DISPATCH(ops::goto_pc(op));
-    }
+  GOTO:
+    DISPATCH(ops::goto_pc(op));
 
-  LOAD_BOOL: {
-      state->set(ops::load_dst(op), Val(abc_lib->bool_type, ops::load_bool_val(op)));
-      DISPATCH(pc+1);
-    }
+  LOAD_BOOL:
+    state->set(ops::load_dst(op), Val(abc_lib->bool_type, ops::load_bool_val(op)));
+    DISPATCH(pc+1);
 
-  LOAD_FUN: {
-      Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
-      state->set(ops::load_dst(op), Val(abc_lib->fun_type, f));
-      DISPATCH(pc+2);
-    }
+  LOAD_FUN:
+    state->set(ops::load_dst(op), Val(abc_lib->fun_type, reinterpret_cast<Fun *>(ops[pc+1])));
+    DISPATCH(pc+2);
 
-  LOAD_INT1: {
-      state->set(ops::load_dst(op), Val(abc_lib->int_type, ops::load_int1_val(op)));
-      DISPATCH(pc+1);
-    }
+  LOAD_INT1:
+    state->set(ops::load_dst(op), Val(abc_lib->int_type, ops::load_int1_val(op)));
+    DISPATCH(pc+1);
 
-  LOAD_INT2: {
-      auto v = static_cast<types::Int::DataType>(ops[pc+1]);
-      state->set(ops::load_dst(op), Val(abc_lib->int_type, v));
-      DISPATCH(pc+2);
-    }
+  LOAD_INT2:
+    state->set(ops::load_dst(op), Val(abc_lib->int_type, static_cast<types::Int::DataType>(ops[pc+1])));
+    DISPATCH(pc+2);
 
-  LOAD_MACRO: {
-      Macro *m = reinterpret_cast<Macro *>(ops[pc+1]);
-      state->set(ops::load_dst(op), Val(abc_lib->macro_type, m));
-      DISPATCH(pc+2);
-    }
+  LOAD_MACRO:
+    state->set(ops::load_dst(op), Val(abc_lib->macro_type, reinterpret_cast<Macro *>(ops[pc+1])));
+    DISPATCH(pc+2);
 
-  LOAD_TYPE: {
-      state->set(ops::load_dst(op), Val(abc_lib->meta_type, types[ops::load_type_id(op)]));
-      DISPATCH(pc+1);
-    }
+  LOAD_TYPE:
+    state->set(ops::load_dst(op), Val(abc_lib->meta_type, types[ops::load_type_id(op)]));
+    DISPATCH(pc+1);
 
-  MOVE: {
-      state->set(ops::move_dst(op), move(state->get(ops::move_src(op))));
-      DISPATCH(pc+1);
-    }
+  MOVE:
+    state->set(ops::move_dst(op), move(state->get(ops::move_src(op))));
+    DISPATCH(pc+1);
 
   MOVES: {
       Reg di = ops::move_dst(op), si = ops::move_src(op);
@@ -162,15 +145,15 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  NOP: { DISPATCH(pc+1); }
+  NOP:
+    DISPATCH(pc+1);
 
-  ONE: {
-      state->set(ops::one_dst(op),
-		 Val(abc_lib->bool_type,
-		     state->get(ops::one_src(op)).as<types::Int::DataType>() == 1));
+  ONE:
+    state->set(ops::one_dst(op),
+	       Val(abc_lib->bool_type,
+		   state->get(ops::one_src(op)).as<types::Int::DataType>() == 1));
       
-      DISPATCH(pc+1);
-    }
+    DISPATCH(pc+1);
 
   REC: {
       State *prev = end_state();
@@ -188,15 +171,13 @@ namespace snabl {
       DISPATCH(ret_pc);
     }
 
-  STATE_BEG: {
-      for (int i = 0; i < ops::state_beg_count(op); i++) { begin_state(); }
-      DISPATCH(pc+1);
-    }
+  STATE_BEG:
+    for (int i = 0; i < ops::state_beg_count(op); i++) { begin_state(); }
+    DISPATCH(pc+1);
 
-  STATE_END: {
-      ret_state(ops::state_end_reg(op));
-      DISPATCH(pc+1);
-    }
+  STATE_END:
+    ret_state(ops::state_end_reg(op));
+    DISPATCH(pc+1);
 
   TEST: {
       cout << "Test " << state->get(ops::test_actual(op)) << " = " << state->get(ops::test_expected(op)) << "...";
@@ -212,19 +193,17 @@ namespace snabl {
       DISPATCH(pc+1);
     }
 
-  TRACE: {
-      op_trace(pc+1, cout, *this);
-      DISPATCH(pc+1);
-    }
+  TRACE:
+    op_trace(pc+1, cout, *this);
+    DISPATCH(pc+1);
     
-  Z: {
-      state->set(ops::z_dst(op), Val(abc_lib->bool_type, state->get(ops::z_src(op)).as<types::Int::DataType>() == 0));
-      DISPATCH(pc+1);
-    }
+  Z:
+    state->set(ops::z_dst(op), Val(abc_lib->bool_type, state->get(ops::z_src(op)).as<types::Int::DataType>() == 0));
+    DISPATCH(pc+1);
 
     /* STOP */
     
-  STOP: {}
+  STOP:
 
     return nullopt;
   }
