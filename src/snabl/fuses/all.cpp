@@ -11,6 +11,7 @@
 #include "snabl/fuses/ret.hpp"
 #include "snabl/fuses/state.hpp"
 #include "snabl/fuses/tail_call.hpp"
+#include "snabl/fuses/unused.hpp"
 
 namespace snabl::fuses {
   void all(Fun *fun, M &m) {
@@ -23,6 +24,7 @@ namespace snabl::fuses {
 	   nop(fun, m) ||
 	   ret(fun, m) ||
 	   state(fun, m) ||
-	   tail_call(fun, m));
+	   tail_call(fun, m) ||
+	   unused(fun, m));
   }
 }

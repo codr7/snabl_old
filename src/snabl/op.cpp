@@ -39,12 +39,11 @@ namespace snabl {
     case OpCode::LOAD_MACRO:
     case OpCode::LOAD_TYPE:
     case OpCode::NOP:
-    case OpCode::RET:
     case OpCode::TRACE:
+    case OpCode::STATE_END:
     case OpCode::STOP:
       break;
     case OpCode::STATE_BEG:
-    case OpCode::STATE_END:
       return true;
     case OpCode::BRANCH:
       return reg == ops::branch_cond(op);
@@ -66,6 +65,8 @@ namespace snabl {
       return reg >= ops::move_src(op) && reg < (ops::move_src(op) + ops::moves_len(op));
     case OpCode::ONE:
       return reg == ops::one_src(op);
+    case OpCode::RET:
+      return reg == ops::ret_reg(op);
     case OpCode::REC:
       return (reg > 1 && reg < Fun::ARG_COUNT);
     case OpCode::TEST:
@@ -83,11 +84,10 @@ namespace snabl {
     case OpCode::NOP:
     case OpCode::STOP:
     case OpCode::STATE_BEG:
+    case OpCode::STATE_END:
     case OpCode::TRACE:
       break;
-    case OpCode::RET:
     case OpCode::REC:
-    case OpCode::STATE_END:
       return true;
     case OpCode::BENCH:
       return reg == ops::bench_reg(op);
@@ -99,7 +99,7 @@ namespace snabl {
     case OpCode::LOAD_INT2:
     case OpCode::LOAD_MACRO:
     case OpCode::LOAD_TYPE:
-      return reg == ops::load_reg(op);
+      return reg == ops::load_dst(op);
     case OpCode::BRANCH:
       return reg == ops::branch_reg(op);
     case OpCode::CALL:
@@ -120,6 +120,8 @@ namespace snabl {
       return reg >= ops::move_dst(op) && reg < (ops::move_dst(op) + ops::moves_len(op));
     case OpCode::ONE:
       return reg == ops::one_dst(op);
+    case OpCode::RET:
+      return reg == ops::ret_reg(op);
     case OpCode::TEST:
       return reg == ops::test_result(op);
     case OpCode::Z:
@@ -173,19 +175,19 @@ namespace snabl {
       out << "LOAD_BOOL " << ops::load_bool_val(op);
       break;
     case OpCode::LOAD_FUN:
-      out << "LOAD_FUN " << ops::load_reg(op);
+      out << "LOAD_FUN " << ops::load_dst(op);
       break;
     case OpCode::LOAD_INT1:
-      out << "LOAD_INT1 " << ops::load_reg(op) << ' ' << ops::load_int1_val(op);
+      out << "LOAD_INT1 " << ops::load_dst(op) << ' ' << ops::load_int1_val(op);
       break;
     case OpCode::LOAD_INT2:
-      out << "LOAD_INT2 " << ops::load_reg(op);
+      out << "LOAD_INT2 " << ops::load_dst(op);
       break;
     case OpCode::LOAD_MACRO:
-      out << "LOAD_MACRO " << ops::load_reg(op);
+      out << "LOAD_MACRO " << ops::load_dst(op);
       break;
     case OpCode::LOAD_TYPE:
-      out << "LOAD_TYPE " << ops::load_reg(op);
+      out << "LOAD_TYPE " << ops::load_dst(op);
       break;
     case OpCode::MOVE:
       out << "MOVE " << ops::move_dst(op) << ' ' << ops::move_src(op);
@@ -203,7 +205,7 @@ namespace snabl {
       out << "ONE " << ops::one_dst(op) << ' ' << ops::one_src(op);
       break;
     case OpCode::RET:
-      out << "RET " << m.frame->ret_reg;
+      out << "RET " << ops::ret_reg(op);
       break;
     case OpCode::STATE_BEG:
       out << "STATE_BEG " << ops::state_beg_count(op) << ' ' << ops::state_beg_reg_count(op);
@@ -291,7 +293,7 @@ namespace snabl {
     
     void LOAD_BOOL(Op &op, Reg reg, bool val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_BOOL) +
-			   (reg << LOAD_REG_BIT) +
+			   (reg << LOAD_DST_BIT) +
 			   ((val ? 1 : 0) << LOAD_VAL_BIT));
     }
     
@@ -304,22 +306,22 @@ namespace snabl {
     }
 
     void LOAD_INT1(Op &op, Reg reg, snabl::types::Int::DataType val) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT1) + (reg << LOAD_REG_BIT) + (val << LOAD_VAL_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT1) + (reg << LOAD_DST_BIT) + (val << LOAD_VAL_BIT));
     }
 
     void LOAD_INT2(Op &op, Reg reg, snabl::types::Int::DataType val) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT2) + (reg << LOAD_REG_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_INT2) + (reg << LOAD_DST_BIT));
       *(&op+1) = static_cast<Op>(val);
     }
 
     void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val) {
-      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_MACRO) + (reg << LOAD_REG_BIT));
+      op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_MACRO) + (reg << LOAD_DST_BIT));
       *(&op+1) = reinterpret_cast<Op>(val);
     }
 
     void LOAD_TYPE(Op &op, Reg reg, snabl::Type val) {
       op = static_cast<Op>(static_cast<Op>(OpCode::LOAD_TYPE) +
-			   (reg << LOAD_REG_BIT) +
+			   (reg << LOAD_DST_BIT) +
 			   (val.imp->id << LOAD_VAL_BIT));
     }
 
@@ -341,7 +343,7 @@ namespace snabl {
       op = static_cast<Op>(static_cast<Op>(OpCode::ONE) + (dst << ONE_DST_BIT) + (src << ONE_SRC_BIT));
     }
 
-    void RET(Op &op) { op = static_cast<Op>(OpCode::RET); }
+    void RET(Op &op, Reg reg) { op = static_cast<Op>(OpCode::RET) + (reg << RET_REG_BIT); }
 
     void STATE_BEG(Op &op, int count, int reg_count) {
       op = static_cast<Op>(static_cast<Op>(OpCode::STATE_BEG) +

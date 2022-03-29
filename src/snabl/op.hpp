@@ -50,8 +50,8 @@
 #define LOAD_INT1_VAL_MIN (-(static_cast<types::Int::DataType>(1) << (LOAD_INT1_VAL_BITS - 1)))
 #define LOAD_INT1_VAL_MAX ((static_cast<types::Int::DataType>(1) << (LOAD_INT1_VAL_BITS - 1)) - 1)
 
-#define LOAD_REG_BIT OP_CODE_BITS
-#define LOAD_VAL_BIT (LOAD_REG_BIT + OP_REG_BITS)
+#define LOAD_DST_BIT OP_CODE_BITS
+#define LOAD_VAL_BIT (LOAD_DST_BIT + OP_REG_BITS)
 
 #define MOVE_DST_BIT OP_CODE_BITS
 #define MOVE_SRC_BIT (MOVE_DST_BIT + OP_REG_BITS)
@@ -61,6 +61,8 @@
 
 #define ONE_DST_BIT OP_CODE_BITS
 #define ONE_SRC_BIT (ONE_DST_BIT + OP_REG_BITS)
+
+#define RET_REG_BIT OP_CODE_BITS
 
 #define STATE_BEG_COUNT_BIT OP_CODE_BITS
 #define STATE_BEG_COUNT_BITS 4
@@ -176,7 +178,7 @@ namespace snabl {
     void LOAD_TYPE(Op &op, Reg reg, Type val);
     inline snabl::Type::Id load_type_id(Op op) { return get<snabl::Type::Id, LOAD_VAL_BIT, OP_TYPE_ID_BITS>(op); }
 
-    inline Reg load_reg(Op op) { return static_cast<Reg>((op >> OP_CODE_BITS) & ((1 << OP_REG_BITS) - 1)); }
+    inline Reg load_dst(Op op) { return get<Reg, LOAD_DST_BIT, OP_REG_BITS>(op); }
 
     void MOVE(Op &op, Reg dst, Reg src);
     inline Reg move_dst(Op op) { return get<Reg, MOVE_DST_BIT, OP_REG_BITS>(op); }
@@ -193,7 +195,8 @@ namespace snabl {
     inline Reg one_dst(Op op) { return get<Reg, ONE_DST_BIT, OP_REG_BITS>(op); }
     inline Reg one_src(Op op) { return get<Reg, ONE_SRC_BIT, OP_REG_BITS>(op); }
     
-    void RET(Op &op);
+    void RET(Op &op, Reg reg);
+    inline Reg ret_reg(Op op) { return get<Reg, RET_REG_BIT, OP_REG_BITS>(op); }
     
     void STATE_BEG(Op &op, int count, int reg_count);
     inline int state_beg_count(Op op) { return get<int, STATE_BEG_COUNT_BIT, STATE_BEG_COUNT_BITS>(op); }

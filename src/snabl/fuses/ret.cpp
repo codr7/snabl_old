@@ -22,7 +22,7 @@ namespace snabl::fuses {
       case OpCode::RET:
 	for (PC rpc: ret_pcs) {
 	  cout << "Fusing " << fun << " RET: " << rpc << endl;
-	  ops::RET(m.ops[rpc]);
+	  ops::RET(m.ops[rpc], ops::ret_reg(op));
 	  n++;
 	}
 

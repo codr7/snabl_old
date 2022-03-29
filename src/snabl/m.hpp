@@ -57,9 +57,10 @@ namespace snabl {
     optional<Error> include(fs::path path, Pos pos);
     optional<Error> use(Lib &lib, const vector<Sym> &syms, Pos pos);
     
-    void ret_state(Reg reg) {
+    void ret_state(Reg reg1, optional<Reg> reg2 = nullopt) {
       State *old = end_state();
-      state->regs[reg] = move(old->regs[reg]);
+      state->regs[reg1] = move(old->regs[reg1]);
+      if (reg2 && *reg2 != reg1) { state->regs[*reg2] = move(old->regs[*reg2]); }
       deref_state(old);
     }
 

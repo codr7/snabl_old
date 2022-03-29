@@ -118,35 +118,35 @@ namespace snabl {
     }
 
   LOAD_BOOL: {
-      state->regs[ops::load_reg(op)] = Val(abc_lib->bool_type, ops::load_bool_val(op));
+      state->regs[ops::load_dst(op)] = Val(abc_lib->bool_type, ops::load_bool_val(op));
       DISPATCH(pc+1);
     }
 
   LOAD_FUN: {
       Fun *f = reinterpret_cast<Fun *>(ops[pc+1]);
-      state->regs[ops::load_reg(op)] = Val(abc_lib->fun_type, f);
+      state->regs[ops::load_dst(op)] = Val(abc_lib->fun_type, f);
       DISPATCH(pc+2);
     }
 
   LOAD_INT1: {
-      state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, ops::load_int1_val(op));
+      state->regs[ops::load_dst(op)] = Val(abc_lib->int_type, ops::load_int1_val(op));
       DISPATCH(pc+1);
     }
 
   LOAD_INT2: {
       auto v = static_cast<types::Int::DataType>(ops[pc+1]);
-      state->regs[ops::load_reg(op)] = Val(abc_lib->int_type, v);
+      state->regs[ops::load_dst(op)] = Val(abc_lib->int_type, v);
       DISPATCH(pc+2);
     }
 
   LOAD_MACRO: {
       Macro *m = reinterpret_cast<Macro *>(ops[pc+1]);
-      state->regs[ops::load_reg(op)] = Val(abc_lib->macro_type, m);
+      state->regs[ops::load_dst(op)] = Val(abc_lib->macro_type, m);
       DISPATCH(pc+2);
     }
 
   LOAD_TYPE: {
-      state->regs[ops::load_reg(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
+      state->regs[ops::load_dst(op)] = Val(abc_lib->meta_type, types[ops::load_type_id(op)]);
       DISPATCH(pc+1);
     }
 
@@ -180,8 +180,8 @@ namespace snabl {
   RET: {
       Frame *f = end_frame();
       PC ret_pc = f->ret_pc;      
-      ret_state(f->ret_reg);
-      ret_state(f->ret_reg);
+      ret_state(f->ret_reg, ops::ret_reg(op));
+      ret_state(f->ret_reg, ops::ret_reg(op));
       deref_frame(f);
       DISPATCH(ret_pc);
     }

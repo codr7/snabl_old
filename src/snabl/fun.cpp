@@ -35,7 +35,7 @@ namespace snabl {
     }
 
     m.deref_scope(m.end_scope());
-    ops::RET(m.emit());
+    ops::RET(m.emit(), reg);
     ops::FUN(op, reg, m.emit_pc);
     fuses::all(this, m);
 
