@@ -65,7 +65,7 @@ Functions are closures.
 ```
 
 ### symbols
-Symbols are prefixed with `'`, globally unique and case sensitive.
+[Symbols](https://github.com/codr7/snabl/blob/main/src/snabl/sym.hpp) are prefixed with `'`, globally unique and case sensitive.
 
 ```
   (= 'foo 'Foo)
