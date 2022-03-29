@@ -26,13 +26,9 @@ namespace snabl {
       return (!v && outer) ? outer->find(reg) : v;
     }
 
-    Val &get(Reg reg) {
-      optional<Val> &v = find(reg);
-      return (!v && outer) ? outer->get(reg) : *v;
-    }
+    Val &get(Reg reg) { return *find(reg); }
     
     void set(Reg reg, const Val &val) { _regs[reg] = val; }
-
     void set(Reg reg, Val &&val) { _regs[reg] = move(val); }
   };
 }

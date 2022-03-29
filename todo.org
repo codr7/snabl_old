@@ -1,5 +1,3 @@
-* try caching state lookups
-** bench
 * remove fun call ret reg
 ** always use 0
 ** move if needed in call ops

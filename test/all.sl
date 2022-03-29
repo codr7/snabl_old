@@ -21,9 +21,11 @@
         bar 0]
     (foo)))
 
+
 (test 42
   (fun: unused-bindings [] Int (let [bar 1 baz 2] 42))
   (unused-bindings))
+
 
 (test 55
 
