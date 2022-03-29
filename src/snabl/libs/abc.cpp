@@ -63,7 +63,7 @@ namespace snabl::libs {
 		 }
 		 
 		 ops::STOP(m.emit());
-		 ops::BENCH(bench_op, reg, m.emit_pc);   
+		 ops::BENCH(bench_op, reg, reg, m.emit_pc);   
 		 return nullopt;
 	       });
     
@@ -86,7 +86,7 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}},
 	     nil_type,
 	     [](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       cout << *m.state->regs[1] << endl;
+	       cout << m.state->get(1) << endl;
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -142,7 +142,7 @@ namespace snabl::libs {
     bind_macro(m.sym("let"), 1,
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 deque<Form> bfs = pop_form(args).as<forms::Slice>().items;
-		 ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
+		 ops::STATE_BEG(m.emit(), 1);
 		 m.begin_scope();
 
 		 while (!bfs.empty()) {
@@ -173,7 +173,7 @@ namespace snabl::libs {
 	       [](Macro &macro, deque<Form> args, Reg reg, Pos pos, M &m) -> Macro::Result {
 		 if (auto err = pop_form(args).emit(1, m); err) { return err; }
 
-		 ops::STATE_BEG(m.emit(), 1, m.scope->reg_count);
+		 ops::STATE_BEG(m.emit(), 1);
 		 m.begin_scope();
 		 
 		 for (const Form &f: args) {
@@ -191,7 +191,7 @@ namespace snabl::libs {
 	     bool_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
 	       m.trace = !m.trace;
-	       m.state->regs[ret_reg] = Val(bool_type, m.trace);
+	       m.state->set(ret_reg, Val(bool_type, m.trace));
 	       return Fun::Result(ret_pc, nullopt);
 	     });
     
@@ -207,10 +207,10 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {	       
-	       optional<Val> *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(int_type,
-				 static_cast<types::Int::DataType>(rs[1]->as<types::Int::DataType>() +
-								   rs[2]->as<types::Int::DataType>()));
+	       m.state->set(ret_reg, Val(int_type,
+					 static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() +
+									   m.state->get(2).as<types::Int::DataType>())));
+			    
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -218,10 +218,10 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     int_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       optional<Val> *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(int_type,
-				 static_cast<types::Int::DataType>(rs[1]->as<types::Int::DataType>() -
-								   rs[2]->as<types::Int::DataType>()));
+	       m.state->set(ret_reg, Val(int_type,
+					 static_cast<types::Int::DataType>(m.state->get(1).as<types::Int::DataType>() -
+									   m.state->get(2).as<types::Int::DataType>())));
+			    
 	       return Fun::Result(ret_pc, nullopt);
 	     });
 
@@ -229,8 +229,10 @@ namespace snabl::libs {
 	     {{m.sym("x"), int_type}, {m.sym("y"), int_type}},
 	     bool_type,
 	     [this](Fun &fun, Reg ret_reg, PC ret_pc, M &m) {
-	       optional<Val> *rs = m.state->regs.begin();
-	       rs[ret_reg] = Val(bool_type, rs[1]->as<types::Int::DataType>() < rs[2]->as<types::Int::DataType>());
+	       m.state->set(ret_reg,
+			    Val(bool_type,
+				m.state->get(1).as<types::Int::DataType>() < m.state->get(2).as<types::Int::DataType>()));
+	       
 	       return Fun::Result(ret_pc, nullopt);
 	     });
   }

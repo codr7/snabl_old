@@ -40,7 +40,7 @@ namespace snabl::fuses {
 	  n++;
 	}
 
-	ops::STATE_BEG(op1, ops::state_beg_count(op1) + pcs.size(), ops::state_beg_reg_count(op1));
+	ops::STATE_BEG(op1, ops::state_beg_count(op1) + pcs.size());
       }
 
       pc1 += op_len(op1);

@@ -15,9 +15,20 @@ namespace snabl {
     
     State *outer;
     int ref_count;
-    array<optional<Val>, REG_COUNT> regs;
+    array<optional<Val>, REG_COUNT> _regs;
 
-    State(State *outer, int reg_count);
+    State(State *outer): outer(outer), ref_count(1) {
+      if (outer) { outer->ref_count++; }
+    }
+   
+    Val &get(Reg reg) {
+      optional<Val> &v = _regs[reg];
+      return (!v && outer) ? outer->get(reg) : *v;
+    }
+    
+    void set(Reg reg, const Val &val) { _regs[reg] = val; }
+
+    void set(Reg reg, Val &&val) { _regs[reg] = move(val); }
   };
 }
 

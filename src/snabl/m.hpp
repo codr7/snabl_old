@@ -59,18 +59,18 @@ namespace snabl {
     
     void ret_state(Reg reg1, optional<Reg> reg2 = nullopt) {
       State *old = end_state();
-      state->regs[reg1] = move(old->regs[reg1]);
-      if (reg2 && *reg2 != reg1) { state->regs[*reg2] = move(old->regs[*reg2]); }
+      state->set(reg1, move(old->get(reg1)));
+      if (reg2 && *reg2 != reg1) { state->set(*reg2, move(old->get(*reg2))); }
       deref_state(old);
     }
 
-    State *begin_state(int reg_count) {
+    State *begin_state() {
       if (free_state) {
 	State *new_state = free_state;
 	free_state = free_state->outer;
-	state = new(new_state) State(state, reg_count);
+	state = new(new_state) State(state);
       } else {
-	state = state_alloc.make(state, reg_count);
+	state = state_alloc.make(state);
       }
       
       return state;
@@ -104,8 +104,7 @@ namespace snabl {
 
     Frame *end_frame() {
       if (frame->target->emit_reg != frame->ret_reg) {
-	optional<Val> *rs = state->regs.begin();
-	rs[frame->ret_reg] = move(rs[frame->target->emit_reg]);
+	state->set(frame->ret_reg, move(state->get(frame->target->emit_reg)));
       }
 
       Frame *old = frame;

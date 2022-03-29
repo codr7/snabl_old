@@ -10,8 +10,9 @@
 #define OP_PC_BITS 10
 #define OP_TYPE_ID_BITS 10
 
-#define BENCH_REG_BIT OP_CODE_BITS
-#define BENCH_END_BIT (BENCH_REG_BIT + OP_REG_BITS)
+#define BENCH_REPS_BIT OP_CODE_BITS
+#define BENCH_RES_BIT (BENCH_REPS_BIT + OP_REG_BITS)
+#define BENCH_END_BIT (BENCH_RES_BIT + OP_REG_BITS)
 
 #define BRANCH_COND_BIT OP_CODE_BITS
 #define BRANCH_REG_BIT (BRANCH_COND_BIT + OP_REG_BITS)
@@ -66,7 +67,6 @@
 
 #define STATE_BEG_COUNT_BIT OP_CODE_BITS
 #define STATE_BEG_COUNT_BITS 4
-#define STATE_BEG_REG_COUNT_BIT (STATE_BEG_COUNT_BIT + STATE_BEG_COUNT_BITS)
 
 #define STATE_END_REG_BIT OP_CODE_BITS
 
@@ -113,8 +113,9 @@ namespace snabl {
     template <typename T, size_t pos, size_t width>
     T get(Op op) { return static_cast<T>((op >> pos) & ((static_cast<T>(1) << width) - 1)); }
 
-    void BENCH(Op &op, Reg reg, PC end_pc);
-    inline Reg bench_reg(Op op) { return get<Reg, BENCH_REG_BIT, OP_REG_BITS>(op); }
+    void BENCH(Op &op, Reg reps, Reg res, PC end_pc);
+    inline Reg bench_reps(Op op) { return get<Reg, BENCH_REPS_BIT, OP_REG_BITS>(op); }
+    inline Reg bench_res(Op op) { return get<Reg, BENCH_RES_BIT, OP_REG_BITS>(op); }
     inline PC bench_end(Op op) { return get<PC, BENCH_END_BIT, OP_PC_BITS>(op); }
 
     void BRANCH(Op &op, Reg cond, Reg reg, PC if_pc, PC else_pc);
@@ -198,9 +199,8 @@ namespace snabl {
     void RET(Op &op, Reg reg);
     inline Reg ret_reg(Op op) { return get<Reg, RET_REG_BIT, OP_REG_BITS>(op); }
     
-    void STATE_BEG(Op &op, int count, int reg_count);
+    void STATE_BEG(Op &op, int count = 1);
     inline int state_beg_count(Op op) { return get<int, STATE_BEG_COUNT_BIT, STATE_BEG_COUNT_BITS>(op); }
-    inline int state_beg_reg_count(Op op) { return get<int, STATE_BEG_REG_COUNT_BIT, OP_REG_BITS>(op); }
 
     void STATE_END(Op &op, Reg reg);
     inline Reg state_end_reg(Op op) { return get<Reg, STATE_END_REG_BIT, OP_REG_BITS>(op); }

@@ -29,7 +29,6 @@ namespace snabl {
 
   bool op_reads(Op op, Reg reg) {
     switch (op_code(op)) {
-    case OpCode::BENCH:
     case OpCode::GOTO:
     case OpCode::LOAD_BOOL:
     case OpCode::LOAD_FUN:
@@ -43,6 +42,8 @@ namespace snabl {
     case OpCode::STATE_END:
     case OpCode::STOP:
       break;
+    case OpCode::BENCH:
+      return reg == ops::bench_reps(op);
     case OpCode::BRANCH:
       return reg == ops::branch_cond(op);
     case OpCode::CALLI1:
@@ -88,7 +89,7 @@ namespace snabl {
     case OpCode::TRACE:
       break;
     case OpCode::BENCH:
-      return reg == ops::bench_reg(op);
+      return reg == ops::bench_res(op);
     case OpCode::CALLI1:
       return reg == ops::calli1_reg(op);
     case OpCode::LOAD_BOOL:
@@ -135,7 +136,7 @@ namespace snabl {
     
     switch (op_code(op)) {
     case OpCode::BENCH:
-      out << "BENCH " << ops::bench_reg(op) << ' ' << ops::bench_end(op);
+      out << "BENCH " << ops::bench_reps(op) << ' ' << ops::bench_res(op) << ' ' << ops::bench_end(op);
       break;
     case OpCode::BRANCH:
       out << "BRANCH " <<
@@ -206,7 +207,7 @@ namespace snabl {
       out << "RET " << ops::ret_reg(op);
       break;
     case OpCode::STATE_BEG:
-      out << "STATE_BEG " << ops::state_beg_count(op) << ' ' << ops::state_beg_reg_count(op);
+      out << "STATE_BEG " << ops::state_beg_count(op);
       break;
     case OpCode::STATE_END:
       out << "STATE_END";
@@ -232,9 +233,10 @@ namespace snabl {
   }
 
   namespace ops {    
-    void BENCH(Op &op, Reg reg, PC end_pc) {
+    void BENCH(Op &op, Reg reps, Reg res, PC end_pc) {
       op = static_cast<Op>(static_cast<Op>(OpCode::BENCH) +
-			   (reg << BENCH_REG_BIT) +
+			   (reps << BENCH_REPS_BIT) +
+			   (res << BENCH_RES_BIT) +
 			   (end_pc << BENCH_END_BIT));
     }
     
@@ -343,10 +345,9 @@ namespace snabl {
 
     void RET(Op &op, Reg reg) { op = static_cast<Op>(OpCode::RET) + (reg << RET_REG_BIT); }
 
-    void STATE_BEG(Op &op, int count, int reg_count) {
+    void STATE_BEG(Op &op, int count) {
       op = static_cast<Op>(static_cast<Op>(OpCode::STATE_BEG) +
-			   (count << STATE_BEG_COUNT_BIT) +
-			   (reg_count << STATE_BEG_REG_COUNT_BIT));
+			   (count << STATE_BEG_COUNT_BIT));
     }
 
     void STATE_END(Op &op, Reg reg) {

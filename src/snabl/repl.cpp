@@ -40,14 +40,14 @@ namespace snabl {
 	buf.str("");
 	buf.clear();
 	ops::STOP(m.emit());
-	m.state->regs[0] = Val(m.abc_lib->nil_type);
+	m.state->set(0, Val(m.abc_lib->nil_type));
 	
 	if (auto err = m.eval(start_pc); err) {
 	  out << *err << endl;
 	  break;
 	}
 
-	out << *m.state->regs[0] << endl;
+	out << m.state->get(0) << endl;
       } else {
 	buf << line << endl;
       }
