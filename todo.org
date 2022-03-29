@@ -1,3 +1,11 @@
+* speed up regs
+** make private (_regs)
+** add set/get
+*** get recursively
+** don't copy in state
+** don't copy args in fun emit body
+** change copys/moves to get/set one reg at a time
+** bench
 * add multi id support to fun arg list
 ** n a b Int
 * add fun macro
@@ -6,6 +14,9 @@
 ** always use 0
 ** move if needed in call ops
 ** remove optional arg to m.ret_state()
+* add quote reader
+** add sym type
+** add form type
 * add CALLI2 op
 ** fun as separate op
 * add LOAD_NIL op
