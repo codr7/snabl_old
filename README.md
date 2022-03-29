@@ -123,7 +123,7 @@ F
 ```
 
 ### performance
-`bench` returns elapsed time in milliseconds for specified number of repetitions.<br/><br/>
+`bench` returns elapsed time in milliseconds for specified number of repetitions.<br/>
 
 First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine.
 
