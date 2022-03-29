@@ -4,13 +4,14 @@
 #include "snabl/forms/call.hpp"
 #include "snabl/forms/id.hpp"
 #include "snabl/forms/lit.hpp"
+#include "snabl/forms/quote.hpp"
 #include "snabl/forms/slice.hpp"
 #include "snabl/m.hpp"
 #include "snabl/reader.hpp"
 
 namespace snabl {
   ReadResult read_form(istream &in, Pos &pos, M &m) {
-    const vector<Reader> readers {read_ws, read_int, read_call, read_slice, read_id};
+    const vector<Reader> readers {read_ws, read_int, read_call, read_slice, read_quote, read_id};
     
     for (Reader r: readers) {
       if (auto [f, err] = r(in, pos, m); err) {
@@ -117,6 +118,24 @@ namespace snabl {
     return ReadResult(forms::Lit(fpos, m.abc_lib->int_type, v), nullopt);
   }
 
+  ReadResult read_quote(istream &in, Pos &pos, M &m) {
+    char c = 0;
+    if (!in.get(c)) { ReadResult(nullopt, nullopt); }
+
+    if (c != '\'') {
+      in.unget();
+      return ReadResult(nullopt, nullopt);
+    }
+
+    Pos fpos = pos;
+    pos.column++;
+    deque<Form> args;
+    auto [f, err] = read_form(in, pos, m);
+    if (err) { return ReadResult(nullopt, err); }
+    if (!f) { return make_pair(nullopt, Error(pos, "Missing quoted form")); }    
+    return ReadResult(forms::Quote(fpos, *f), nullopt);
+  }
+  
   ReadResult read_slice(istream &in, Pos &pos, M &m) {
     char c = 0;
     if (!in.get(c)) { ReadResult(nullopt, nullopt); }

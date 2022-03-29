@@ -13,6 +13,7 @@
 #include "snabl/types/meta.hpp"
 #include "snabl/types/nil.hpp"
 #include "snabl/types/reg.hpp"
+#include "snabl/types/sym.hpp"
 
 namespace snabl::libs {
   static Form pop_form(deque<Form> &in) {
@@ -31,7 +32,8 @@ namespace snabl::libs {
     macro_type(*this, make_shared<types::Macro>(type_id(), m.sym("Macro"))),
     meta_type(*this, make_shared<types::Meta>(type_id(), m.sym("Meta"))),
     nil_type(*this, make_shared<types::Nil>(type_id(), m.sym("Nil"))),
-    reg_type(*this, make_shared<types::Reg>(type_id(), m.sym("Reg"))) {
+    reg_type(*this, make_shared<types::Reg>(type_id(), m.sym("Reg"))),
+    sym_type(*this, make_shared<types::Sym>(type_id(), m.sym("Sym"))) {
     
     bind(m.sym("Bool"), meta_type, bool_type);
     bind(m.sym("Fun"), meta_type, fun_type);
@@ -40,6 +42,7 @@ namespace snabl::libs {
     bind(m.sym("Meta"), meta_type, meta_type);
     bind(m.sym("Nil"), meta_type, nil_type);
     bind(m.sym("Reg"), meta_type, reg_type);
+    bind(m.sym("Sym"), meta_type, sym_type);
 
     bind(m.sym("_"), nil_type, nullptr);
     bind(m.sym("T"), bool_type, true);

@@ -16,5 +16,10 @@ namespace snabl::forms {
     return v->type.imp->methods.emit(*v, reg, pos, m);
   }
 
+  optional<Error> Id::Imp::quote(Reg reg, M &m) const {
+    ops::LOAD_SYM(m.emit(), reg, name);
+    return nullopt;
+  }
+
   optional<Val> Id::Imp::val(M &m) const { return m.scope->find(name); }
 }

@@ -25,7 +25,7 @@ The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common 
 - Everything is a method
 - `let*` is defult
 - Globals look special by definition
-- There is but one kind of 'symbol
+- There is but one kind of 'Symbol
 
 ### status
 The codebase is pushing `3`kloc. Currently verifying and tweaking the design to improve performance based on initial profiling. Error checking still leaves a lot to wish for.
@@ -62,6 +62,15 @@ Functions are closures.
     (foo))
 
 42
+```
+
+### symbols
+Symbols are prefixed with `'`, globally unique and case sensitive.
+
+```
+  (= 'foo 'Foo)
+
+F
 ```
 
 ### tests

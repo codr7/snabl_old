@@ -5,7 +5,7 @@
 
 namespace snabl::libs {
   struct Abc: Lib {
-    Type bool_type, fun_type, int_type, macro_type, meta_type, nil_type, reg_type;
+    Type bool_type, fun_type, int_type, macro_type, meta_type, nil_type, reg_type, sym_type;
     
     Abc(M &m);
   };

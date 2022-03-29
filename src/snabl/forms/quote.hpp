@@ -1,5 +1,5 @@
-#ifndef SNABL_FORMS_ID_HPP
-#define SNABL_FORMS_ID_HPP
+#ifndef SNABL_FORMS_QUOTE_HPP
+#define SNABL_FORMS_QUOTE_HPP
 
 #include "snabl/form.hpp"
 #include "snabl/sym.hpp"
@@ -7,17 +7,15 @@
 namespace snabl::forms {
   using namespace snabl;
   
-  struct Id: Form {
+  struct Quote: Form {
     struct Imp: Form::Imp {
-      Sym name;
-      Imp(Pos pos, Sym name);    
+      Form form;
+      Imp(Pos pos, Form form);    
       void dump(ostream& out) const override;
       optional<Error> emit(Reg reg, M &m) const override;
-      optional<Error> quote(Reg reg, M &m) const override;
-      optional<Val> val(M &m) const override;
     };
 
-    Id(Pos pos, Sym name);
+    Quote(Pos pos, Form form);
   };
 
 }

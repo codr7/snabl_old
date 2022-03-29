@@ -89,7 +89,7 @@ namespace snabl {
     BENCH, BRANCH,
     CALL, CALLI1, COPY, COPYS,
     DEC, EQ, FUN, GOTO,
-    LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_TYPE,
+    LOAD_BOOL, LOAD_FUN, LOAD_INT1, LOAD_INT2, LOAD_MACRO, LOAD_SYM, LOAD_TYPE,
     MOVE, MOVES,
     NOP, ONE,
     REC, RET,
@@ -175,6 +175,9 @@ namespace snabl {
     void LOAD_INT2(Op &op, Reg reg, snabl::types::Int::DataType val);
 
     void LOAD_MACRO(Op &op, Reg reg, snabl::Macro *val);
+
+    void LOAD_SYM(Op &op, Reg reg, Sym val);
+    inline snabl::Sym::Id load_sym_id(Op op) { return get<snabl::Sym::Id, LOAD_VAL_BIT, OP_TYPE_ID_BITS>(op); }
 
     void LOAD_TYPE(Op &op, Reg reg, Type val);
     inline snabl::Type::Id load_type_id(Op op) { return get<snabl::Type::Id, LOAD_VAL_BIT, OP_TYPE_ID_BITS>(op); }

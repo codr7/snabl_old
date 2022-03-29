@@ -22,6 +22,7 @@ namespace snabl {
       virtual ~Imp();
       virtual void dump(ostream& out) const = 0;
       virtual optional<Error> emit(Reg reg, M &m) const = 0;
+      virtual optional<Error> quote(Reg reg, M &m) const;
       virtual optional<Val> val(M &m) const;
     };
 
@@ -30,6 +31,7 @@ namespace snabl {
     Form(shared_ptr<const Imp> imp = nullptr);
     void dump(ostream& out) const;
     optional<Error> emit(Reg reg, M &m) const;
+    optional<Error> quote(Reg reg, M &m) const;
     optional<Val> val(M &m) const;
 
     template <typename T>

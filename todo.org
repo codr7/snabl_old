@@ -1,22 +1,21 @@
-* add quote reader
-** add sym type
-** add form type
+* NOP rewrite instead of op1 in unused fuse
+** fib-tail
+** replaces depth check?
+* use drill_pc on next in copys/moves
+** fib-tail
+* add next_pc to STATE_BEG
+** drill & update in fuse
+** update eval
+** fib-rec
+* fuse COPY-RET to RET with correct reg
+** fib-rec
+* add Type.isa
+** add typeof/isa fns
+** handle type/val in isa
 * add fun macro
 ** create lambda
-* add CALLI2 op
-** fun as separate op
-* add LOAD_NIL op
-** enable nil type emit
 * add tusks
 ** pure green threads
-* add sym type/reader
-* add Type.isa
-* add scope & state to bench macro like (let)
-* add fun call type check
-* add multi
-** add DISP op
-* add pattern matching in fun arg list
-** anything but Id
 * add string type
 ** add reader
 ** add unquotes
@@ -26,6 +25,16 @@
 ** encoded in uint64
 ** add reader
 *** .25
+* add CALLI2 op
+** fun as separate op
+* add LOAD_NIL op
+** enable nil type emit
+* add scope & state to bench macro like (let)
+* add fun call type check
+* add multi
+** add DISP op
+* add pattern matching in fun arg list
+** anything but Id
 * move readers into M
 * add Fuse type
 ** move fuses into M

@@ -15,7 +15,7 @@ namespace snabl {
       &&BENCH, &&BRANCH,
       &&CALL, &&CALLI1, &&COPY, &&COPYS,
       &&DEC, &&EQ, &&FUN, &&GOTO,
-      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_TYPE,
+      &&LOAD_BOOL, &&LOAD_FUN, &&LOAD_INT1, &&LOAD_INT2, &&LOAD_MACRO, &&LOAD_SYM, &&LOAD_TYPE,
       &&MOVE, &&MOVES,
       &&NOP, &&ONE,
       &&REC, &&RET,
@@ -128,6 +128,10 @@ namespace snabl {
   LOAD_MACRO:
     state->set(ops::load_dst(op), Val(abc_lib->macro_type, reinterpret_cast<Macro *>(ops[pc+1])));
     DISPATCH(pc+2);
+
+  LOAD_SYM:
+    state->set(ops::load_dst(op), Val(abc_lib->sym_type, syms[ops::load_sym_id(op)]));
+    DISPATCH(pc+1);
 
   LOAD_TYPE:
     state->set(ops::load_dst(op), Val(abc_lib->meta_type, types[ops::load_type_id(op)]));
