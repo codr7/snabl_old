@@ -6,14 +6,12 @@
 ** don't copy args in fun emit body
 ** change copys/moves to get/set one reg at a time
 ** bench
-* add multi id support to fun arg list
-** n a b Int
-* add fun macro
-** create lambda
 * remove fun call ret reg
 ** always use 0
 ** move if needed in call ops
 ** remove optional arg to m.ret_state()
+* add fun macro
+** create lambda
 * add quote reader
 ** add sym type
 ** add form type

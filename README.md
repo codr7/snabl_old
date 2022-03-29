@@ -137,7 +137,7 @@ Next tail recursive, Python3 takes `105`ms on the same machine.<br/>
 Snabl detects and fuses tail calls [automagically](https://github.com/codr7/snabl/blob/main/src/snabl/fuses/tail_call.cpp) at compile time.
 
 ```
-  (fun: fib-tail [n Int a Int b Int] Int
+  (fun: fib-tail [n a b Int] Int
     (if (z? n) a (if (one? n) b (fib-tail (dec n) b (+ a b)))))
 
   (bench 10000 (fib-tail 70 0 1))

@@ -34,7 +34,7 @@
 
 (test 55
 
-  (fun: fib-tail [n Int a Int b Int] Int
+  (fun: fib-tail [n a b Int] Int
     (if (z? n) a (if (one? n) b (fib-tail (dec n) b (+ a b)))))
 
   (fib-tail 10 0 1))

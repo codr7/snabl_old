@@ -97,12 +97,20 @@ namespace snabl::libs {
 		 vector<Fun::Arg> fargs;
 
 		 while (!arg_forms.empty()) {
-		   Sym arg_id = pop_sym(arg_forms);
+		   vector<Sym> arg_ids;
+		   
+		   while (!arg_forms.empty()) {
+		     Sym arg_id = arg_forms.front().as<forms::Id>().name;
+		     if (isupper(arg_id.imp->name[0])) { break; }
+		     arg_ids.push_back(arg_id);
+		     arg_forms.pop_front();
+		   }
+		     
 		   Form type_form = pop_form(arg_forms);
 		   Sym type_id = type_form.as<forms::Id>().name;
 		   optional<Val> arg_type = m.scope->find(type_id);
 		   if (!arg_type) { return Error(type_form.imp->pos, "Type not found: ", type_id); }
-		   fargs.emplace_back(arg_id, arg_type->as<Type>());
+		   for (Sym arg_id: arg_ids) { fargs.emplace_back(arg_id, arg_type->as<Type>()); }
 		 }
 		 
 		 optional<Val> ret_type = m.scope->find(pop_sym(args));
