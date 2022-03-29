@@ -22,8 +22,8 @@
     (foo)))
 
 (test 42
-  (fun: unused-args [] Int (let [bar 1 baz 2] 42))
-  (unused-args))
+  (fun: unused-bindings [] Int (let [bar 1 baz 2] 42))
+  (unused-bindings))
 
 (test 55
 
