@@ -1,4 +1,3 @@
-* profile
 * add multi id support to fun arg list
 ** n a b Int
 * add fun macro
