@@ -94,7 +94,6 @@ namespace snabl {
       {
 	Val v = Val(abc_lib->int_type, state->get(ops::dec_src(op)).as<types::Int::DataType>() - ops::dec_delta(op));
 	state->set(ops::dec_dst(op), v);
-	if (ops::dec_src(op) != ops::dec_dst(op)) { state->set(ops::dec_src(op), v); }
       }
       
       DISPATCH(pc+1);
