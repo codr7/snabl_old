@@ -91,19 +91,17 @@ namespace snabl {
     }
 
   DEC: {
-      {
-	Val v = Val(abc_lib->int_type, state->get(ops::dec_src(op)).as<types::Int::DataType>() - ops::dec_delta(op));
-	state->set(ops::dec_dst(op), v);
-      }
+      state->set(ops::dec_dst(op),
+		 Val(abc_lib->int_type,
+		     state->get(ops::dec_src(op)).as<types::Int::DataType>() - ops::dec_delta(op)));
       
       DISPATCH(pc+1);
     }
 
   EQ: {
-      {
-	Val left = state->get(ops::eq_left(op)), right = state->get(ops::eq_right(op));
-	state->set(ops::eq_dst(op), Val(abc_lib->bool_type, left == right));
-      }
+      state->set(ops::eq_dst(op),
+		 Val(abc_lib->bool_type,
+		     state->get(ops::eq_left(op)) == state->get(ops::eq_right(op))));
       
       DISPATCH(pc+1);
     }
@@ -167,7 +165,10 @@ namespace snabl {
   NOP: { DISPATCH(pc+1); }
 
   ONE: {
-      state->set(ops::one_dst(op), Val(abc_lib->bool_type, state->get(ops::one_src(op)).as<types::Int::DataType>() == 1));
+      state->set(ops::one_dst(op),
+		 Val(abc_lib->bool_type,
+		     state->get(ops::one_src(op)).as<types::Int::DataType>() == 1));
+      
       DISPATCH(pc+1);
     }
 
@@ -188,11 +189,7 @@ namespace snabl {
     }
 
   STATE_BEG: {
-      {
-	int sc = ops::state_beg_count(op);
-	for (int i = 0; i < sc; i++) { begin_state(); }
-      }
-      
+      for (int i = 0; i < ops::state_beg_count(op); i++) { begin_state(); }
       DISPATCH(pc+1);
     }
 

@@ -130,7 +130,7 @@ First up is basic recursive Fibonacci, Python3 takes `233`ms on the same machine
 ```
   (bench 100 (fib-rec 20))
 
-835
+788
 ```
 
 Next tail recursive, Python3 takes `105`ms on the same machine.<br/>
@@ -139,10 +139,10 @@ Snabl detects and fuses tail calls [automagically](https://github.com/codr7/snab
 ```
   (fun: fib-tail [n a b Int] Int
     (if (z? n) a (if (one? n) b (fib-tail (dec n) b (+ a b)))))
-
+    
   (bench 10000 (fib-tail 70 0 1))
   
-324
+310
 ```
 
 ### support
