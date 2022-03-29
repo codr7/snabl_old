@@ -19,7 +19,6 @@ namespace snabl {
     ops::LOAD_FUN(m.emit(2), reg, this);
     Op &op = m.emit();
     start_pc = m.emit_pc;
-    reg_count = m.scope->reg_count;
     m.begin_scope();
     
     for (int i = 0; i < arg_count; i++) {
@@ -34,6 +33,7 @@ namespace snabl {
       if (optional<Error> err = f.emit(reg, m); err) { return err; }
     }
 
+    reg_count = m.scope->reg_count;
     m.deref_scope(m.end_scope());
     ops::RET(m.emit(), reg);
     ops::FUN(op, reg, m.emit_pc);

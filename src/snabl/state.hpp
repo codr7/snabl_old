@@ -21,8 +21,13 @@ namespace snabl {
       if (outer) { outer->ref_count++; }
     }
    
-    Val &get(Reg reg) {
+    optional<Val> &find(Reg reg) {
       optional<Val> &v = _regs[reg];
+      return (!v && outer) ? outer->find(reg) : v;
+    }
+
+    Val &get(Reg reg) {
+      optional<Val> &v = find(reg);
       return (!v && outer) ? outer->get(reg) : *v;
     }
     

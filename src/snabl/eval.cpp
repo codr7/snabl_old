@@ -103,8 +103,7 @@ namespace snabl {
     DISPATCH(pc+1);
 
   FUN:
-    state->get(ops::fun_reg(op)).as<Fun *>()->state = begin_state();
-    end_state();
+    state->get(ops::fun_reg(op)).as<Fun *>()->state = freeze_state();
     DISPATCH(ops::fun_end(op));
 
   GOTO:

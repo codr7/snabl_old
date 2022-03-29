@@ -4,11 +4,11 @@
 ** always use 0
 ** move if needed in call ops
 ** remove optional arg to m.ret_state()
-* add fun macro
-** create lambda
 * add quote reader
 ** add sym type
 ** add form type
+* add fun macro
+** create lambda
 * add CALLI2 op
 ** fun as separate op
 * add LOAD_NIL op

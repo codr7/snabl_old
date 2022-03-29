@@ -76,6 +76,17 @@ namespace snabl {
       return state;
     }
 
+    State *freeze_state() {
+      State *s = begin_state();
+      end_state();
+      
+      for (Reg i = Fun::ARG_COUNT+1; i < State::REG_COUNT; i++) {
+	if (auto v = s->find(i); v) { s->set(i, *v); }
+      }
+
+      return s;
+    }
+    
     State *end_state() {
       State *old = state;
       state = state->outer;
