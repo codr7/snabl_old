@@ -1,6 +1,3 @@
-* fuse COPY-RET to RET with correct reg
-** fib-rec
-* --
 * add Type.isa
 ** add typeof/isa fns
 ** handle type/val in isa

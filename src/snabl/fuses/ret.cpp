@@ -11,15 +11,15 @@ namespace snabl::fuses {
       Op op = m.ops[pc];
       
       switch (op_code(op)) {
-      case OpCode::NOP:
-	ret_pcs.push_back(pc);
-	pc++;
-	break;
       case OpCode::GOTO:
 	ret_pcs.push_back(pc);
 	pc = ops::goto_pc(op);
 	break;
-      case OpCode::RET:
+      case OpCode::NOP:
+	ret_pcs.push_back(pc);
+	pc++;
+	break;
+      case OpCode::RET: {
 	for (PC rpc: ret_pcs) {
 	  cout << "Fusing " << fun << " RET: ";
 	  op_trace(rpc, cout, m);
@@ -30,6 +30,7 @@ namespace snabl::fuses {
 	ret_pcs.clear();
 	pc++;
 	break;
+      }
       case OpCode::TRACE:
 	pc++;
 	break;
