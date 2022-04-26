@@ -24,7 +24,6 @@ The tip of the iceberg is a custom Lisp that wants to be as pragmatic as Common 
 - Parens are for calls, vectors use brackets
 - Everything is a method
 - `let*` is defult
-- Globals look special by definition
 - There is but one kind of 'Symbol
 
 ### status
