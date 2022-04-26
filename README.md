@@ -132,7 +132,7 @@ F
 ```
 
 ### performance
-The short story on performance is that Snabl currently takes around 3-5 times as long as Python3 to get an answer, but there are plenty of [shortcuts]() left to explore.
+The short story on performance is that Snabl currently takes around 3-5 times as long as Python3 to get an answer, but there are plenty of [shortcuts](https://github.com/codr7/snabl/tree/main/src/snabl/fuses) left to explore.
 
 `bench` returns elapsed time in milliseconds for specified number of repetitions.
 
