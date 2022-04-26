@@ -30,7 +30,7 @@ namespace snabl::forms {
     
     if (v->type == m.abc_lib->macro_type) { return v->as<snabl::Macro *>()->emit(args, reg, pos, m); }
 
-    ops::STATE_BEG(m.emit());
+    ops::STATE_BEG(m.emit(), m.emit_pc);
 
     for (int i = 0; i < args.size(); i++) {
       if (auto err = args[i].emit(i+1, m); err) { return err; }

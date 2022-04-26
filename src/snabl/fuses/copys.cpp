@@ -7,31 +7,27 @@ namespace snabl::fuses {
   int copys(Fun *fun, M &m) {
     int n = 0;
     
-    for (PC pc1 = fun->start_pc; pc1 < m.emit_pc;) {
-      Op &op1 = m.ops[pc1];
+    for (PC pc = fun->start_pc; pc < m.emit_pc;) {
+      Op &op1 = m.ops[pc];
 
       if (op_code(op1) == OpCode::COPY) {
-	int len = 1;
 	vector<PC> pcs;
 	
 	for (;;) {
-	  PC pc2 = drill_pc(pc1+1, m).back();
-	  Op op2 = m.ops[pc2];
+	  pc = drill_pc(pc+1, m).first;
+	  Op op2 = m.ops[pc];
 	  
 	  if (op_code(op2) == OpCode::COPY &&
 	      ops::copy_src(op2) == ops::copy_src(op1)+1 &&
 	      ops::copy_dst(op2) == ops::copy_dst(op1)+1) {
-	    pcs.push_back(pc2++);
-	    len++;
+	    pcs.push_back(pc);
 	  } else {
 	    break;
 	  }
-
-	  pc1 = pc2;
 	}
 
-	if (len > 1) {
-	  ops::COPYS(op1, ops::copy_dst(op1), ops::copy_src(op1), len);
+	if (!pcs.empty()) {
+	  ops::COPYS(op1, ops::copy_dst(op1), ops::copy_src(op1), pcs.size());
 	  
 	  for (PC pc: pcs) {
 	    cout << "Fusing " << fun << " COPYS: ";
@@ -41,7 +37,7 @@ namespace snabl::fuses {
 	}
       }
 
-      pc1 += op_len(op1);
+      pc += op_len(m.ops[pc]);
     }
 
     return n;

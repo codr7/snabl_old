@@ -13,7 +13,7 @@ namespace snabl::fuses {
       if (op_code(op1) == OpCode::GOTO) {
 	pc1 = ops::goto_pc(op1);
 	
-	if (auto pcs = drill_pc(pc1, m); pcs.back() != pc1) {
+	if (auto [pc, pcs] = drill_pc(pc1, m); pc != pc1) {
 	  for (PC pc2: pcs) {
 	    cout << "Fusing " << fun << " GOTO: ";
 	    op_trace(pc2, cout, m);

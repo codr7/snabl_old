@@ -1,7 +1,3 @@
-* add next_pc to STATE_BEG
-** drill & update in fuse
-** update eval
-** fib-rec
 * fuse COPY-RET to RET with correct reg
 ** fib-rec
 * --

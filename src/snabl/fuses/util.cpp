@@ -2,11 +2,11 @@
 #include "snabl/fuses/util.hpp"
 
 namespace snabl::fuses {
- vector<PC> drill_pc(PC pc, M &m) {
+  pair<PC, vector<PC>> drill_pc(PC pc, M &m) {
    vector<PC> out;
-   out.push_back(pc);
+   bool done = false;
    
-    while (pc < m.emit_pc) {
+    while (pc < m.emit_pc && !done) {
       Op op = m.ops[pc];
 
       switch (op_code(op)) {
@@ -21,10 +21,10 @@ namespace snabl::fuses {
 	pc++;
 	break;
       default:
-	return out;
+	done = true;
       }
     }
 
-    return out;
+    return make_pair(pc, out);
   }
 }

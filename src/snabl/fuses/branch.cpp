@@ -11,7 +11,7 @@ namespace snabl::fuses {
       Op &b = m.ops[pc];
 
       if (op_code(b) == OpCode::BRANCH) {
-	PC if_pc = drill_pc(ops::branch_if_pc(b), m).back();
+	PC if_pc = drill_pc(ops::branch_if_pc(b), m).first;
 	bool changed = false;
 	
 	if (if_pc != ops::branch_if_pc(b)) {
@@ -21,7 +21,7 @@ namespace snabl::fuses {
 	  n++;
 	}
 
-	PC else_pc = drill_pc(ops::branch_else_pc(b), m).back();
+	PC else_pc = drill_pc(ops::branch_else_pc(b), m).first;
 
 	if (else_pc != ops::branch_else_pc(b)) {
 	  cout << "Fusing " << fun << " BRANCH ELSE: ";

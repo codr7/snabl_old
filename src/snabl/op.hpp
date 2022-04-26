@@ -65,7 +65,8 @@
 
 #define RET_REG_BIT OP_CODE_BITS
 
-#define STATE_BEG_COUNT_BIT OP_CODE_BITS
+#define STATE_BEG_NEXT_PC_BIT OP_CODE_BITS
+#define STATE_BEG_COUNT_BIT (STATE_BEG_NEXT_PC_BIT+OP_PC_BITS)
 #define STATE_BEG_COUNT_BITS 4
 
 #define STATE_END_REG_BIT OP_CODE_BITS
@@ -202,7 +203,8 @@ namespace snabl {
     void RET(Op &op, Reg reg);
     inline Reg ret_reg(Op op) { return get<Reg, RET_REG_BIT, OP_REG_BITS>(op); }
     
-    void STATE_BEG(Op &op, int count = 1);
+    void STATE_BEG(Op &op, PC next, int count = 1);
+    inline PC state_beg_next(Op op) { return get<PC, STATE_BEG_NEXT_PC_BIT, OP_PC_BITS>(op); }
     inline int state_beg_count(Op op) { return get<int, STATE_BEG_COUNT_BIT, STATE_BEG_COUNT_BITS>(op); }
 
     void STATE_END(Op &op, Reg reg);

@@ -1,49 +1,45 @@
 #include "snabl/m.hpp"
 #include "snabl/op.hpp"
 #include "snabl/fuses/state.hpp"
+#include "snabl/fuses/util.hpp"
 
 namespace snabl::fuses {
   int state(Fun *fun, M &m) {
     int n = 0;
 
-    for (PC pc1 = fun->start_pc; pc1 < m.emit_pc;) {
-      bool done = false;
-      Op &op1 = m.ops[pc1];
+    for (PC pc = fun->start_pc; pc < m.emit_pc;) {
+      Op &op1 = m.ops[pc];
 
       if (op_code(op1) == OpCode::STATE_BEG) {
 	vector<PC> pcs;
+	int count = ops::state_beg_count(op1);
 
-	for (PC pc2 = pc1+1; !done && pc2 < m.emit_pc;) {
-	  Op op2 = m.ops[pc2];
+	for (;;) {
+	  pc = drill_pc(pc+1, m).first;
+	  Op op2 = m.ops[pc];
 	  
-	  switch (op_code(op2)) {
-	  case OpCode::GOTO:
-	    pc2 = ops::goto_pc(op2);
+	  if (op_code(op2) == OpCode::STATE_BEG) {
+	    pcs.push_back(pc);
+	    count += ops::state_beg_count(op2);
+	  } else {
 	    break;
-	  case OpCode::NOP:
-	  case OpCode::TRACE:
-	    pc2++;
-	    break;
-	  case OpCode::STATE_BEG:
-	    pcs.push_back(pc2);
-	    pc2++;
-	    break;
-	  default:
-	    done = true;
 	  }
 	}
 
-	for (PC pc: pcs) {
-	  cout << "Fusing " << fun << " STATE: ";
-	  op_trace(pc, cout, m);
-	  ops::NOP(m.ops[pc]);
-	  n++;
-	}
+	if (!pcs.empty()) {
+	  ops::STATE_BEG(op1, ops::state_beg_next(m.ops[pcs.back()]), count);	  
 
-	ops::STATE_BEG(op1, ops::state_beg_count(op1) + pcs.size());
+	  for (PC pc: pcs) {
+	    cout << "Fusing " << fun << " STATE: ";
+	    op_trace(pc, cout, m);
+	    Op &op = m.ops[pc];
+	    ops::NOP(op);
+	    n++;
+	  }
+	}
       }
 
-      pc1 += op_len(op1);
+      pc += op_len(m.ops[pc]);
     }
 
     return n;
