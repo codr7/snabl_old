@@ -97,7 +97,6 @@ namespace snabl {
     STATE_BEG, STATE_END,
     TEST, TRACE,
     Z,
-    /* STOP */
     STOP
   };
     
@@ -221,8 +220,6 @@ namespace snabl {
     inline Reg z_dst(Op op) { return get<Reg, Z_DST_BIT, OP_REG_BITS>(op); }
     inline Reg z_src(Op op) { return get<Reg, Z_SRC_BIT, OP_REG_BITS>(op); }
 
-    /* STOP */
-    
     void STOP(Op &op);
   }
 }

@@ -22,7 +22,6 @@ namespace snabl {
       &&STATE_BEG, &&STATE_END,
       &&TEST, &&TRACE,
       &&Z,
-      /* STOP */
       &&STOP};
 
     PC pc = -1;
@@ -206,10 +205,7 @@ namespace snabl {
     state->set(ops::z_dst(op), Val(abc_lib->bool_type, state->get(ops::z_src(op)).as<types::Int::DataType>() == 0));
     DISPATCH(pc+1);
 
-    /* STOP */
-    
   STOP:
-
     return nullopt;
   }
 }
