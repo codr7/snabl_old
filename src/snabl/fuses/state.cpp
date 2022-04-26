@@ -32,14 +32,14 @@ namespace snabl::fuses {
 	if (pc != ops::state_beg_next(op1) || count != ops::state_beg_count(op1)) {
 	  ops::STATE_BEG(op1, pc, count);
 	  cout << "Fusing " << fun << " STATE: ";
-	  op_trace(pc, cout, m);
+	  op_trace(pc1, cout, m);
 	  n++;
 	}
 
 	for (PC pc: pcs) { ops::NOP(m.ops[pc]); }
       }
 
-      pc += op_len(m.ops[pc]);
+      pc = pc1+op_len(op1);
     }
 
     return n;
