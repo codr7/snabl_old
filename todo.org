@@ -1,14 +1,10 @@
-* NOP rewrite instead of op1 in unused fuse
-** fib-tail
-** replaces depth check?
-* use drill_pc on next in copys/moves
-** fib-tail
 * add next_pc to STATE_BEG
 ** drill & update in fuse
 ** update eval
 ** fib-rec
 * fuse COPY-RET to RET with correct reg
 ** fib-rec
+* --
 * add Type.isa
 ** add typeof/isa fns
 ** handle type/val in isa
@@ -38,5 +34,5 @@
 * move readers into M
 * add Fuse type
 ** move fuses into M
-* ucp
+* udpc
 * raygui
