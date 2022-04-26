@@ -1,6 +1,5 @@
 #include <fstream>
 
-#include "snabl/defer.hpp"
 #include "snabl/m.hpp"
 #include "snabl/reader.hpp"
 
@@ -57,8 +56,9 @@ namespace snabl {
     ops::STOP(emit());
     auto prev_path(load_path);
     load_path = path.parent_path();
-    auto restore_load_path(defer([&]() { load_path = prev_path; }));
-    return eval(start_pc);
+    optional<Error> result = eval(start_pc);
+    load_path = prev_path;
+    return result;
   }
 
   optional<Error> M::use(Lib &lib, const vector<Sym> &syms, Pos pos) {
