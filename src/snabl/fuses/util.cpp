@@ -4,11 +4,11 @@
 namespace snabl::fuses {
   pair<PC, vector<PC>> drill_pc(PC pc, M &m) {
    vector<PC> out;
-   bool done = false;
-   
+   bool done = false, trace = false;
+  
     while (pc < m.emit_pc && !done) {
       Op op = m.ops[pc];
-
+      
       switch (op_code(op)) {
       case OpCode::NOP:
 	out.push_back(pc++);
@@ -18,6 +18,7 @@ namespace snabl::fuses {
 	pc = ops::goto_pc(op);
 	break;
       case OpCode::TRACE:
+	trace = true;
 	pc++;
 	break;
       default:
@@ -25,6 +26,6 @@ namespace snabl::fuses {
       }
     }
 
-    return make_pair(pc, out);
+    return make_pair(trace ? pc-1 : pc, out);
   }
 }

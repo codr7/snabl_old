@@ -12,18 +12,17 @@ namespace snabl::fuses {
       Op &op1 = m.ops[pc1];
 
       if (op_code(op1) == OpCode::STATE_BEG) {
-	vector<PC> pcs;
 	int count = ops::state_beg_count(op1);
 	pc = ops::state_beg_next(op1);
 	
 	for (;;) {
 	  pc = drill_pc(pc, m).first;
-	  Op op2 = m.ops[pc];
+	  Op &op2 = m.ops[pc];
 	  
 	  if (op_code(op2) == OpCode::STATE_BEG) {
-	    pcs.push_back(pc);
 	    count += ops::state_beg_count(op2);
 	    pc = ops::state_beg_next(op2);
+	    ops::NOP(op2);
 	  } else {
 	    break;
 	  }
@@ -35,8 +34,6 @@ namespace snabl::fuses {
 	  op_trace(pc1, cout, m);
 	  n++;
 	}
-
-	for (PC pc: pcs) { ops::NOP(m.ops[pc]); }
       }
 
       pc = pc1+op_len(op1);
