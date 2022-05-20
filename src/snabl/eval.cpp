@@ -159,7 +159,7 @@ namespace snabl {
 
   REC: {
       State *prev = end_state();
-      for (Reg i = 1; i < Fun::ARG_COUNT+1; i++) { state->set(i, move(prev->get(i))); }
+      for (Reg i = 1; i < frame->target->arg_count+1; i++) { state->set(i, move(prev->get(i))); }
       deref_state(prev);
       DISPATCH(frame->target->start_pc);
     }

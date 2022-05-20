@@ -152,7 +152,7 @@ Snabl detects and fuses tail calls [automagically](https://github.com/codr7/snab
     
   (bench 10000 (fib-tail 70 0 1))
   
-307
+287
 ```
 
 ### support

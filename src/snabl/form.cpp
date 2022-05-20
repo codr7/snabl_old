@@ -5,6 +5,7 @@ namespace snabl {
   Form::Imp::~Imp() {}
 
   optional<Val> Form::Imp::val(M &m) const { return nullopt; }
+  
   optional<Error> Form::Imp::quote(Reg reg, M &m) const { return emit(reg, m); }
 
   Form::Form(shared_ptr<const Imp> imp): imp(imp) {}
