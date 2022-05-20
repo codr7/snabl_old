@@ -1,7 +1,7 @@
 #ifndef SNABL_ALLOC_HPP
 #define SNABL_ALLOC_HPP
 
-#include <list>
+#include <deque>
 #include <memory>
 
 namespace snabl {
@@ -24,7 +24,7 @@ namespace snabl {
     template <typename...Args>
     T *make(Args&&...args) { return new (get()) T(forward<Args>(args)...); }
     
-    list<Slab> slabs;
+    deque<Slab> slabs;
     size_t n = 0;
   };
 }
