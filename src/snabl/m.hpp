@@ -24,7 +24,7 @@ namespace snabl {
     bool trace = false;
 
     static const int OP_COUNT = 1024;
-    static const int SLAB_SIZE = 64;
+    static const int SLAB_SIZE = 32;
 
     Alloc<Frame, SLAB_SIZE> frame_alloc;
     Alloc<Fun, SLAB_SIZE> fun_alloc;

@@ -1,9 +1,8 @@
 #ifndef SNABL_ALLOC_HPP
 #define SNABL_ALLOC_HPP
 
+#include <list>
 #include <memory>
-#include <utility>
-#include <vector>
 
 namespace snabl {
   using namespace std;
@@ -14,18 +13,18 @@ namespace snabl {
     
     Slab &push_slab() {
       n = 0;
-      return *slabs.emplace_back(make_unique<Slab>());
+      return slabs.emplace_back();
     }
 
     T *get() {
-      Slab &s = (slabs.empty() || n == N) ? push_slab() : *slabs.back();
+      Slab &s = (slabs.empty() || n == N) ? push_slab() : slabs.back();
       return reinterpret_cast<T *>(&s.slots[n++]);
     }
 
     template <typename...Args>
     T *make(Args&&...args) { return new (get()) T(forward<Args>(args)...); }
     
-    vector<unique_ptr<Slab>> slabs;
+    list<Slab> slabs;
     size_t n = 0;
   };
 }
