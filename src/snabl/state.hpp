@@ -14,8 +14,8 @@ namespace snabl {
     static const int REG_COUNT = 1 << OP_REG_BITS;
     
     State *outer;
-    int ref_count;
     array<optional<Val>, REG_COUNT> _regs;
+    int ref_count;
 
     State(State *outer): outer(outer), ref_count(1) {
       if (outer) { outer->ref_count++; }
